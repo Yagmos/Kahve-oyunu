@@ -34,6 +34,7 @@
  */
 const GIRL_NAME = 'Elif';
 const BOY_NAME = 'Kerem';
+const TEACHER_NAME = 'Öğretmen';
 
 const STORY = {
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
@@ -182,211 +183,607 @@ const STORY = {
   ],
 
   // ================= ACT II: OKUL =================
+  //
+  // Yapı:
+  //  1) Kerem POV — dergi kulübü (küçük, hikayeyi kilitlemeyen etkileşimler)
+  //  2) Koridor — dergileri sınıflara dağıtmaya giderken küçük etkileşimler
+  //  3) Elif + Din Kültürü öğretmeni tartışması (Kerem YOK) — ana sekans,
+  //     4 turdan oluşur; her turda Elif'in cevap ÜSLUBU seçilir (felsefi /
+  //     doğrudan / sakin). Bu seçimler doğru/yanlış olarak puanlanmaz,
+  //     sadece öğretmenin bir sonraki repliğini ve Elif'in tonunu etkiler.
+  //  4) Kerem, tartışmanın ortasında (2. tur sonunda) sınıfa girer — bu,
+  //     iki karakterin BİRBİRİNİ İLK KEZ GÖRDÜĞÜ an.
+  //  5) İlk bakış — kısa, sakin, romantikleştirilmemiş.
+  //  6) Tartışma 3. ve 4. turla (Kerem sessizce sınıfta) devam edip biter.
+  //  7) Kerem dergiyi tanıtır — ilk doğal (romantik olmayan) diyalog.
+  //  8) Kısa ders sonrası: Kerem POV + Elif POV, birer küçük gözlem.
+  //  9) Perde sonu kartı — mevcut act2_end → act3_start bağlantısı korunur.
 
-  // 1: Okula varış. ACT I'in bittiği yerden (okul bahçesi, siyah ekran) devam eder.
+  // ---- 1) KEREM POV: DERGİ KULÜBÜ ----
   act2_start: [
-    { type: 'say', speaker: '', text: 'Okulun kapısından içeri giriyor. Koridor her zamanki gibi kalabalık.' },
-    { type: 'show', id: 'girl', file: 'girl_happy.svg', position: 'center', transition: 'fade' },
-    { type: 'say', speaker: '', text: `(${GIRL_NAME}'in içinden) Yine aynı yüzler, aynı gürültü.` },
-    { type: 'say', speaker: '', text: `(${GIRL_NAME}'in içinden) Bugün ilk ders matematik, sonra...` },
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: '', text: '(İçinden) ...sonra kimya var. Tabii.' },
-    { type: 'jump', goto: 'act2_classroom' }
-  ],
-
-  // 2: Ders öncesi — sıradan sınıf detayları, bir sınıf arkadaşıyla kısa konuşma.
-  act2_classroom: [
-    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: '', text: 'Sınıfına giriyor, çantasını sırasının yanına bırakıyor.' },
-    { type: 'say', speaker: '', text: 'Defterlerini çıkarıp masasına diziyor.' },
-    { type: 'say', speaker: 'Sınıf arkadaşı', text: 'Ödevi yaptın mı?' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Tabii ki yaptım... dün gece.' },
-    { type: 'say', speaker: '', text: '(İçinden) Yeter ki kimse kimya ödevini sormasın.' },
-    { type: 'jump', goto: 'act2_chemistry_intro' }
-  ],
-
-  // 3: Zor ders başlıyor — öğretmen sadece hızlı/zorlayıcı, kötü değil.
-  act2_chemistry_intro: [
-    { type: 'say', speaker: '', text: 'Ders zili çalıyor.' },
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: '', text: '(İçinden) Tabii. Kimya.' },
-    { type: 'say', speaker: '', text: 'Öğretmen tahtaya hızlı hızlı bir şeyler yazmaya başlıyor.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bunu neden bu kadar hızlı yazıyor ki?' },
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
-    { type: 'say', speaker: '', text: '(İçinden) Tamam... bunu kesinlikle not almam lazım.' },
-    { type: 'say', speaker: '', text: '(Öğretmen anlattıkça, gerçekten önemli olanları not almaya çalışabilirsin.)' },
-    { type: 'jump', goto: 'act2_note1' }
-  ],
-
-  // ---- MİNİ OYUN: NOT ALMA ----
-  // 5 bilgi parçası art arda geliyor; her birinde "Not al" ya da "Geç"
-  // seçilir. Doğru seçim game.noteScore'a +1 ekler (bkz. points alanı).
-  // Ne olursa olsun akış her zaman act2_note_result'ta birleşir — kesinlikle
-  // "oyun bitti" / başarısızlık durumu yoktur.
-
-  // Önemli: sınav tarihi
-  act2_note1: [
-    { type: 'say', speaker: 'Öğretmen', text: 'Sınav önümüzdeki Cuma, unutmayın.' },
-    {
-      type: 'choice',
-      prompt: 'Not almalı mı?',
-      options: [
-        { text: 'Not al', goto: 'act2_note1_write', points: 1 },
-        { text: 'Geç', goto: 'act2_note1_skip', points: 0 }
-      ]
-    }
-  ],
-  act2_note1_write: [
-    { type: 'say', speaker: '', text: '(İçinden) Sınav tarihi. Bunu kesin yazmalıyım.' },
-    { type: 'jump', goto: 'act2_note2' }
-  ],
-  act2_note1_skip: [
-    { type: 'say', speaker: '', text: '(İçinden) Eh, sınav tarihini nasılsa hatırlarım... değil mi?' },
-    { type: 'jump', goto: 'act2_note2' }
-  ],
-
-  // Önemsiz: alakasız anı
-  act2_note2: [
-    { type: 'say', speaker: 'Öğretmen', text: 'Bu arada, üniversitede bir hocam vardı, çok ilginç biriydi...' },
-    {
-      type: 'choice',
-      prompt: 'Not almalı mı?',
-      options: [
-        { text: 'Not al', goto: 'act2_note2_write', points: 0 },
-        { text: 'Geç', goto: 'act2_note2_skip', points: 1 }
-      ]
-    }
-  ],
-  act2_note2_write: [
-    { type: 'say', speaker: '', text: '(İçinden) Bunu neden yazdım ki?' },
-    { type: 'jump', goto: 'act2_note3' }
-  ],
-  act2_note2_skip: [
-    { type: 'say', speaker: '', text: '(İçinden) Bu kısmı geçebilirim herhalde.' },
-    { type: 'jump', goto: 'act2_note3' }
-  ],
-
-  // Önemli: ödev
-  act2_note3: [
-    { type: 'say', speaker: 'Öğretmen', text: "Sayfa 42'deki soruları ödev olarak çözün." },
-    {
-      type: 'choice',
-      prompt: 'Not almalı mı?',
-      options: [
-        { text: 'Not al', goto: 'act2_note3_write', points: 1 },
-        { text: 'Geç', goto: 'act2_note3_skip', points: 0 }
-      ]
-    }
-  ],
-  act2_note3_write: [
-    { type: 'say', speaker: '', text: '(İçinden) Ödev. Tamam, yazdım.' },
-    { type: 'jump', goto: 'act2_note4' }
-  ],
-  act2_note3_skip: [
-    { type: 'say', speaker: '', text: '(İçinden) Ödevi... unutursam kendimi suçlarım.' },
-    { type: 'jump', goto: 'act2_note4' }
-  ],
-
-  // Önemsiz: bariz bilgi
-  act2_note4: [
-    { type: 'say', speaker: 'Öğretmen', text: 'Defterlerinizi açık tutun, tabii ki.' },
-    {
-      type: 'choice',
-      prompt: 'Not almalı mı?',
-      options: [
-        { text: 'Not al', goto: 'act2_note4_write', points: 0 },
-        { text: 'Geç', goto: 'act2_note4_skip', points: 1 }
-      ]
-    }
-  ],
-  act2_note4_write: [
-    { type: 'say', speaker: '', text: '(İçinden) Bunun not olduğuna emin değilim.' },
-    { type: 'jump', goto: 'act2_note5' }
-  ],
-  act2_note4_skip: [
-    { type: 'say', speaker: '', text: '(İçinden) Bunu zaten biliyordum.' },
-    { type: 'jump', goto: 'act2_note5' }
-  ],
-
-  // Önemli: temel formül/kavram
-  act2_note5: [
-    { type: 'say', speaker: 'Öğretmen', text: 'Ve unutmayın: mol kütlesi hesaplamalarının temeli budur.' },
-    {
-      type: 'choice',
-      prompt: 'Not almalı mı?',
-      options: [
-        { text: 'Not al', goto: 'act2_note5_write', points: 1 },
-        { text: 'Geç', goto: 'act2_note5_skip', points: 0 }
-      ]
-    }
-  ],
-  act2_note5_write: [
-    { type: 'say', speaker: '', text: '(İçinden) Bu önemliymiş gibi duruyor. Yazayım.' },
-    { type: 'jump', goto: 'act2_note_result' }
-  ],
-  act2_note5_skip: [
-    { type: 'say', speaker: '', text: '(İçinden) Sonra birinden bakarım nasılsa.' },
-    { type: 'jump', goto: 'act2_note_result' }
-  ],
-
-  // Mini oyun sonucu — game.noteScore'a göre değişen, ama hep normal devam eden kapanış.
-  act2_note_result: [
-    {
-      type: 'say',
-      speaker: '',
-      text: (game) => {
-        if (game.noteScore >= 4) return '(İçinden) Fena değil. Sanırım önemli kısımları yakaladım.';
-        if (game.noteScore >= 2) return '(İçinden) Bazı yerleri kaçırmış olabilirim ama idare eder.';
-        return '(İçinden) Pek çoğunu kaçırmışım galiba... yarın birinden not isterim.';
-      }
-    },
-    {
-      type: 'expr',
-      id: 'girl',
-      file: (game) => {
-        if (game.noteScore >= 4) return 'girl_happy.svg';
-        if (game.noteScore >= 2) return 'girl_neutral.svg';
-        return 'girl_sleepy.svg';
-      }
-    },
-    { type: 'jump', goto: 'act2_after_class' }
-  ],
-
-  // 5: Ders sonrası — koridor, kısa okul hayatı anları.
-  act2_after_class: [
-    { type: 'say', speaker: '', text: 'Ders bitiyor. Herkes aynı anda ayağa kalkıyor.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bir ders bitti, kaç ders kaldı...' },
-    { type: 'say', speaker: '', text: 'Koridora çıkıyor. Teneffüs kalabalığı her zamanki gibi.' },
-    { type: 'jump', goto: 'act2_hallway' }
-  ],
-
-  // 6: Erkek karakterin İLK KEZ, çok kısa ve sıradan bir şekilde görünmesi.
-  act2_hallway: [
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
-    { type: 'say', speaker: '', text: 'Koridorda yürürken karşıdan biri geliyor.' },
-    { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },
-    { type: 'say', speaker: '', text: 'Sınıf değiştiren bir öğrenci, o kadar.' },
-    { type: 'say', speaker: '', text: `(${GIRL_NAME}'in içinden) Tanımadığım biri.` },
-    { type: 'hide', id: 'boy' },
-    { type: 'say', speaker: '', text: 'Yollarına devam ediyorlar.' },
-    { type: 'jump', goto: 'act2_boy_pov' }
-  ],
-
-  // 7: Kısa erkek POV'u — ilk kez onun iç sesini duyuyoruz.
-  act2_boy_pov: [
-    { type: 'hide', id: 'girl' },
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
-    { type: 'say', speaker: '', text: '(İçinden) Tamam.' },
-    { type: 'say', speaker: '', text: "(İçinden) Sadece 'merhaba' de." },
-    { type: 'say', speaker: '', text: '(İçinden) Bu neden söylendiğinden daha zor?' },
-    { type: 'say', speaker: '', text: '(İçinden) Belki yarın. Ya da... uygun bir an bulunca.' },
-    { type: 'say', speaker: '', text: '(İçinden) Beni tanımıyor bile. Neden tanısın ki.' },
+    { type: 'say', speaker: '', text: 'Dergi kulübü odası, öğle arasının hemen öncesi.' },
+    { type: 'say', speaker: '', text: 'Masanın üstünde yeni sayının son baskıları duruyor.' },
+    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Bu sefer erken bitirdik, değil mi?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Erken bitirdik ama hâlâ dağıtım var. Asıl iş şimdi başlıyor.' },
+    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Yine gönüllü mü oldun dağıtıma?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Gönüllü olmadım, sırada bendim.' },
+    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'İlginç, sıra hep sana geliyor bir şekilde.' },
+    { type: 'say', speaker: '', text: '(İçinden) Aslında dağıtımı sevmiyor değilim. Sınıfları gezmek fena değil.' },
+    { type: 'jump', goto: 'act2_club_cover' }
+  ],
+
+  act2_club_cover: [
+    { type: 'say', speaker: '', text: 'Kapağı eline alıp inceliyor.' },
+    {
+      type: 'choice',
+      prompt: 'Neye baksın önce?',
+      options: [
+        { text: 'Renklere', goto: 'act2_club_cover_colors' },
+        { text: 'Başlık fontuna', goto: 'act2_club_cover_font' }
+      ]
+    }
+  ],
+  act2_club_cover_colors: [
+    { type: 'say', speaker: BOY_NAME, text: 'Renkler bu sefer iyi çıkmış. Geçen sayı biraz fazla cıvık kaçmıştı.' },
+    { type: 'jump', goto: 'act2_club_content' }
+  ],
+  act2_club_cover_font: [
+    { type: 'say', speaker: BOY_NAME, text: 'Font da okunaklı olmuş. Geçen sayıda üçüncü sayfadan sonra göz kanatıyordu.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bu sefer baştan dikkat ettik, iyi ki de etmişiz.' },
+    { type: 'jump', goto: 'act2_club_content' }
+  ],
+
+  act2_club_content: [
+    { type: 'say', speaker: '', text: 'Sayfaları hızlıca karıştırıyor.' },
+    {
+      type: 'choice',
+      prompt: 'Hangi bölüme baksın?',
+      options: [
+        { text: 'Öğrenci yazıları', goto: 'act2_club_content_writing' },
+        { text: 'Çizimler', goto: 'act2_club_content_art' }
+      ]
+    }
+  ],
+  act2_club_content_writing: [
+    { type: 'say', speaker: BOY_NAME, text: 'Bu sayının en iyi yazısı bence şu röportaj olmuş.' },
+    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Onu ben de beğendim, iyi sorular sormuş.' },
+    { type: 'jump', goto: 'act2_club_sort' }
+  ],
+  act2_club_content_art: [
+    { type: 'say', speaker: BOY_NAME, text: 'Kapağı yapan bu sefer bir de çizgi roman sayfası göndermiş, güzel olmuş.' },
+    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Önümüzdeki sayı için ondan bir sayfa daha isteyelim mi?' },
+    { type: 'jump', goto: 'act2_club_sort' }
+  ],
+
+  act2_club_sort: [
+    { type: 'say', speaker: '', text: 'Dergileri sınıflara göre paketlere ayırmaya başlıyor.' },
+    { type: 'say', speaker: 'Kulüp arkadaşı', text: "12-A'ya fazladan birkaç tane koy, geçen sefer yetmemişti." },
+    {
+      type: 'choice',
+      prompt: 'Kaç tane ayırsın?',
+      options: [
+        { text: 'Söylediği kadar', goto: 'act2_club_sort_asked' },
+        { text: 'Biraz daha fazla', goto: 'act2_club_sort_extra' }
+      ]
+    }
+  ],
+  act2_club_sort_asked: [
+    { type: 'say', speaker: BOY_NAME, text: 'Tamam, dediğin kadar ayırayım.' },
+    { type: 'say', speaker: '', text: 'Paketleri hızlıca bantlayıp kenara diziyor.' },
+    { type: 'jump', goto: 'act2_club_route' }
+  ],
+  act2_club_sort_extra: [
+    { type: 'say', speaker: BOY_NAME, text: 'Olsun, birkaç tane daha koyayım, idare eder.' },
+    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Bak sen, çok düşüncelisin.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Ya da sonra tekrar buraya gelmek istemiyorum, o kadar.' },
+    { type: 'say', speaker: '', text: 'Paketleri hızlıca bantlayıp kenara diziyor.' },
+    { type: 'jump', goto: 'act2_club_route' }
+  ],
+
+  act2_club_route: [
+    { type: 'say', speaker: '', text: 'Paketleri sayıp listeye göz atıyor: bugün üst kat ve doğu koridoru sırada.' },
+    {
+      type: 'choice',
+      prompt: 'Önce hangi taraftan başlasın?',
+      options: [
+        { text: 'Üst kattan', goto: 'act2_club_route_upstairs' },
+        { text: 'Doğu koridorundan', goto: 'act2_club_route_east' }
+      ]
+    }
+  ],
+  act2_club_route_upstairs: [
+    { type: 'say', speaker: BOY_NAME, text: 'Merdivenleri önce hallederim, sonra düz gidilir.' },
+    { type: 'jump', goto: 'act2_club_leave' }
+  ],
+  act2_club_route_east: [
+    { type: 'say', speaker: BOY_NAME, text: 'Doğu tarafı daha yakın, önce oradan başlayayım.' },
+    { type: 'jump', goto: 'act2_club_leave' }
+  ],
+
+  act2_club_leave: [
+    { type: 'say', speaker: '', text: 'Dergi yığınını koluna alıp kapıya yöneliyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tamam, sınıflara dağıtmaya başlıyorum.' },
+    { type: 'say', speaker: 'Kulüp danışmanı', text: 'Dikkat et, geçen sefer merdivenlerden koşarak inmiştin.' },
+    { type: 'say', speaker: BOY_NAME, text: 'O bir kereydi hocam, söz veriyorum.' },
+    { type: 'say', speaker: '', text: '(İçinden) İki kereydi aslında, ama bunu şimdi açıklamaya gerek yok.' },
     { type: 'hide', id: 'boy' },
+    { type: 'camera', effect: 'slide-right' },
+    { type: 'jump', goto: 'act2_hallway1' }
+  ],
+
+  // ---- 2) KORİDOR ----
+  act2_hallway1: [
+    { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
+    { type: 'say', speaker: '', text: 'Koridor kalabalık, herkes teneffüse çıkmış.' },
+    { type: 'say', speaker: '', text: 'Karşıdan tanıdık bir yüz geliyor.' },
+    {
+      type: 'choice',
+      prompt: 'Nasıl selamlasın?',
+      options: [
+        { text: 'Elini kaldırıp selam ver', goto: 'act2_hallway1_wave' },
+        { text: 'Sadece başını salla', goto: 'act2_hallway1_nod' }
+      ]
+    }
+  ],
+  act2_hallway1_wave: [
+    { type: 'say', speaker: BOY_NAME, text: 'Selam!' },
+    { type: 'say', speaker: '', text: 'Karşıdaki de elini kaldırıp karşılık veriyor, yoluna devam ediyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Kısa ve net, tam istediğim gibi.' },
+    { type: 'jump', goto: 'act2_hallway2' }
+  ],
+  act2_hallway1_nod: [
+    { type: 'say', speaker: '', text: 'Başıyla selam veriyor, karşı taraf da aynı şekilde karşılık veriyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Eller dolu olunca selamlaşmak biraz tuhaflaşıyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Neyse, teneffüs kalabalığında bu kadarı yeter.' },
+    { type: 'jump', goto: 'act2_hallway2' }
+  ],
+
+  act2_hallway2: [
+    { type: 'say', speaker: '', text: 'Dergi yığını biraz kaymaya başlıyor.' },
+    {
+      type: 'choice',
+      prompt: 'Ne yapsın?',
+      options: [
+        { text: 'Tek koluna sıkıştır', goto: 'act2_hallway2_arm' },
+        { text: 'Göğsüne yasla', goto: 'act2_hallway2_chest' }
+      ]
+    }
+  ],
+  act2_hallway2_arm: [
+    { type: 'say', speaker: '', text: 'Yığını tek koluna sıkıştırıyor, birkaçı neredeyse düşüyor ama toparlıyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Az kalsın.' },
+    { type: 'say', speaker: '', text: 'Yoldan geçen biri gülümseyip başını sallıyor, o da hafifçe gülümsüyor.' },
+    { type: 'jump', goto: 'act2_hallway3' }
+  ],
+  act2_hallway2_chest: [
+    { type: 'say', speaker: '', text: 'Yığını göğsüne yaslayıp dengeliyor. Bu sefer daha güvenli.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bunu baştan böyle taşısaymışım.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tamam, böylesi daha iyiymiş.' },
+    { type: 'jump', goto: 'act2_hallway3' }
+  ],
+
+  act2_hallway3: [
+    { type: 'say', speaker: '', text: 'Bir sınıf kapısının önünde duruyor, tabelaya bakıyor.' },
+    {
+      type: 'choice',
+      prompt: 'Hangi tabelaya baksın?',
+      options: [
+        { text: 'Kapının üstündeki numaraya', goto: 'act2_hallway3_number' },
+        { text: 'Yandaki ders programına', goto: 'act2_hallway3_schedule' }
+      ]
+    }
+  ],
+  act2_hallway3_number: [
+    { type: 'say', speaker: BOY_NAME, text: '11-B... hayır, bu 11-C.' },
+    { type: 'say', speaker: '', text: '(İçinden) Numaralar bazen okulun en kafa karıştırıcı kısmı.' },
+    { type: 'jump', goto: 'act2_hallway4' }
+  ],
+  act2_hallway3_schedule: [
+    { type: 'say', speaker: '', text: 'Ders programına bakıp bu saatte burada hangi dersin olduğunu kontrol ediyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tamam, burası değil. Bir sonraki.' },
+    { type: 'say', speaker: '', text: '(İçinden) Programa bakmak daha güvenilir, kapı numaraları bazen yanlış asılıyor.' },
+    { type: 'jump', goto: 'act2_hallway4' }
+  ],
+
+  act2_hallway4: [
+    { type: 'say', speaker: '', text: 'Birkaç kapı ileride durduğu yer, listedeki sınıflardan biri: hedef burası.' },
+    { type: 'camera', effect: 'zoom-in' },
+    { type: 'say', speaker: '', text: 'Kapıya yaklaşırken içeriden sesler geliyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bir şey mi oluyor?' },
+    { type: 'say', speaker: '', text: 'İçeride hararetli bir tartışma sürüyor gibi. Sesler kızgın değil, ama yoğun.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Hmm. Belki biraz beklesem daha iyi olur.' },
+    { type: 'hide', id: 'boy' },
+    { type: 'jump', goto: 'act2_debate_start' }
+  ],
+
+  // ---- 3) ELİF + ÖĞRETMEN TARTIŞMASI (Kerem henüz yok) ----
+  act2_debate_start: [
+    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
+    { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
+    { type: 'say', speaker: '', text: "Tahtada güncel bir başlık var: 'İnanç ve Sorgulama'." },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bakın, bugün sadece bilgi aktarmayacağım, sizi düşündürmek istiyorum.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'İnsan, inanmadan önce sorgulamalı mı? Yoksa bazı şeyler sorgulanmadan da anlam taşır mı?' },
+    { type: 'say', speaker: '', text: '(İçinden) Bu soruyu hep merak etmişimdir zaten.' },
+    { type: 'say', speaker: '', text: 'Sınıftaki birkaç kişi mırıldanıyor, kimse hemen cevap vermiyor.' },
+    { type: 'say', speaker: 'Bir öğrenci', text: 'Bence dinin buna cevabı zaten var, sorgulamaya gerek yok.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Olabilir. Ama bugün biraz da farklı düşünenlerin fikrini duyalım.' },
+    { type: 'say', speaker: TEACHER_NAME, text: `${GIRL_NAME}, sen ne düşünüyorsun?` },
+    { type: 'say', speaker: '', text: '(İçinden) Tabii, yine ben.' },
+    { type: 'jump', goto: 'act2_debate_turn1' }
+  ],
+
+  // Tur 1, aşama A: açılış argümanı + üslup seçimi.
+  act2_debate_turn1: [
+    { type: 'say', speaker: TEACHER_NAME, text: 'İnsanlık tarihi boyunca inanç sistemleri, insanlara bir anlam çerçevesi sunmuş.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Birçok toplum, ahlaki değerlerini ve topluluk bilincini bu çerçeve üzerine kurmuş.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Sizce bu bir tesadüf mü, yoksa insanın gerçekten böyle bir çerçeveye ihtiyacı mı var?' },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} nasıl cevap versin?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn1_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn1_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn1_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn1_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Belki de insanın anlam arayışı, o çerçevenin doğru olduğu anlamına gelmiyordur.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yani bir şeye ihtiyaç duymakla, o şeyin gerçek olması aynı şey değil bence.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'İlginç bir ayrım. Ama bir ihtiyacı bu kadar evrensel kılan şey, sence tamamen rastlantı mı?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa ortak bir insan deneyiminden mi besleniyor?' },
+    { type: 'jump', goto: 'act2_debate_turn1b' }
+  ],
+  act2_debate_turn1_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Açıkçası, ahlaklı olmak için bir çerçeveye ihtiyacım olduğunu düşünmüyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Empati kurabiliyorum, sonuçları düşünebiliyorum. Bana yeterli geliyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Peki bu empati duygusu sence nereden geliyor?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Kendiliğinden mi ortaya çıkıyor, yoksa zamanla öğrenilen bir şey mi?' },
+    { type: 'jump', goto: 'act2_debate_turn1b' }
+  ],
+  act2_debate_turn1_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bence herkesin bir çerçeveye ihtiyacı olabilir, ama bu herkes için aynı çerçeve olmak zorunda değil.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ben kendi sorularımı sormaya devam ediyorum, o kadar.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Makul bir yaklaşım. Peki bu sorular seni hiç bir yere götürmedi mi?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa sadece sormuş olmak, sana yetiyor mu?' },
+    { type: 'jump', goto: 'act2_debate_turn1b' }
+  ],
+
+  // Tur 1, aşama B: öğretmenin karşı sorusuna cevap + turun kapanışı.
+  act2_debate_turn1b: [
+    { type: 'say', speaker: '', text: `${GIRL_NAME} bir an duraksıyor, sonra devam ediyor.` },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn1b_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn1b_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn1b_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn1b_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Ortak bir deneyimden besleniyor olabilir, ama ortak olmak onu otomatik olarak doğru yapmaz.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Birçok insanın aynı yanılgıya düşmesi de mümkün sonuçta.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Sağlam bir itiraz. Bunu aklımda tutacağım.' },
+    { type: 'jump', goto: 'act2_debate_turn2' }
+  ],
+  act2_debate_turn1b_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bence kısmen öğreniliyor, kısmen de doğuştan geliyor. İkisinin birbirini dışlaması gerekmiyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Katılıyorum aslında, ikisi bir arada olabilir.' },
+    { type: 'jump', goto: 'act2_debate_turn2' }
+  ],
+  act2_debate_turn1b_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bazılarına götürdü, ama hâlâ yolun ortasındayım diyebilirim.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Dürüst bir cevap. Yolun ortasında olmak da bir yer sonuçta.' },
+    { type: 'jump', goto: 'act2_debate_turn2' }
+  ],
+
+  // Tur 2, aşama A.
+  act2_debate_turn2: [
+    { type: 'say', speaker: '', text: 'Öğretmen tahtaya iki kelime daha yazıyor: Bilim ve Sınırları.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Gelelim ikinci noktaya. Bilim bize pek çok şeyi açıklıyor, kabul ediyorum.' },
+    { type: 'say', speaker: TEACHER_NAME, text: "Ama bazı sorular var: 'Neden hiçlik değil de bir şeyler var?' gibi. Bilim bunlara nasıl cevap veriyor?" },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} nasıl cevap versin?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn2_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn2_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn2_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn2_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bazı sorulara henüz cevap bulunamamış olması, bir açıklamanın var olmadığı anlamına gelmiyor bence.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bilinmemek başka, bilinemez olmak başka bir şey.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Doğru bir ayrım. Ama insan bilinmeyenle yaşamakta ne kadar rahat, sence?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa illa bir açıklama mı arıyoruz?' },
+    { type: 'jump', goto: 'act2_debate_turn2b' }
+  ],
+  act2_debate_turn2_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bilim her şeyi açıklayamıyor olabilir ama bu, açıklayamadığı yeri dinin doldurması gerektiği anlamına gelmez.' },
+    { type: 'say', speaker: GIRL_NAME, text: "'Bilmiyorum' demek bazen en dürüst cevaptır." },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Kabul ediyorum, dürüst bir cevap.' },
+    { type: 'say', speaker: TEACHER_NAME, text: "Ama bu 'bilmiyorum' seni hiç rahatsız etmiyor mu?" },
+    { type: 'jump', goto: 'act2_debate_turn2b' }
+  ],
+  act2_debate_turn2_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: "Bence bilim ve o tür sorular farklı kategorilerde. Biri 'nasıl'ı, öbürü belki 'neden'i soruyor." },
+    { type: 'say', speaker: GIRL_NAME, text: "Ama 'neden' sorusuna bir cevap olması, o cevabın illa dini olması gerektiği anlamına gelmiyor bence." },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Adil bir nokta. Peki sence o soruya hiç cevap yok mu, yoksa henüz bulunmadı mı?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa bu ikisi arasındaki fark senin için önemli değil mi?' },
+    { type: 'jump', goto: 'act2_debate_turn2b' }
+  ],
+
+  // Tur 2, aşama B.
+  act2_debate_turn2b: [
+    { type: 'say', speaker: '', text: 'Öğretmen masaya yaslanıp bekliyor.' },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn2b_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn2b_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn2b_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn2b_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: "Açıkçası illa bir açıklama aramıyorum, sadece 'bilmiyoruz' demekten korkmuyorum." },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu benim için rahatsız edici değil, tam tersine dürüst geliyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bu rahatlığı takdir ediyorum, herkeste yok.' },
+    { type: 'jump', goto: 'act2_kerem_arrives' }
+  ],
+  act2_debate_turn2b_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Rahatsız etmiyor değil, ama beni rahatsız eden bir şey olması onu yanlış yapmıyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Kesinlikle haklısın, rahatsızlık bir kanıt değildir.' },
+    { type: 'jump', goto: 'act2_kerem_arrives' }
+  ],
+  act2_debate_turn2b_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bence fark önemli, ama şu an için ikisini de aynı kefeye koyabiliyorum.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Zamanla o fark senin için netleşebilir belki.' },
+    { type: 'jump', goto: 'act2_kerem_arrives' }
+  ],
+
+  // ---- 4) KEREM'İN SINIFA GİRİŞİ — birbirlerini İLK KEZ görüyorlar ----
+  act2_kerem_arrives: [
+    { type: 'camera', effect: 'slide-left' },
+    { type: 'say', speaker: '', text: 'Kapı hafifçe aralanıyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Umarım ortasına denk gelmemişimdir.' },
+    { type: 'hide', id: 'girl' },
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
+    { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },
+    { type: 'say', speaker: '', text: 'Sınıftaki birkaç öğrenci başını çevirip bakıyor, sonra tekrar tahtaya dönüyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bir şey mi vardı?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Dergi kulübünden gelmiştim. Yeni sayıyı tanıtıp dağıtacaktım.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Tabii, bir dakika bekleyebilirsin.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tabii, sorun değil.' },
+    { type: 'say', speaker: '', text: 'Kerem sınıfın kenarında, elinde dergilerle bekliyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Ortasına denk gelmişim işte. Olsun, beklerim.' },
+    { type: 'jump', goto: 'act2_first_look' }
+  ],
+
+  // ---- 5) İLK BAKIŞ — kısa, sakin, romantikleştirilmemiş ----
+  act2_first_look: [
+    { type: 'camera', effect: 'zoom-in' },
+    { type: 'say', speaker: '', text: 'Konuşma bir anlığına devam ederken, Elif bir an başını çeviriyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Yeni biri mi geldi?' },
+    { type: 'say', speaker: '', text: 'Kerem de ona bakıyor. Kısa bir sessizlik.' },
+    { type: 'say', speaker: '', text: 'Sınıftaki kimse bu bakışmayı fark etmiyor bile; herkes hâlâ tartışmada.' },
+    { type: 'camera', effect: 'zoom-out' },
+    { type: 'say', speaker: '', text: 'Elif tekrar öğretmene dönüyor.' },
+    { type: 'say', speaker: '', text: 'Kerem de dergileri tutarak beklemeye devam ediyor.' },
+    { type: 'jump', goto: 'act2_debate_turn3' }
+  ],
+
+  // ---- 6) Tartışma devam ediyor (Kerem sınıfta, sessiz) ----
+  act2_debate_turn3: [
+    { type: 'say', speaker: '', text: 'Öğretmen sıraların arasında yürümeye başlıyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Üçüncü noktaya gelelim. Ahlakın kaynağı nedir sizce?' },
+    { type: 'say', speaker: TEACHER_NAME, text: "Bazıları, dinin ahlaka temel oluşturduğunu söyler. Din olmadan 'iyi' ve 'kötü' kavramları temelsiz kalır mı?" },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} nasıl cevap versin?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn3_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn3_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn3_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn3_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bence ahlak, birlikte yaşamanın gereksinimlerinden de doğabilir. Bir toplulukta yaşamak belirli kuralları gerektiriyor.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu kuralların dinden gelmesi bir yol, ama tek yol olması gerekmiyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Peki o kurallar dinden bağımsız olarak nasıl bağlayıcı hale geliyor sence?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bir otorite olmadan insanlar neden uysun?' },
+    { type: 'jump', goto: 'act2_debate_turn3b' }
+  ],
+  act2_debate_turn3_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bir çocuğun canının yanmasının kötü olduğunu anlamak için dine ihtiyacım yok.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu, gördüğüm anda hissettiğim bir şey.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'O hissin kendisi de bir yerden geliyor olabilir mi peki?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Belki evrimsel, belki öğrenilmiş.' },
+    { type: 'jump', goto: 'act2_debate_turn3b' }
+  ],
+  act2_debate_turn3_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bence kaynağın nereden geldiği kadar, nasıl uygulandığı da önemli.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Dinden gelen biriyle gelmeyen biri aynı sonuca varabiliyorsa, kaynak tartışması biraz teorik kalıyor bence.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Pratik bir bakış açısı. Ama teori bazen pratiği şekillendirir, öyle değil mi?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yanlış bir teori, yanlış bir pratiğe de yol açabilir.' },
+    { type: 'jump', goto: 'act2_debate_turn3b' }
+  ],
+
+  // Tur 3, aşama B.
+  act2_debate_turn3b: [
+    { type: 'say', speaker: '', text: `${GIRL_NAME} bir süre düşünüyor.` },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn3b_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn3b_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn3b_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn3b_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Belki de bağlayıcılık bir otoriteden değil, karşılıklı fayda ve güvenden geliyordur.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Sosyal sözleşme fikrine yaklaştın, farkında mısın?' },
+    { type: 'jump', goto: 'act2_debate_turn4' }
+  ],
+  act2_debate_turn3b_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kaynağı ne olursa olsun, sonuçta iyi davranıyorsam bu yeterli bence.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Sonuç odaklı bir bakış. Buna itirazım yok aslında.' },
+    { type: 'jump', goto: 'act2_debate_turn4' }
+  ],
+  act2_debate_turn3b_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Yanlış bir teori kötü sonuçlar doğurabilir, kabul ediyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ama doğru teoriyi bulmak da tek bir kaynaktan gelmiyor bence.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bunu düşünmeye devam etmen güzel.' },
+    { type: 'jump', goto: 'act2_debate_turn4' }
+  ],
+
+  // Tur 4, aşama A — son tur.
+  act2_debate_turn4: [
+    { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu sormak istiyorum: sorgulamak seni bir yere götürdü mü?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa sadece soru sormuş olmak, kendi başına yeterli mi?' },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} nasıl cevap versin?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn4_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn4_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn4_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn4_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Sanırım henüz kesin bir cevabım yok, ama sormaya devam etmek bir yere varmaktan daha değerli geliyor bana.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yolculuğun kendisi bazen varılan yerden daha çok şey öğretir.' },
+    { type: 'jump', goto: 'act2_debate_turn4b' }
+  ],
+  act2_debate_turn4_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Beni kesin bir cevaba götürmedi, ama en azından neye inanmadığımı biliyorum.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bu da az bir şey değil aslında.' },
+    { type: 'jump', goto: 'act2_debate_turn4b' }
+  ],
+  act2_debate_turn4_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Belki de asıl mesele bir cevaba varmak değil, soruyu sormaktan korkmamaktır.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bunu bu sınıfta duymak beni mutlu ediyor.' },
+    { type: 'jump', goto: 'act2_debate_turn4b' }
+  ],
+
+  // Tur 4, aşama B — tartışmanın son sözü, hemen ardından kapanış.
+  act2_debate_turn4b: [
+    { type: 'say', speaker: '', text: 'Sınıfta kısa bir sessizlik oluyor.' },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} sözlerini nasıl tamamlasın?`,
+      options: [
+        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn4b_philo' },
+        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn4b_direct' },
+        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn4b_calm' }
+      ]
+    }
+  ],
+  act2_debate_turn4b_philo: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Belki de bu tartışmanın amacı bana kesin bir cevap vermek değil, soruyu doğru sormayı öğretmekti.' },
+    { type: 'jump', goto: 'act2_debate_end' }
+  ],
+  act2_debate_turn4b_direct: [
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bir cevap bulmuş gibi hissetmiyorum ama en azından ne düşündüğümü daha iyi biliyorum.' },
+    { type: 'jump', goto: 'act2_debate_end' }
+  ],
+  act2_debate_turn4b_calm: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Sanırım bunu düşünmeye devam edeceğim. Bu derste bitmiş bir konu değil çünkü.' },
+    { type: 'jump', goto: 'act2_debate_end' }
+  ],
+
+  act2_debate_end: [
+    { type: 'say', speaker: TEACHER_NAME, text: 'Güzel bir tartışma oldu. Kimsenin kimseyi ikna etmesi gerekmiyor bu derste.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Önemli olan, sorguladığın şeyle dürüst bir ilişki kurabilmen.' },
+    { type: 'say', speaker: 'Bir öğrenci', text: 'Yani sınavda bu sorulmayacak, değil mi hocam?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Sınavda sorulmaz ama hayatta karşına çıkar, o ayrı mesele.' },
+    { type: 'say', speaker: '', text: 'Sınıftan hafif bir kahkaha yükseliyor.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Katılıyorum, hocam.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bu dersi bu yüzden seviyorum aslında.' },
+    { type: 'jump', goto: 'act2_magazine_intro' }
+  ],
+
+  // ---- 7) DERGİ TANITIMI — ilk doğal (romantik olmayan) diyalog ----
+  act2_magazine_intro: [
+    { type: 'say', speaker: TEACHER_NAME, text: 'Evet, sanırım sıra dergi kulübünde.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Teşekkürler hocam.' },
+    { type: 'say', speaker: '', text: 'Kerem öne çıkıp dergiyi gösteriyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu ayki sayı çıktı. İçinde öğrenci yazıları, birkaç çizim, okul etkinliklerinden haberler ve kısa hikayeler var.' },
+    { type: 'say', speaker: BOY_NAME, text: 'İsteyen teneffüste kulüp masasından alabilir.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kapak kimin işi?' },
+    { type: 'say', speaker: BOY_NAME, text: "Onu 10-D'den biri yaptı. Bu sayı gerçekten iyi çıktı bence." },
+    { type: 'say', speaker: GIRL_NAME, text: 'Fena görünmüyor.' },
+    {
+      type: 'choice',
+      prompt: `${GIRL_NAME} hangisini sorsun?`,
+      options: [
+        { text: 'Kısa hikayeleri', goto: 'act2_magazine_ask_stories' },
+        { text: 'Okul etkinliklerini', goto: 'act2_magazine_ask_events' }
+      ]
+    }
+  ],
+  act2_magazine_ask_stories: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu sayıda kısa hikaye de var mı?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Var, iki tane. Biri fena değil, diğeri de fena değil.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yani ikisi de fena değil.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Aynen öyle. Objektif eleştirmenlik böyle bir şey.' },
+    { type: 'say', speaker: '', text: '(İçinden) Şu kısa hikaye bölümüne bir bakabilirim belki.' },
+    { type: 'jump', goto: 'act2_aftermath' }
+  ],
+  act2_magazine_ask_events: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Etkinlik haberlerinde ne var bu sefer?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Basketbol turnuvası, bir de resim sergisi haberi var.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Resim sergisini kaçırmışım, ne zamanmış?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Geçen hafta bitti galiba, ama dergide fotoğrafları var.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bari fotoğraflarına bakarım.' },
+    { type: 'jump', goto: 'act2_aftermath' }
+  ],
+
+  // ---- 8) KISA DERS SONRASI ----
+  act2_aftermath: [
+    { type: 'say', speaker: '', text: 'Ders bitiyor, herkes toplanmaya başlıyor.' },
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
+    { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
+    { type: 'say', speaker: '', text: 'Kerem koridorda, elinde kalan birkaç dergiyle.' },
+    { type: 'say', speaker: '', text: '(İçinden) İçeri girdiğimde böyle bir tartışmanın ortasına düşeceğimi düşünmemiştim.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Sınıfın yarısı hocayla tartışıyor sandım, az kalsın geri kapıdan çıkıyordum.' },
+    { type: 'say', speaker: '', text: '(İçinden) Ama iyi ki çıkmamışım, ilginç bir dersmiş.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Neyse, kalan sınıflara da yetişeyim.' },
+    { type: 'hide', id: 'boy' },
+    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
+    { type: 'show', id: 'girl', file: 'girl_happy.svg', position: 'center', transition: 'fade' },
+    { type: 'say', speaker: '', text: 'Elif çantasını topluyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Yeni çocuk muydu?' },
+    { type: 'say', speaker: '', text: '(İçinden) Dergi kulübündeymiş demek.' },
+    { type: 'say', speaker: '', text: 'Sıradan bir gündü, dergiyi eline alıp koridora çıkıyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Neyse, sıradaki derse geç kalmayayım.' },
+    { type: 'hide', id: 'girl' },
     { type: 'jump', goto: 'act2_end' }
   ],
 
-  // 8: Perde sonu kartı. ACT III hazır olduğu için doğrudan ona bağlanıyor.
+  // ---- 9) Perde sonu kartı. ACT III hazır olduğu için doğrudan ona bağlanıyor. ----
   act2_end: [
     { type: 'say', speaker: '', text: 'ACT II — SCHOOL' },
     { type: 'say', speaker: '', text: 'END' },
