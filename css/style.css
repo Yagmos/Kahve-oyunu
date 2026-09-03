@@ -1,0 +1,481 @@
+/* ==========================================================================
+   Kahve Oyunu — Mobil öncelikli Visual Novel arayüzü
+   ========================================================================== */
+
+:root {
+  --color-bg: #1b100c;
+  --color-surface: #2a1810;
+  --color-surface-2: #34201555;
+  --color-accent: #d9a441;
+  --color-text: #f5e9da;
+  --color-text-dim: #c9b8a8;
+  --coffee-dark: #3b2418;
+  --coffee: #6f4e37;
+  --coffee-light: #8a6a4d;
+  --danger: #b3543f;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Trebuchet MS', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 560px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--color-bg);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- Ekran geçişleri ---- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   Ana menü / Ayarlar ortak stiller
+   ========================================================================== */
+
+.menu-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: calc(var(--safe-top) + 24px) calc(var(--safe-right) + 24px) calc(var(--safe-bottom) + 24px) calc(var(--safe-left) + 24px);
+  background: radial-gradient(circle at 50% 20%, var(--coffee-dark), var(--color-bg) 70%);
+  text-align: center;
+}
+
+.game-title {
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  text-shadow: 0 2px 12px rgba(217, 164, 65, 0.35);
+}
+
+.game-subtitle {
+  margin: -18px 0 0;
+  color: var(--color-text-dim);
+  font-size: 0.95rem;
+}
+
+.screen-title {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.menu-btn {
+  min-height: 56px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--coffee), var(--coffee-dark));
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  transition: transform 0.08s ease, opacity 0.2s ease;
+}
+
+.menu-btn:active {
+  transform: scale(0.97) translateY(1px);
+}
+
+.menu-btn:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.back-btn {
+  margin-top: 10px;
+}
+
+/* ---- Ayarlar ---- */
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 340px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border-radius: 12px;
+}
+
+.settings-row-column {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.settings-label {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.toggle-btn {
+  min-width: 96px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 22px;
+  background: var(--coffee-dark);
+  color: var(--color-text-dim);
+  font-weight: 600;
+}
+
+.toggle-btn[data-on="true"] {
+  background: var(--color-accent);
+  color: #241305;
+}
+
+.speed-options {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.speed-btn {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 10px;
+  background: var(--coffee-dark);
+  color: var(--color-text-dim);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.speed-btn.active {
+  background: var(--color-accent);
+  color: #241305;
+}
+
+/* ==========================================================================
+   Oyun ekranı
+   ========================================================================== */
+
+#screen-game {
+  background: #000;
+}
+
+#scene-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--coffee-dark);
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.bg-layer.visible {
+  opacity: 1;
+}
+
+.character-slot {
+  position: absolute;
+  bottom: 0;
+  width: 58%;
+  height: 78%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+  opacity: 0;
+  --tx: -50%;
+  transform: translate(var(--tx), 24px);
+  transition: opacity 400ms ease, transform 450ms ease;
+  pointer-events: none;
+}
+
+.character-slot.visible {
+  opacity: 1;
+  transform: translate(var(--tx), 0);
+}
+
+.slot-left {
+  left: 4%;
+  --tx: 0%;
+}
+
+.slot-center {
+  left: 50%;
+  --tx: -50%;
+}
+
+.slot-right {
+  right: 4%;
+  left: auto;
+  --tx: 0%;
+}
+
+/* ---- Kamera efektleri ---- */
+
+@keyframes camZoomIn {
+  from { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  to { transform: scale(1); }
+}
+@keyframes camZoomOut {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+@keyframes camSlideLeft {
+  from { transform: translateX(2.5%); }
+  to { transform: translateX(0); }
+}
+@keyframes camSlideRight {
+  from { transform: translateX(-2.5%); }
+  to { transform: translateX(0); }
+}
+
+.cam-zoom-in { animation: camZoomIn 600ms ease; }
+.cam-zoom-out { animation: camZoomOut 600ms ease; }
+.cam-slide-left { animation: camSlideLeft 500ms ease; }
+.cam-slide-right { animation: camSlideRight 500ms ease; }
+
+/* ---- Üst bar (geçmiş / duraklat) ---- */
+
+.top-bar {
+  position: absolute;
+  top: calc(var(--safe-top) + 10px);
+  right: calc(var(--safe-right) + 10px);
+  display: flex;
+  gap: 10px;
+  z-index: 30;
+}
+
+.icon-btn {
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  background: rgba(20, 12, 8, 0.65);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+/* ---- Diyalog kutusu ---- */
+
+.dialogue-box {
+  position: relative;
+  z-index: 20;
+  margin: 0 calc(var(--safe-right) + 12px) calc(var(--safe-bottom) + 14px) calc(var(--safe-left) + 12px);
+  margin-top: auto;
+  padding: 16px 18px 20px;
+  min-height: 118px;
+  background: rgba(20, 12, 8, 0.82);
+  border: 1px solid rgba(217, 164, 65, 0.25);
+  border-radius: 16px;
+  backdrop-filter: blur(3px);
+}
+
+.speaker-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-accent);
+  margin-bottom: 6px;
+  min-height: 1.2em;
+}
+
+.dialogue-text {
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  min-height: 3.2em;
+}
+
+.tap-indicator {
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  animation: bounceArrow 1.2s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ---- Seçim katmanı ---- */
+
+.choice-layer {
+  position: absolute;
+  left: calc(var(--safe-left) + 16px);
+  right: calc(var(--safe-right) + 16px);
+  bottom: calc(var(--safe-bottom) + 150px);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice-prompt {
+  text-align: center;
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.choice-btn {
+  min-height: 52px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(111, 78, 55, 0.92);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+.choice-btn:active {
+  transform: scale(0.97);
+  background: rgba(217, 164, 65, 0.9);
+  color: #241305;
+}
+
+/* ---- Katman panelleri (geçmiş / duraklatma) ---- */
+
+.overlay-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: calc(var(--safe-top) + 16px) calc(var(--safe-right) + 16px) calc(var(--safe-bottom) + 16px) calc(var(--safe-left) + 16px);
+}
+
+.panel-box {
+  width: 100%;
+  max-width: 400px;
+  max-height: 82%;
+  background: var(--color-surface);
+  border: 1px solid rgba(217, 164, 65, 0.25);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-accent);
+}
+
+.history-box {
+  max-height: 70vh;
+}
+
+.history-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.history-entry {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--color-text-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
+}
+
+.history-speaker {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---- Yardımcılar ---- */
+
+.hidden {
+  display: none !important;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#241512">
+<title>Kahve Oyunu</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ANA MENÜ -->
+  <section id="screen-main-menu" class="screen active">
+    <div class="menu-content">
+      <h1 class="game-title">KAHVE OYUNU</h1>
+      <p class="game-subtitle">3 perdelik bir görsel roman</p>
+      <nav class="menu-buttons">
+        <button id="btn-new-game" class="menu-btn" type="button">YENİ OYUN</button>
+        <button id="btn-continue" class="menu-btn" type="button" disabled>DEVAM ET</button>
+        <button id="btn-settings" class="menu-btn" type="button">AYARLAR</button>
+      </nav>
+    </div>
+  </section>
+
+  <!-- OYUN EKRANI -->
+  <section id="screen-game" class="screen">
+    <div id="scene-layer">
+      <div id="bg-a" class="bg-layer"></div>
+      <div id="bg-b" class="bg-layer"></div>
+      <div id="character-left" class="character-slot slot-left"></div>
+      <div id="character-center" class="character-slot slot-center"></div>
+      <div id="character-right" class="character-slot slot-right"></div>
+    </div>
+
+    <div class="top-bar">
+      <button id="btn-history" class="icon-btn" type="button" aria-label="Geçmiş">≡</button>
+      <button id="btn-game-menu" class="icon-btn" type="button" aria-label="Duraklat">⏸</button>
+    </div>
+
+    <div id="choice-layer" class="choice-layer hidden"></div>
+
+    <div id="dialogue-box" class="dialogue-box">
+      <div id="speaker-name" class="speaker-name"></div>
+      <div id="dialogue-text" class="dialogue-text"></div>
+      <div id="tap-indicator" class="tap-indicator hidden">▼</div>
+    </div>
+
+    <!-- Geçmiş paneli -->
+    <div id="history-panel" class="overlay-panel hidden">
+      <div class="panel-box history-box">
+        <div class="panel-header">
+          <h2>Geçmiş</h2>
+          <button id="btn-close-history" class="icon-btn" type="button" aria-label="Kapat">✕</button>
+        </div>
+        <div id="history-list" class="history-list"></div>
+      </div>
+    </div>
+
+    <!-- Oyun içi duraklatma menüsü -->
+    <div id="game-menu-panel" class="overlay-panel hidden">
+      <div class="panel-box">
+        <button id="btn-resume" class="menu-btn" type="button">DEVAM ET</button>
+        <button id="btn-save-game" class="menu-btn" type="button">KAYDET</button>
+        <button id="btn-game-settings" class="menu-btn" type="button">AYARLAR</button>
+        <button id="btn-quit-to-menu" class="menu-btn" type="button">ANA MENÜ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- AYARLAR -->
+  <section id="screen-settings" class="screen">
+    <div class="menu-content">
+      <h1 class="screen-title">AYARLAR</h1>
+      <div class="settings-list">
+        <div class="settings-row">
+          <span class="settings-label">Müzik</span>
+          <button id="toggle-music" class="toggle-btn" type="button" data-on="true">AÇIK</button>
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Ses Efektleri</span>
+          <button id="toggle-sfx" class="toggle-btn" type="button" data-on="true">AÇIK</button>
+        </div>
+        <div class="settings-row settings-row-column">
+          <span class="settings-label">Metin Hızı</span>
+          <div class="speed-options">
+            <button class="speed-btn" type="button" data-speed="slow">Yavaş</button>
+            <button class="speed-btn" type="button" data-speed="normal">Normal</button>
+            <button class="speed-btn" type="button" data-speed="fast">Hızlı</button>
+          </div>
+        </div>
+      </div>
+      <button id="btn-settings-back" class="menu-btn back-btn" type="button">GERİ</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/config.js" defer></script>
+<script src="js/save.js" defer></script>
+<script src="js/audio.js" defer></script>
+<script src="js/scene.js" defer></script>
+<script src="js/dialogue.js" defer></script>
+<script src="js/story.js" defer></script>
+<script src="js/game.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
