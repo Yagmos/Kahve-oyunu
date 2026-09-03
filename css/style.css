@@ -228,7 +228,7 @@ button {
   inset: 0;
   background-size: cover;
   background-position: center;
-  background-color: var(--coffee-dark);
+  background-color: #000;
   opacity: 0;
   transition: opacity 500ms ease;
 }
@@ -470,6 +470,94 @@ button {
 }
 
 .history-speaker {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---- Telefon ekranı ---- */
+
+.phone-box {
+  max-height: 85%;
+  overflow-y: auto;
+  background: #12100e;
+  border: 1px solid rgba(217, 164, 65, 0.3);
+}
+
+.phone-statusbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#phone-time {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+#phone-date {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+}
+
+.phone-section h3 {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.phone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phone-row {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.phone-row-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.phone-row-text {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+  line-height: 1.35;
+}
+
+.phone-schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.phone-schedule-time {
+  font-weight: 700;
+  color: var(--color-text-dim);
+  min-width: 48px;
+}
+
+.phone-schedule-subject {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.phone-schedule-row.highlight {
+  background: rgba(217, 164, 65, 0.16);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+}
+
+.phone-schedule-row.highlight .phone-schedule-subject {
   color: var(--color-accent);
   font-weight: 700;
 }

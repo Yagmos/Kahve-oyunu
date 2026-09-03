@@ -36,10 +36,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const audioManager = new AudioManager();
 
+  const phoneManager = new PhoneManager({
+    panelEl: document.getElementById('phone-panel'),
+    timeEl: document.getElementById('phone-time'),
+    dateEl: document.getElementById('phone-date'),
+    notificationsEl: document.getElementById('phone-notifications'),
+    scheduleEl: document.getElementById('phone-schedule')
+  });
+
   const game = new Game({
     sceneManager,
     dialogueManager,
     audioManager,
+    phoneManager,
     onExitToMenu: () => {
       showScreen('menu');
       updateContinueButton();
@@ -134,6 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
     audioManager.stopBgm();
     showScreen('menu');
     updateContinueButton();
+  });
+
+  // ---- Telefon ekranı ----
+  const btnClosePhone = document.getElementById('btn-close-phone');
+  btnClosePhone.addEventListener('click', () => {
+    game.closePhone();
   });
 
   // ---- Ayarlar ekranı ----

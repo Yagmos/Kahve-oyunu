@@ -4,17 +4,19 @@
  */
 class Game {
   /**
-   * @param {{sceneManager:SceneManager, dialogueManager:DialogueManager, audioManager:AudioManager, onExitToMenu:Function}} deps
+   * @param {{sceneManager:SceneManager, dialogueManager:DialogueManager, audioManager:AudioManager, phoneManager:PhoneManager, onExitToMenu:Function}} deps
    */
   constructor(deps) {
     this.scene = deps.sceneManager;
     this.dialogue = deps.dialogueManager;
     this.audio = deps.audioManager;
+    this.phone = deps.phoneManager;
     this.onExitToMenu = deps.onExitToMenu || function () {};
 
     this.label = STORY_START_LABEL;
     this.index = 0;
     this.waitingForChoice = false;
+    this.waitingForPhone = false;
     this.finished = false;
   }
 
@@ -22,9 +24,11 @@ class Game {
     SaveManager.clearSave();
     this.dialogue.clearHistory();
     this.dialogue.hideChoices();
+    this.phone.hide();
     this.scene.reset();
     this.finished = false;
     this.waitingForChoice = false;
+    this.waitingForPhone = false;
     this.label = STORY_START_LABEL;
     this.index = 0;
     this._executeCurrent();
@@ -39,9 +43,11 @@ class Game {
 
     this.dialogue.clearHistory();
     this.dialogue.hideChoices();
+    this.phone.hide();
     this.scene.reset();
     this.finished = false;
     this.waitingForChoice = false;
+    this.waitingForPhone = false;
 
     this._replayInstantly(save.label, save.index);
     this.label = save.label;
@@ -74,7 +80,7 @@ class Game {
           this.audio.playBgm(step.file);
           break;
         default:
-          break; // sfx / camera / say / choice / jump / end tekrar oynatılmaz
+          break; // sfx / camera / say / choice / phone / jump / end tekrar oynatılmaz
       }
     }
   }
@@ -83,7 +89,7 @@ class Game {
    * Kullanıcının ekrana dokunması/tıklamasıyla çağrılır.
    */
   advance() {
-    if (this.waitingForChoice) return;
+    if (this.waitingForChoice || this.waitingForPhone) return;
 
     if (this.finished) {
       this._returnToMenu();
@@ -160,6 +166,12 @@ class Game {
         this._saveProgress();
         break;
 
+      case 'phone':
+        this.waitingForPhone = true;
+        this.phone.show(step);
+        this._saveProgress();
+        break;
+
       case 'end':
         this._finishStory();
         break;
@@ -182,6 +194,13 @@ class Game {
     this.label = option.goto;
     this.index = 0;
     this._executeCurrent();
+  }
+
+  closePhone() {
+    if (!this.waitingForPhone) return;
+    this.waitingForPhone = false;
+    this.phone.hide();
+    this._advanceAuto();
   }
 
   _saveProgress() {

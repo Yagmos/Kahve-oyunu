@@ -66,6 +66,25 @@
         <button id="btn-quit-to-menu" class="menu-btn" type="button">ANA MENÜ</button>
       </div>
     </div>
+
+    <!-- Telefon ekranı (kurgusal, basit arayüz) -->
+    <div id="phone-panel" class="overlay-panel hidden">
+      <div class="panel-box phone-box">
+        <div class="phone-statusbar">
+          <span id="phone-time">--:--</span>
+          <span id="phone-date"></span>
+        </div>
+        <div class="phone-section">
+          <h3>Bildirimler</h3>
+          <div id="phone-notifications" class="phone-list"></div>
+        </div>
+        <div class="phone-section">
+          <h3>Bugünkü Ders Programı</h3>
+          <div id="phone-schedule" class="phone-list"></div>
+        </div>
+        <button id="btn-close-phone" class="menu-btn" type="button">KAPAT</button>
+      </div>
+    </div>
   </section>
 
   <!-- AYARLAR -->
@@ -101,6 +120,7 @@
 <script src="js/audio.js" defer></script>
 <script src="js/scene.js" defer></script>
 <script src="js/dialogue.js" defer></script>
+<script src="js/phone.js" defer></script>
 <script src="js/story.js" defer></script>
 <script src="js/game.js" defer></script>
 <script src="js/main.js" defer></script>

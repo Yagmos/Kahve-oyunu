@@ -36,12 +36,16 @@ class SceneManager {
     el.classList.remove('visible', 'slide-in-left', 'slide-in-right', 'slide-in-center');
   }
 
+  /**
+   * @param {string} [filename] Boş bırakılırsa (ör. sahne geçişlerinde
+   * ekranı siyaha düşürmek için) arka plan görseli olmadan düz renge döner.
+   */
   setBackground(filename) {
     const nextIndex = this.activeBgIndex === 0 ? 1 : 0;
     const nextLayer = this.bgLayers[nextIndex];
     const prevLayer = this.bgLayers[this.activeBgIndex];
 
-    nextLayer.style.backgroundImage = `url("${assetPath('backgrounds', filename)}")`;
+    nextLayer.style.backgroundImage = filename ? `url("${assetPath('backgrounds', filename)}")` : 'none';
     // Bir sonraki frame'de görünür yap ki CSS transition tetiklensin.
     requestAnimationFrame(() => {
       nextLayer.classList.add('visible');
