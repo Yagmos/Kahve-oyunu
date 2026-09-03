@@ -1,17 +1,18 @@
 /**
- * story.js — ACT I: SABAH, ACT II: OKUL
+ * story.js — ACT I: SABAH, ACT II: OKUL, ACT III: KONUŞMA
  *
  * ACT I: Kızın sıradan bir okul sabahı. Erkek karakter YOK.
  * ACT II: Okul günü. Perdenin sonuna doğru erkek karakter İLK KEZ,
  * sadece görsel olarak ve çok kısaca beliriyor — hâlâ konuşmuyorlar.
- *
- * ACT III henüz yazılmadı. act2_end'teki 'end' adımına `next: 'act3_start'`
- * eklenip ilgili etiketler tanımlandığında üçüncü perde otomatik olarak
- * bağlanır (bkz. act1_end → act2_start bağlantısı, aynı desen).
+ * ACT III (SON PERDE): Aynı gün, okul çıkışına doğru. İlk kez konuşuyorlar,
+ * erkek karakter kendini tanıtıyor (adı burada öğreniliyor) ve kıza kahve
+ * içmeyi teklif ediyor. Üç farklı, saygılı sonuç mümkün; hepsi aynı kapanışta
+ * birleşiyor. Bu, oyunun son perdesidir — ACT IV yoktur.
  *
  * Kızın adını tek yerden değiştirebilmek için GIRL_NAME sabiti kullanılır.
- * Erkek karakterin adı henüz oyuncuya (ya da kıza) söylenmiyor, bu yüzden
- * bir isim sabiti yok — repliklerinde speaker olarak boş bırakılıyor.
+ * Erkek karakterin adı ACT III'e kadar oyuncuya söylenmiyordu (ACT I/II'de
+ * repliklerinde speaker boş bırakıldı); ACT III'te kendini tanıttığı an
+ * BOY_NAME sabiti kullanılmaya başlanıyor.
  *
  * Adım (step) tipleri:
  *   bg        { type:'bg', file }            — file boş bırakılırsa ekran siyaha döner
@@ -32,6 +33,7 @@
  * "goto" bir etiket adıdır ve her zaman ilgili etiketin 0. adımına atlar.
  */
 const GIRL_NAME = 'Elif';
+const BOY_NAME = 'Kerem';
 
 const STORY = {
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
@@ -384,10 +386,105 @@ const STORY = {
     { type: 'jump', goto: 'act2_end' }
   ],
 
-  // 8: Perde sonu kartı. ACT III henüz yazılmadı; next eklendiğinde otomatik bağlanır.
+  // 8: Perde sonu kartı. ACT III hazır olduğu için doğrudan ona bağlanıyor.
   act2_end: [
     { type: 'say', speaker: '', text: 'ACT II — SCHOOL' },
     { type: 'say', speaker: '', text: 'END' },
+    { type: 'end', next: 'act3_start' }
+  ],
+
+  // ================= ACT III: KONUŞMA (SON PERDE) =================
+
+  // Sahne 1 (kız POV) — ACT II'nin bittiği yerden (koridor, siyah ekran) devam.
+  act3_start: [
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
+    { type: 'camera', effect: 'slide-left' },
+    { type: 'say', speaker: '', text: 'Koridorda yürümeye devam ediyor. Aklında hâlâ biraz kimya, biraz da eve gidince ne yiyeceği var.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: '', text: `(${GIRL_NAME}'in içinden) Bugün fena değildi aslında.` },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    { type: 'say', speaker: '', text: 'Az ileride, tanımadığı biri ona doğru yürüyor gibi görünüyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bu sabah gördüğüm... öğrenci mi neydi?' },
+    { type: 'say', speaker: '', text: '(İçinden) Neyse, muhtemelen başka bir yere gidiyordur.' },
+    { type: 'jump', goto: 'act3_boy_pov' }
+  ],
+
+  // Sahne 2 (erkek POV) — tedirgin, saygılı, hafif esprili bir iç ses.
+  act3_boy_pov: [
+    { type: 'camera', effect: 'zoom-out' },
+    { type: 'hide', id: 'girl' },
+    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
+    { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
+    { type: 'say', speaker: '', text: '(İçinden) Tamam.' },
+    { type: 'say', speaker: '', text: "(İçinden) Sadece 'merhaba' de." },
+    { type: 'say', speaker: '', text: '(İçinden) Bu neden bu kadar zor geliyor ki?' },
+    { type: 'say', speaker: '', text: '(İçinden) Beni tanımıyor. Sorun değil.' },
+    { type: 'say', speaker: '', text: '(İçinden) Sadece soracağım.' },
+    { type: 'camera', effect: 'zoom-in' },
+    { type: 'jump', goto: 'act3_conversation' }
+  ],
+
+  // Sahne 3 — ilk kez konuşuyorlar.
+  act3_conversation: [
+    { type: 'hide', id: 'boy' },
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
+    { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },
+    { type: 'say', speaker: BOY_NAME, text: 'Selam.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bana mı diyor?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Selam?' },
+    { type: 'say', speaker: BOY_NAME, text: `Ben ${BOY_NAME}. Sanırım daha önce hiç tanışmadık.` },
+    { type: 'say', speaker: GIRL_NAME, text: `Hayır, sanmıyorum. Ben ${GIRL_NAME}.` },
+    { type: 'say', speaker: BOY_NAME, text: `${GIRL_NAME}. Tamam.` },
+    { type: 'say', speaker: BOY_NAME, text: 'Seni birkaç kere görmüştüm, aynı koridorlardan geçiyoruz galiba.' },
+    { type: 'say', speaker: '', text: '(İçinden) Normal bir şey aslında. Okul pek büyük değil.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Olabilir. Okul pek büyük değil zaten.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: BOY_NAME, text: 'Şey... okulda bir ara kahve içmek ister misin?' },
+    {
+      type: 'choice',
+      prompt: 'Ne cevap verse iyi olur?',
+      options: [
+        { text: 'Olur.', goto: 'act3_yes' },
+        { text: 'Belki... önce biraz tanışsak?', goto: 'act3_getknow' },
+        { text: 'Teşekkür ederim ama istemiyorum.', goto: 'act3_no' }
+      ]
+    }
+  ],
+
+  // Sahne 4, seçim 1 — EVET.
+  act3_yes: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Tamam, olur.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Gerçekten mi? Tamam... harika.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ne zaman istersen, haber ver.' },
+    { type: 'say', speaker: '', text: '(İçinden) Fena bir fikir değilmiş aslında.' },
+    { type: 'jump', goto: 'act3_ending' }
+  ],
+
+  // Sahne 4, seçim 2 — ÖNCE TANIŞALIM.
+  act3_getknow: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Belki... önce biraz tanışsak?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tabii, sorun değil.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Okulda görüşürüz o zaman, biraz konuşuruz.' },
+    { type: 'say', speaker: '', text: '(İçinden) Makul bir teklif.' },
+    { type: 'jump', goto: 'act3_ending' }
+  ],
+
+  // Sahne 4, seçim 3 — HAYIR.
+  act3_no: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Teşekkür ederim ama istemiyorum.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tabii, sorun değil. Yine de tanıştığımıza memnun oldum.' },
+    { type: 'say', speaker: '', text: '(İçinden) Nazikçe karşıladı. İyi biri gibi duruyor.' },
+    { type: 'jump', goto: 'act3_ending' }
+  ],
+
+  // Kapanış — her üç seçim de buraya bağlanır. Oyunun sonu; ACT IV yoktur.
+  act3_ending: [
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'bg', file: null },
+    { type: 'say', speaker: '', text: 'ACT III — THE CONVERSATION' },
+    { type: 'say', speaker: '', text: 'END' },
+    { type: 'say', speaker: '', text: 'Bazen önemli olan cevabı bilmek değil, ilk adımı atabilmektir.' },
     { type: 'end' }
   ]
 };
