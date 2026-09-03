@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1400" width="700" height="1400">
+  <!-- Saç (arka, kısa) -->
+  <path d="M195 380 Q185 190 350 170 Q515 190 505 380 L505 460 Q505 500 350 510 Q195 500 195 460 Z" fill="#241a12"/>
+
+  <!-- Gövde -->
+  <path d="M210 760 Q350 700 490 760 L560 1400 L140 1400 Z" fill="#4a5a63"/>
+  <path d="M255 780 Q350 815 445 780 L462 1000 L238 1000 Z" fill="#2f3b42"/>
+
+  <!-- Boyun -->
+  <rect x="310" y="560" width="80" height="120" fill="#e7bd94"/>
+
+  <!-- Yüz -->
+  <ellipse cx="350" cy="430" rx="148" ry="162" fill="#e7bd94"/>
+
+  <!-- Saç (ön, kısa/düz) -->
+  <path d="M204 360 Q210 195 350 180 Q490 195 496 360 Q470 270 350 268 Q230 270 204 360 Z" fill="#241a12"/>
+
+  <!-- Sakin ama hafif tedirgin gözler -->
+  <ellipse cx="286" cy="436" rx="13" ry="15" fill="#1c130c"/>
+  <ellipse cx="414" cy="436" rx="13" ry="15" fill="#1c130c"/>
+
+  <!-- Hafif kalkık kaşlar (tedirginlik) -->
+  <path d="M252 392 Q284 378 316 392" stroke="#241a12" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M384 392 Q416 378 448 392" stroke="#241a12" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+  <!-- Nötr, hafif gergin ağız -->
+  <path d="M318 502 Q350 496 382 502" stroke="#7a4a30" stroke-width="9" fill="none" stroke-linecap="round"/>
+
+  <text x="50%" y="1370" text-anchor="middle" font-family="sans-serif" font-size="26"
+        fill="#e7bd94" opacity="0.5">PLACEHOLDER — boy_neutral</text>
+</svg>

@@ -1,4 +1,14 @@
 /**
+ * Bir adım alanı (ör. 'say' metni, 'expr' dosyası) ya sabit bir değer,
+ * ya da (game) => değer şeklinde bir fonksiyon olabilir. Fonksiyon ise
+ * çalıştırılıp sonucu döndürülür — mini oyun sonucu gibi oyunun anlık
+ * durumuna bağlı içerikler için kullanılır.
+ */
+function resolveDynamic(value, game) {
+  return typeof value === 'function' ? value(game) : value;
+}
+
+/**
  * Game: hikaye adımlarını (STORY) sırayla oynatan ana motor.
  * Sahne/diyalog/ses yöneticilerini birbirine bağlar.
  */
@@ -18,6 +28,7 @@ class Game {
     this.waitingForChoice = false;
     this.waitingForPhone = false;
     this.finished = false;
+    this.noteScore = 0; // ACT II not alma mini oyunu için basit puan sayacı
   }
 
   newGame() {
@@ -29,6 +40,7 @@ class Game {
     this.finished = false;
     this.waitingForChoice = false;
     this.waitingForPhone = false;
+    this.noteScore = 0;
     this.label = STORY_START_LABEL;
     this.index = 0;
     this._executeCurrent();
@@ -48,6 +60,7 @@ class Game {
     this.finished = false;
     this.waitingForChoice = false;
     this.waitingForPhone = false;
+    this.noteScore = (save.vars && typeof save.vars.noteScore === 'number') ? save.vars.noteScore : 0;
 
     this._replayInstantly(save.label, save.index);
     this.label = save.label;
@@ -71,7 +84,7 @@ class Game {
           this.scene.showCharacter(step.id, step);
           break;
         case 'expr':
-          this.scene.changeExpression(step.id, step.file);
+          this.scene.changeExpression(step.id, resolveDynamic(step.file, this));
           break;
         case 'hide':
           this.scene.hideCharacter(step.id);
@@ -134,7 +147,7 @@ class Game {
         break;
 
       case 'expr':
-        this.scene.changeExpression(step.id, step.file);
+        this.scene.changeExpression(step.id, resolveDynamic(step.file, this));
         this._advanceAuto();
         break;
 
@@ -156,7 +169,7 @@ class Game {
 
       case 'say':
         this.dialogue.hideChoices();
-        this.dialogue.say(step.speaker, step.text);
+        this.dialogue.say(step.speaker, resolveDynamic(step.text, this));
         this._saveProgress();
         break;
 
@@ -173,7 +186,7 @@ class Game {
         break;
 
       case 'end':
-        this._finishStory();
+        this._finishStory(step.next);
         break;
 
       default:
@@ -191,6 +204,9 @@ class Game {
   _onChoiceSelected(option) {
     this.waitingForChoice = false;
     this.dialogue.hideChoices();
+    if (typeof option.points === 'number') {
+      this.noteScore += option.points;
+    }
     this.label = option.goto;
     this.index = 0;
     this._executeCurrent();
@@ -204,10 +220,22 @@ class Game {
   }
 
   _saveProgress() {
-    SaveManager.save({ label: this.label, index: this.index });
+    SaveManager.save({ label: this.label, index: this.index, vars: { noteScore: this.noteScore } });
   }
 
-  _finishStory() {
+  /**
+   * @param {string} [nextLabel] Belirtilirse (ör. bir sonraki perdenin
+   * başlangıç etiketi) hikaye orada devam eder. Belirtilmez veya etiket
+   * henüz STORY içinde yoksa (o perde henüz yazılmadıysa) hikaye burada
+   * biter ve ana menüye dönülür.
+   */
+  _finishStory(nextLabel) {
+    if (nextLabel && STORY[nextLabel]) {
+      this.label = nextLabel;
+      this.index = 0;
+      this._executeCurrent();
+      return;
+    }
     this.finished = true;
     SaveManager.clearSave();
   }
