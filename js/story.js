@@ -403,26 +403,26 @@ const STORY = {
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
-    { type: 'say', speaker: '', text: "Tahtada güncel bir başlık var: 'İnanç ve Sorgulama'." },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bakın, bugün sadece bilgi aktarmayacağım, sizi düşündürmek istiyorum.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'İnsan, inanmadan önce sorgulamalı mı? Yoksa bazı şeyler sorgulanmadan da anlam taşır mı?' },
-    { type: 'say', speaker: '', text: '(İçinden) Bu soruyu hep merak etmişimdir zaten.' },
-    { type: 'say', speaker: '', text: 'Sınıftaki birkaç kişi mırıldanıyor, kimse hemen cevap vermiyor.' },
-    { type: 'say', speaker: 'Bir öğrenci', text: 'Bence dinin buna cevabı zaten var, sorgulamaya gerek yok.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Olabilir. Ama bugün biraz da farklı düşünenlerin fikrini duyalım.' },
-    { type: 'say', speaker: TEACHER_NAME, text: `${GIRL_NAME}, sen ne düşünüyorsun?` },
-    { type: 'say', speaker: '', text: '(İçinden) Tabii, yine ben.' },
+    { type: 'say', speaker: '', text: "Tahtada bir başlık var: 'İnanç ve Teslimiyet'." },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bugün bazı şeyleri hatırlatacağım. Bunlar tartışmaya açık meseleler değil.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'İnanç, önce sorgulanıp sonra kabul edilecek bir şey değildir. Zaten doğrudur; biz sadece onu anlamaya çalışırız.' },
+    { type: 'say', speaker: '', text: '(İçinden) Yine mi bu cümle...' },
+    { type: 'say', speaker: '', text: 'Sınıftaki birkaç kişi başını sallıyor, kimse itiraz etmiyor.' },
+    { type: 'say', speaker: 'Bir öğrenci', text: 'Haklısınız hocam, zaten böyle biliniyor.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Aferin. Ama bazılarınız hâlâ soru sormayı seviyor galiba.' },
+    { type: 'say', speaker: TEACHER_NAME, text: `${GIRL_NAME}, yine mi düşüncelisin bugün?` },
+    { type: 'say', speaker: '', text: '(İçinden) Görünüşe göre öyle.' },
     { type: 'jump', goto: 'act2_debate_turn1' }
   ],
 
-  // Tur 1, aşama A: açılış argümanı + üslup seçimi.
+  // Tur 1, aşama A: Elif'in ilk sorgulaması + öğretmenin kesin cevabı.
   act2_debate_turn1: [
-    { type: 'say', speaker: TEACHER_NAME, text: 'İnsanlık tarihi boyunca inanç sistemleri, insanlara bir anlam çerçevesi sunmuş.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Birçok toplum, ahlaki değerlerini ve topluluk bilincini bu çerçeve üzerine kurmuş.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Sizce bu bir tesadüf mü, yoksa insanın gerçekten böyle bir çerçeveye ihtiyacı mı var?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bize aktarılmış açık bilgiler var. Bunlar yüzyıllardır orada; üzerinde durulmuş, sağlamlığı belli gerçekler.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyleri sürekli sorgulamak zorunda değilsiniz.' },
+    { type: 'say', speaker: '', text: `${GIRL_NAME} parmak kaldırıyor.` },
     {
       type: 'choice',
-      prompt: `${GIRL_NAME} nasıl cevap versin?`,
+      prompt: `${GIRL_NAME} nasıl sorsun?`,
       options: [
         { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn1_philo' },
         { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn1_direct' },
@@ -431,31 +431,26 @@ const STORY = {
     }
   ],
   act2_debate_turn1_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Belki de insanın anlam arayışı, o çerçevenin doğru olduğu anlamına gelmiyordur.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Yani bir şeye ihtiyaç duymakla, o şeyin gerçek olması aynı şey değil bence.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'İlginç bir ayrım. Ama bir ihtiyacı bu kadar evrensel kılan şey, sence tamamen rastlantı mı?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa ortak bir insan deneyiminden mi besleniyor?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bilginin aktarılmış olması, onu sorgulamayacağımız anlamına mı geliyor?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Hayır, ama bazı konularda cevap zaten bellidir.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Herkesin tekerleği yeniden icat etmesine gerek yok, Elif.' },
     { type: 'jump', goto: 'act2_debate_turn1b' }
   ],
   act2_debate_turn1_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Açıkçası, ahlaklı olmak için bir çerçeveye ihtiyacım olduğunu düşünmüyorum.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Empati kurabiliyorum, sonuçları düşünebiliyorum. Bana yeterli geliyor.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Peki bu empati duygusu sence nereden geliyor?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Kendiliğinden mi ortaya çıkıyor, yoksa zamanla öğrenilen bir şey mi?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yüzyıllardır böyle denmiş olması, doğru olduğu anlamına gelmiyor bence.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Doğruluğu zaten sabit, Elif. Bu konuda kafanı karıştırmana gerek yok.' },
     { type: 'jump', goto: 'act2_debate_turn1b' }
   ],
   act2_debate_turn1_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Bence herkesin bir çerçeveye ihtiyacı olabilir, ama bu herkes için aynı çerçeve olmak zorunda değil.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Ben kendi sorularımı sormaya devam ediyorum, o kadar.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Makul bir yaklaşım. Peki bu sorular seni hiç bir yere götürmedi mi?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa sadece sormuş olmak, sana yetiyor mu?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ben sadece bunun neden böyle olduğunu anlamaya çalışıyorum, hocam.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Anlamaya çalışmak güzel. Ama bazı şeyleri olduğu gibi kabul etmek de bir erdemdir.' },
     { type: 'jump', goto: 'act2_debate_turn1b' }
   ],
 
-  // Tur 1, aşama B: öğretmenin karşı sorusuna cevap + turun kapanışı.
+  // Tur 1, aşama B: Elif cevabın varsayımını sorguluyor, öğretmen daha otoriter.
   act2_debate_turn1b: [
-    { type: 'say', speaker: '', text: `${GIRL_NAME} bir an duraksıyor, sonra devam ediyor.` },
+    { type: 'say', speaker: '', text: 'Öğretmenin sesi biraz sertleşiyor, sanki bu tartışmayı daha önce de yaşamış gibi.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
@@ -467,28 +462,30 @@ const STORY = {
     }
   ],
   act2_debate_turn1b_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Ortak bir deneyimden besleniyor olabilir, ama ortak olmak onu otomatik olarak doğru yapmaz.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Birçok insanın aynı yanılgıya düşmesi de mümkün sonuçta.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Sağlam bir itiraz. Bunu aklımda tutacağım.' },
+    { type: 'say', speaker: GIRL_NAME, text: "'Cevap zaten belli' demek, sorunun bir daha sorulmaması gerektiği anlamına mı geliyor?" },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyler sürekli sorgulanmaz, Elif. İnanç dediğimiz şey zaten bunun üzerine kuruludur.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Peki inanç, sorgulanmadığı için mi güçlü, yoksa doğru olduğu için mi?' },
     { type: 'jump', goto: 'act2_debate_turn2' }
   ],
   act2_debate_turn1b_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bence kısmen öğreniliyor, kısmen de doğuştan geliyor. İkisinin birbirini dışlaması gerekmiyor.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Katılıyorum aslında, ikisi bir arada olabilir.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kafamı karıştırmıyorum hocam, sadece nedenini soruyorum.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı sorular cevap aramaktan çok, itiraz etmek için sorulur. Seninkinin öyle olmadığını umuyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'İtiraz etmiyorum, anlamaya çalışıyorum. İkisi aynı şey değil.' },
     { type: 'jump', goto: 'act2_debate_turn2' }
   ],
   act2_debate_turn1b_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Bazılarına götürdü, ama hâlâ yolun ortasındayım diyebilirim.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Dürüst bir cevap. Yolun ortasında olmak da bir yer sonuçta.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kabul etmek bir erdemse, sorgulamak neden erdem olmasın?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Çünkü bazı konularda sorgulamanın da bir sınırı vardır.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'O sınırı kim çiziyor peki?' },
     { type: 'jump', goto: 'act2_debate_turn2' }
   ],
 
   // Tur 2, aşama A.
   act2_debate_turn2: [
     { type: 'say', speaker: '', text: 'Öğretmen tahtaya iki kelime daha yazıyor: Bilim ve Sınırları.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Gelelim ikinci noktaya. Bilim bize pek çok şeyi açıklıyor, kabul ediyorum.' },
-    { type: 'say', speaker: TEACHER_NAME, text: "Ama bazı sorular var: 'Neden hiçlik değil de bir şeyler var?' gibi. Bilim bunlara nasıl cevap veriyor?" },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bilim size nasıl sorusuna cevap verir. Ama bazı konularda cevap zaten dinen bellidir.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bilimin buna bir şey söylemesine gerek yoktur.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
@@ -500,31 +497,25 @@ const STORY = {
     }
   ],
   act2_debate_turn2_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Bazı sorulara henüz cevap bulunamamış olması, bir açıklamanın var olmadığı anlamına gelmiyor bence.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bilinmemek başka, bilinemez olmak başka bir şey.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Doğru bir ayrım. Ama insan bilinmeyenle yaşamakta ne kadar rahat, sence?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa illa bir açıklama mı arıyoruz?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yani bir konuda bilimsel bir kanıt olmasa bile, o konu kesin kabul edilebilir mi?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Elbette. Her gerçek laboratuvarda kanıtlanmaz. Bazı gerçekler zaten bize bildirilmiştir.' },
     { type: 'jump', goto: 'act2_debate_turn2b' }
   ],
   act2_debate_turn2_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bilim her şeyi açıklayamıyor olabilir ama bu, açıklayamadığı yeri dinin doldurması gerektiği anlamına gelmez.' },
-    { type: 'say', speaker: GIRL_NAME, text: "'Bilmiyorum' demek bazen en dürüst cevaptır." },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Kabul ediyorum, dürüst bir cevap.' },
-    { type: 'say', speaker: TEACHER_NAME, text: "Ama bu 'bilmiyorum' seni hiç rahatsız etmiyor mu?" },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kanıt yoksa, neden bu kadar emin olabiliyoruz ki?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Çünkü emin olmamız gereken bir kaynaktan geliyor. Bunu sürekli sorgulaman gerekmiyor.' },
     { type: 'jump', goto: 'act2_debate_turn2b' }
   ],
   act2_debate_turn2_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: "Bence bilim ve o tür sorular farklı kategorilerde. Biri 'nasıl'ı, öbürü belki 'neden'i soruyor." },
-    { type: 'say', speaker: GIRL_NAME, text: "Ama 'neden' sorusuna bir cevap olması, o cevabın illa dini olması gerektiği anlamına gelmiyor bence." },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Adil bir nokta. Peki sence o soruya hiç cevap yok mu, yoksa henüz bulunmadı mı?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa bu ikisi arasındaki fark senin için önemli değil mi?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ben sadece bilim ile inancın nasıl bir arada durduğunu merak ediyorum.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bir arada dururlar, çünkü ikisi de aynı gerçeğe farklı yerlerden bakar. Ama biri diğerinden üstündür.' },
     { type: 'jump', goto: 'act2_debate_turn2b' }
   ],
 
   // Tur 2, aşama B.
   act2_debate_turn2b: [
-    { type: 'say', speaker: '', text: 'Öğretmen masaya yaslanıp bekliyor.' },
+    { type: 'say', speaker: '', text: 'Sınıfta birkaç öğrenci rahatsız kıpırdanıyor; öğretmen bunu fark ediyor ama devam ediyor.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
@@ -536,20 +527,22 @@ const STORY = {
     }
   ],
   act2_debate_turn2b_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: "Açıkçası illa bir açıklama aramıyorum, sadece 'bilmiyoruz' demekten korkmuyorum." },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bu benim için rahatsız edici değil, tam tersine dürüst geliyor.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bu rahatlığı takdir ediyorum, herkeste yok.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Üstün olan taraf, kendi üstünlüğünü nasıl kanıtlıyor peki?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Kanıtlamaya ihtiyacı yok, Elif. Çünkü zaten mutlak olan odur.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Mutlak olduğunu söylemek, onu mutlak yapmıyor ama.' },
     { type: 'jump', goto: 'act2_kerem_arrives' }
   ],
   act2_debate_turn2b_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Rahatsız etmiyor değil, ama beni rahatsız eden bir şey olması onu yanlış yapmıyor.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Kesinlikle haklısın, rahatsızlık bir kanıt değildir.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bunu sormak gereksiz yere sorgulamak değil hocam, sadece merak.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı meraklar seni yanlış yöne götürebilir. Dikkatli ol.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Merak etmek yanlış bir yöne mi götürüyor, yoksa sadece rahatsız edici bir yöne mi?' },
     { type: 'jump', goto: 'act2_kerem_arrives' }
   ],
   act2_debate_turn2b_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Bence fark önemli, ama şu an için ikisini de aynı kefeye koyabiliyorum.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Zamanla o fark senin için netleşebilir belki.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Belki de ikisinin bir üstünlük yarışına girmesine gerek yok.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Yarış yok, çünkü zaten belli olan bir sıralama var.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Belli olduğunu düşünmek, herkes için aynı anlama gelmiyor olabilir.' },
     { type: 'jump', goto: 'act2_kerem_arrives' }
   ],
 
@@ -587,8 +580,8 @@ const STORY = {
   // ---- 6) Tartışma devam ediyor (Kerem sınıfta, sessiz) ----
   act2_debate_turn3: [
     { type: 'say', speaker: '', text: 'Öğretmen sıraların arasında yürümeye başlıyor.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Üçüncü noktaya gelelim. Ahlakın kaynağı nedir sizce?' },
-    { type: 'say', speaker: TEACHER_NAME, text: "Bazıları, dinin ahlaka temel oluşturduğunu söyler. Din olmadan 'iyi' ve 'kötü' kavramları temelsiz kalır mı?" },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Ahlakın kaynağı konusunda kafanız karışmasın: iyi ve kötü, bize dinen bildirilmiştir.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bunun dışında bir zemin aramaya gerek yok.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
@@ -600,31 +593,25 @@ const STORY = {
     }
   ],
   act2_debate_turn3_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Bence ahlak, birlikte yaşamanın gereksinimlerinden de doğabilir. Bir toplulukta yaşamak belirli kuralları gerektiriyor.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bu kuralların dinden gelmesi bir yol, ama tek yol olması gerekmiyor.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Peki o kurallar dinden bağımsız olarak nasıl bağlayıcı hale geliyor sence?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bir otorite olmadan insanlar neden uysun?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ama insanlar dini bilmeden önce de iyiyi kötüyü ayırt edebiliyordu. Bu nasıl açıklanır?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'O ayrımın kendisi de zaten bu bilginin bir yansımasıdır, farkında olmasalar da.' },
     { type: 'jump', goto: 'act2_debate_turn3b' }
   ],
   act2_debate_turn3_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bir çocuğun canının yanmasının kötü olduğunu anlamak için dine ihtiyacım yok.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bu, gördüğüm anda hissettiğim bir şey.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'O hissin kendisi de bir yerden geliyor olabilir mi peki?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Belki evrimsel, belki öğrenilmiş.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yani dinsiz biri gerçekten ahlaklı olamaz mı diyorsunuz?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Ben öyle demedim. Ama sağlam bir zemine sahip olamayacağını söylüyorum.' },
     { type: 'jump', goto: 'act2_debate_turn3b' }
   ],
   act2_debate_turn3_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Bence kaynağın nereden geldiği kadar, nasıl uygulandığı da önemli.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Dinden gelen biriyle gelmeyen biri aynı sonuca varabiliyorsa, kaynak tartışması biraz teorik kalıyor bence.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Pratik bir bakış açısı. Ama teori bazen pratiği şekillendirir, öyle değil mi?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yanlış bir teori, yanlış bir pratiğe de yol açabilir.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ben sadece kaynağın tek olup olmadığını merak ediyorum, hocam.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Tektir, Elif. Başka bir zemin aramak insanı yanlış yollara sürükleyebilir.' },
     { type: 'jump', goto: 'act2_debate_turn3b' }
   ],
 
   // Tur 3, aşama B.
   act2_debate_turn3b: [
-    { type: 'say', speaker: '', text: `${GIRL_NAME} bir süre düşünüyor.` },
+    { type: 'say', speaker: '', text: 'Öğretmen kollarını kavuşturuyor, sesi biraz daha sertleşiyor.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
@@ -636,27 +623,28 @@ const STORY = {
     }
   ],
   act2_debate_turn3b_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Belki de bağlayıcılık bir otoriteden değil, karşılıklı fayda ve güvenden geliyordur.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Sosyal sözleşme fikrine yaklaştın, farkında mısın?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yansıma olduğunu nasıl ayırt ediyoruz? Tesadüf olmadığını nereden biliyoruz?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bunu bilmek için önce inanmış olman gerekir. Dışarıdan bakınca elbette tesadüf gibi görünür.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yani önce inanmam mı gerekiyor ki mantıklı gelsin?' },
     { type: 'jump', goto: 'act2_debate_turn4' }
   ],
   act2_debate_turn3b_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Kaynağı ne olursa olsun, sonuçta iyi davranıyorsam bu yeterli bence.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Sonuç odaklı bir bakış. Buna itirazım yok aslında.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu biraz kestirmeden bir cevap gibi geldi bana.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Her sorunun uzun bir cevabı olması gerekmez. Bazı gerçekler basittir.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Basit olması, tartışmaya kapalı olduğu anlamına gelmiyor bence.' },
     { type: 'jump', goto: 'act2_debate_turn4' }
   ],
   act2_debate_turn3b_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Yanlış bir teori kötü sonuçlar doğurabilir, kabul ediyorum.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Ama doğru teoriyi bulmak da tek bir kaynaktan gelmiyor bence.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bunu düşünmeye devam etmen güzel.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yanlış yollara sürüklenmekten bahsettiniz, ama sormak da bir yol değil mi?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Doğru yolu zaten biliyorsan, başka yollara bakmana gerek kalmaz.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ya doğru yolu bildiğimi düşünüp yanılıyorsam?' },
     { type: 'jump', goto: 'act2_debate_turn4' }
   ],
 
   // Tur 4, aşama A — son tur.
   act2_debate_turn4: [
-    { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu sormak istiyorum: sorgulamak seni bir yere götürdü mü?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yoksa sadece soru sormuş olmak, kendi başına yeterli mi?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu söylemek istiyorum: bazı sorular, sormak için değil, kabul etmek için vardır.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
@@ -668,25 +656,25 @@ const STORY = {
     }
   ],
   act2_debate_turn4_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Sanırım henüz kesin bir cevabım yok, ama sormaya devam etmek bir yere varmaktan daha değerli geliyor bana.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yolculuğun kendisi bazen varılan yerden daha çok şey öğretir.' },
+    { type: 'say', speaker: GIRL_NAME, text: "Bir soru nasıl 'kabul etmek için' olabilir? Bu, soru olmaktan çıkmaz mı?" },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı sorular biçim olarak sorudur ama aslında bir daveti içerir: teslim olma daveti.' },
     { type: 'jump', goto: 'act2_debate_turn4b' }
   ],
   act2_debate_turn4_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Beni kesin bir cevaba götürmedi, ama en azından neye inanmadığımı biliyorum.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bu da az bir şey değil aslında.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yani bazı sorulara cevap aramamam mı gerekiyor?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Cevabı zaten var. Aramak değil, kabul etmek gerekiyor.' },
     { type: 'jump', goto: 'act2_debate_turn4b' }
   ],
   act2_debate_turn4_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Belki de asıl mesele bir cevaba varmak değil, soruyu sormaktan korkmamaktır.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bunu bu sınıfta duymak beni mutlu ediyor.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bence her soru sorulmayı hak ediyor, cevabı ne olursa olsun.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Güzel bir düşünce. Ama her sorunun sonunda bir teslimiyet olması gerektiğini de unutma.' },
     { type: 'jump', goto: 'act2_debate_turn4b' }
   ],
 
   // Tur 4, aşama B — tartışmanın son sözü, hemen ardından kapanış.
   act2_debate_turn4b: [
-    { type: 'say', speaker: '', text: 'Sınıfta kısa bir sessizlik oluyor.' },
+    { type: 'say', speaker: '', text: 'Ders bitmek üzere, ama öğretmen son sözü söylemek istiyor gibi duruyor.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} sözlerini nasıl tamamlasın?`,
@@ -698,28 +686,30 @@ const STORY = {
     }
   ],
   act2_debate_turn4b_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Belki de bu tartışmanın amacı bana kesin bir cevap vermek değil, soruyu doğru sormayı öğretmekti.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Teslim olmak ile ikna olmak aynı şey değil bence.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Olabilir. Ama ikisi de seni aynı yere götürebilir, Elif.' },
     { type: 'jump', goto: 'act2_debate_end' }
   ],
   act2_debate_turn4b_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bir cevap bulmuş gibi hissetmiyorum ama en azından ne düşündüğümü daha iyi biliyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ben ikna olmadan bir şeyi kabul edemem, elimde değil.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bu senin şu anki hâlin. Zamanla değişebilir.' },
     { type: 'jump', goto: 'act2_debate_end' }
   ],
   act2_debate_turn4b_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Sanırım bunu düşünmeye devam edeceğim. Bu derste bitmiş bir konu değil çünkü.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Sanırım bunu düşünmeye devam edeceğim, kabul etsem de etmesem de.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Düşünmeye devam etmen kötü değil. Yeter ki bir yerde durmayı da öğren.' },
     { type: 'jump', goto: 'act2_debate_end' }
   ],
 
   act2_debate_end: [
-    { type: 'say', speaker: TEACHER_NAME, text: 'Güzel bir tartışma oldu. Kimsenin kimseyi ikna etmesi gerekmiyor bu derste.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Önemli olan, sorguladığın şeyle dürüst bir ilişki kurabilmen.' },
-    { type: 'say', speaker: 'Bir öğrenci', text: 'Yani sınavda bu sorulmayacak, değil mi hocam?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Sınavda sorulmaz ama hayatta karşına çıkar, o ayrı mesele.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Neyse, bu konuyu başka bir derste daha açarız.' },
+    { type: 'say', speaker: 'Bir öğrenci', text: 'Hocam, bu da mı sınava girecek?' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Girmeyecek, ama unutma: sınavdan daha önemli meseleler var.' },
     { type: 'say', speaker: '', text: 'Sınıftan hafif bir kahkaha yükseliyor.' },
-    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Katılıyorum, hocam.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bu dersi bu yüzden seviyorum aslında.' },
+    { type: 'say', speaker: TEACHER_NAME, text: `${GIRL_NAME}, düşünmeye devam et. Ama bir gün bir yerde karar kılman gerekecek.` },
+    { type: 'say', speaker: GIRL_NAME, text: 'Belki.' },
+    { type: 'say', speaker: '', text: '(İçinden) Ya da hiç karar kılmam gerekmez, sadece sormaya devam ederim.' },
     { type: 'jump', goto: 'act2_magazine_intro' }
   ],
 
