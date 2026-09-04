@@ -586,6 +586,7 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Dergi kulübünden gelmiştim. Yeni sayıyı tanıtıp dağıtacaktım.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Tabii, bir dakika bekleyebilirsin.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tabii, sorun değil.' },
+    { type: 'expr', id: 'boy', file: 'boy_skeptic.svg' }, // tartışmanın ortasına denk geldi, kenarda bekliyor
     { type: 'say', speaker: '', text: 'Yahya sınıfın kenarında, elinde dergilerle bekliyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Ortasına denk gelmişim işte. Olsun, beklerim.' },
     { type: 'jump', goto: 'act2_first_look' }
@@ -764,6 +765,7 @@ const STORY = {
   act2_magazine_intro: [
     { type: 'say', speaker: TEACHER_NAME, text: 'Evet, sanırım sıra dergi kulübünde.' },
     { type: 'say', speaker: BOY_NAME, text: 'Teşekkürler hocam.' },
+    { type: 'expr', id: 'boy', file: 'boy_neutral.svg' }, // sıra ona geldi, işine döner
     { type: 'say', speaker: '', text: 'Yahya öne çıkıp dergiyi gösteriyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bu ayki sayı çıktı. İçinde öğrenci yazıları, birkaç çizim, okul etkinliklerinden haberler ve kısa hikayeler var.' },
     { type: 'say', speaker: BOY_NAME, text: 'İsteyen teneffüste kulüp masasından alabilir.' },
@@ -873,6 +875,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: '(İçinden) Az önce sınıfta konuşmuştuk zaten, bahaneye gerek yok.' },
+    { type: 'expr', id: 'boy', file: 'boy_serious.svg' }, // kendini toparlıyor
     { type: 'say', speaker: '', text: "(İçinden) Sadece 'selam' demek bu kadar zor olmamalı." },
     { type: 'camera', effect: 'zoom-in' },
     { type: 'jump', goto: 'act3_greeting' }
@@ -885,10 +888,12 @@ const STORY = {
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },
     { type: 'say', speaker: BOY_NAME, text: 'Selam.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Selam.' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // şakayla açılış
     { type: 'say', speaker: BOY_NAME, text: 'Bu sefer dergi yok, azıcık daha hafif geziyorum.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Sınıfa girdiğinde ortalık biraz karışıktı.' },
     { type: 'say', speaker: BOY_NAME, text: 'Fark ettim. Kapıyı açtığımda bir an geri çıkmayı düşündüm.' },
     { type: 'say', speaker: BOY_NAME, text: 'Ama sen hiç geri adım atmıyordun, o yüzden kaldım.' },
+    { type: 'expr', id: 'boy', file: 'boy_neutral.svg' }, // konu ciddileşiyor
     { type: 'say', speaker: GIRL_NAME, text: 'Hoca da atmıyor. Sorun da orada zaten.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bu arada, adın neydi?' },
     { type: 'say', speaker: BOY_NAME, text: 'Yahya.' },
@@ -910,6 +915,7 @@ const STORY = {
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yani severek yapıyorsun ama itiraf etmiyorsun.' },
     { type: 'say', speaker: BOY_NAME, text: 'Belki.' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // yazıyı gerçekten okumuş
     { type: 'say', speaker: BOY_NAME, text: 'Bu arada, geçen sayıdaki atlarla ilgili yazı senindi değil mi?' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'say', speaker: '', text: '(İçinden) Okumuş demek.' },
@@ -966,6 +972,7 @@ const STORY = {
   // Sahne 9, seçim 1 — EVET. Sakin, gündelik, aşk ilanı değil.
   act3_yes: [
     { type: 'say', speaker: GIRL_NAME, text: 'Olur.' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // teklifi kabul edildi
     { type: 'say', speaker: BOY_NAME, text: 'Cidden mi? Güzel.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Ama önce kısa hikayeyi okuyayım, sonra ne zaman olacağını konuşuruz.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tabii, acelesi yok.' },
@@ -976,6 +983,7 @@ const STORY = {
   // Sahne 9, seçim 2 — ÖNCE TANIŞALIM. Sınır koyuyor ama kapıyı kapatmıyor; gizli bir "evet" değil.
   act3_getknow: [
     { type: 'say', speaker: GIRL_NAME, text: 'Belki... önce biraz tanışsak?' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // acele ettirmiyor
     { type: 'say', speaker: BOY_NAME, text: 'Olur, sorun değil.' },
     { type: 'say', speaker: BOY_NAME, text: 'Zaten sınıflarımız yakın, sık karşılaşırız herhalde.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Muhtemelen.' },

@@ -252,15 +252,22 @@ button {
   pointer-events: none;
 }
 
-/* İnci'nin çizimi büst kadrajlı; tam boy placeholder'larla aynı kutuda küçük
-   kalmasın diye kendi ölçüsü var. */
-.character-slot[data-char="girl"] {
-  width: 74%;
-  height: 58%;
+/* İnci ve Yahya'nın çizimleri büst kadrajlı; kendi ölçüleri var. */
+.character-slot[data-char="girl"],
+.character-slot[data-char="boy"] {
+  width: 62%;
+  height: 54%;
   /* Büst kadrajı olduğu için tabana yaslanmaz; yüzü diyalog kutusunun
      üstünde kalsın diye biraz yukarıdan başlar. */
   bottom: 16%;
 }
+
+/* İkisi aynı anda sahnedeyken yüzleri üst üste gelmesin diye kenarlara taşar. */
+.character-slot[data-char="girl"].slot-left,
+.character-slot[data-char="boy"].slot-left { left: -4%; }
+
+.character-slot[data-char="girl"].slot-right,
+.character-slot[data-char="boy"].slot-right { right: -4%; }
 
 .character-slot.visible {
   opacity: 1;
@@ -409,9 +416,10 @@ button {
   background-position: 50% 4%;
 }
 
-/* Yahya'nın saçı daha kısa; üstte boşluk kalmaması için pencere biraz aşağı. */
+/* Yahya'nın çizimi de büst; kare portrede yüz ortalanır. */
 .portrait-image[data-char="boy"] {
-  background-position: 50% 18%;
+  background-size: auto 122%;
+  background-position: 50% 4%;
 }
 
 /* Öğretmen asseti büst çizimi (diğerleri tam boy placeholder), bu yüzden
@@ -759,11 +767,8 @@ button {
   background-position: center bottom;
 }
 
-/* Yahya'nın tartışma görseli yok; placeholder SVG tam boy figür olduğu için
-   biraz taşırılıp alttan kırpılır. */
-.debate-stage[data-char="boy"] .debate-char-art {
-  background-size: auto 95%;
-}
+/* Yahya'nın tartışmaya özel çizimi henüz yok; diyalog portresindeki çizimi
+   aynı kadraj kuralıyla kullanılır (yukarıdaki varsayılan ölçü geçerli). */
 
 /* ---- Vurgu: seçilen karşı çıkış repliğinde kısa sarsıntı + flash ---- */
 
