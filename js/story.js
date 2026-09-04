@@ -23,8 +23,11 @@
  *   hide      { type:'hide', id }
  *   camera    { type:'camera', effect }       — 'zoom-in' | 'zoom-out' | 'slide-left' | 'slide-right'
  *   say       { type:'say', speaker, text }   — text bir fonksiyon da olabilir: (game) => metin
- *   choice    { type:'choice', prompt, options:[{text, goto, points?}] }
+ *                — emphasis:true verilirse tartışma sahnesinde kısa sarsıntı + flash
+ *   choice    { type:'choice', prompt, options:[{text, goto, points?, set?, add?}] }
  *                — points verilirse seçilince game.noteScore'a eklenir (mini oyunlar için)
+ *                — set: {anahtar: değer} game.flags'e yazar, add: {anahtar: sayı} sayaç artırır;
+ *                  sonraki sahneler bunları okuyup metni değiştirebilir
  *   phone     { type:'phone', time, date, notifications:[{app,from,text}], schedule:[{time,subject,highlight}] }
  *   jump      { type:'jump', goto }
  *   end       { type:'end', next? }           — next bir sonraki perdenin başlangıç etiketidir;
@@ -140,7 +143,7 @@ const STORY = {
       date: 'Salı',
       notifications: [
         { app: 'Mesajlar', from: 'Annem', text: 'Süt almayı unutma, tamam mı? :)' },
-        { app: 'Okul Duyuruları', text: "İngilizce Bilgi Yarışması bugün 15.00'te konferans salonunda." },
+        { app: 'Hatırlatıcı', text: "İngilizce bilgi yarışması bugün 15.00 — sen de yarışıyorsun, geç kalma." },
         { app: 'Hatırlatıcı', text: 'Matematik ödevini çantaya koy!' },
         { app: 'Notlar', text: 'Atlar — 2. bölüm (taslak): toynak kısmını yeniden yaz.' }
       ],
@@ -151,7 +154,7 @@ const STORY = {
         { time: '13:00', subject: 'Beden Eğitimi' }
       ]
     },
-    { type: 'say', speaker: '', text: '(İçinden) İngilizce yarışması bugünmüş; bizim sınıftan kim çıkacak acaba.' },
+    { type: 'say', speaker: '', text: '(İçinden) Yarışma bugünmüş. Hatırlatıcıyı kendim kurmuşum, demek ki gerçekten gideceğim.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bir de bu var tabii.' },
     { type: 'say', speaker: '', text: '(İçinden) Geçen hafta soru sorduğumda "bu tartışmaya açık bir konu değil" demişti.' },
@@ -409,7 +412,7 @@ const STORY = {
   act2_debate_turn1: [
     { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // konumunu sabitliyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bize aktarılmış açık bilgiler var. Bunlar yüzyıllardır orada; üzerinde durulmuş, sağlamlığı belli gerçekler.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyleri sürekli sorgulamak zorunda değilsiniz.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyleri sürekli sorgulamak zorunda değilsiniz.', emphasis: true },
     { type: 'say', speaker: '', text: `${GIRL_NAME} parmak kaldırıyor.` },
     {
       type: 'choice',
@@ -452,7 +455,7 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Öğretmen tahtaya iki kelime daha yazıyor: Bilim ve Sınırları.' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // sınıfa dönüp iddiayı vurguluyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bilim size nasıl sorusuna cevap verir. Ama bazı konularda cevap zaten dinen bellidir.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bilimin buna bir şey söylemesine gerek yoktur.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bilimin buna bir şey söylemesine gerek yoktur.', emphasis: true },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' }, // beklemediği cevap
     { type: 'say', speaker: '', text: '(İçinden) Bunu gerçekten söyledi mi şimdi?' },
     {
@@ -526,7 +529,7 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Öğretmen sıraların arasında yürümeye başlıyor.' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // tartışmaya geri dönüş
     { type: 'say', speaker: TEACHER_NAME, text: 'Ahlakın kaynağı konusunda kafanız karışmasın: iyi ve kötü, bize dinen bildirilmiştir.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bunun dışında bir zemin aramaya gerek yok.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bunun dışında bir zemin aramaya gerek yok.', emphasis: true },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
@@ -560,7 +563,7 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Öğretmen kollarını kavuşturuyor, sesi biraz daha sertleşiyor.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // öğretmen sertleşiyor
     { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // tartışmanın tepe noktası
-    { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu söylemek istiyorum: bazı sorular, sormak için değil, kabul etmek için vardır.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu söylemek istiyorum: bazı sorular, sormak için değil, kabul etmek için vardır.', emphasis: true },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' }, // beklenmedik iddia
     {
       type: 'choice',

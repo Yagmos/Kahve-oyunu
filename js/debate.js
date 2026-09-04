@@ -13,8 +13,14 @@
  *  - Modun açılması tamamen etiket adından gelir; story.js'te mod anahtarı yok.
  */
 
-/** Tartışmanın geçtiği etiketler: act2_debate* + Yahya'nın girdiği iki sahne. */
+/**
+ * Tartışmanın geçtiği etiketler: act2_debate* + Yahya'nın girdiği iki sahne.
+ * Dersin açılışı (act2_debate_start) BİLEREK dışarıda: hoca daha ders anlatırken
+ * oyun normal sahne + portre düzeninde kalır, karşılıklı tartışma başlayınca
+ * (İnci parmak kaldırdığında) tam ekran düzene geçilir.
+ */
 const DEBATE_LABEL_PREFIX = 'act2_debate';
+const DEBATE_EXCLUDED_LABELS = ['act2_debate_start'];
 const DEBATE_EXTRA_LABELS = ['act2_kerem_arrives', 'act2_first_look'];
 
 /** İnci'nin seçilen karşı çıkış repliği bu etiketlerin ilk sözüdür. */
@@ -67,6 +73,7 @@ class DebateManager {
   /** Bu etiket tartışmanın parçası mı? */
   isDebateLabel(label) {
     if (!label) return false;
+    if (DEBATE_EXCLUDED_LABELS.indexOf(label) !== -1) return false;
     return label.indexOf(DEBATE_LABEL_PREFIX) === 0 || DEBATE_EXTRA_LABELS.indexOf(label) !== -1;
   }
 
@@ -97,7 +104,7 @@ class DebateManager {
 
     // Vurgu: İnci'nin seçilen karşı çıkış repliği (branch etiketinin ilk sözü).
     if (index === 0 && REBUTTAL_LABEL_RE.test(label || '') && speakingId === 'girl') {
-      this._emphasize();
+      this.emphasize();
     }
   }
 
@@ -149,8 +156,12 @@ class DebateManager {
     this.stageEl.classList.add('present');
   }
 
-  /** Kısa, tek seferlik vurgu: hafif sarsıntı + flash. */
-  _emphasize() {
+  /**
+   * Kısa, tek seferlik vurgu: hafif sarsıntı + flash.
+   * İnci'nin seçilen karşı çıkışında otomatik, hocanın iddialı repliklerinde
+   * story.js'teki `emphasis: true` alanıyla tetiklenir.
+   */
+  emphasize() {
     if (!this.layerEl) return;
     this.layerEl.classList.remove('emphasis');
     void this.layerEl.offsetWidth; // reflow: animasyon tekrar başlasın

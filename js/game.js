@@ -241,6 +241,7 @@ class Game {
           this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText));
           if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
           if (this.debate) this.debate.update(step.speaker, this.label, this.index);
+          if (step.emphasis && this.debate) this.debate.emphasize();
         }
         this._saveProgress();
         break;
