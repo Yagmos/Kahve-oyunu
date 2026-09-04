@@ -34,6 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     historyListEl: document.getElementById('history-list')
   });
 
+  const portraitManager = new PortraitManager({
+    frameEl: document.getElementById('portrait-frame'),
+    imageEl: document.getElementById('portrait-image'),
+    boxEl: document.getElementById('dialogue-box'),
+    sceneManager
+  });
+
   const audioManager = new AudioManager();
 
   const phoneManager = new PhoneManager({
@@ -47,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const game = new Game({
     sceneManager,
     dialogueManager,
+    portraitManager,
     audioManager,
     phoneManager,
     onExitToMenu: () => {

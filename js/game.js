@@ -19,6 +19,8 @@ class Game {
   constructor(deps) {
     this.scene = deps.sceneManager;
     this.dialogue = deps.dialogueManager;
+    // Portre katmanı opsiyoneldir; yoksa motor aynen çalışmaya devam eder.
+    this.portrait = deps.portraitManager || null;
     this.audio = deps.audioManager;
     this.phone = deps.phoneManager;
     this.onExitToMenu = deps.onExitToMenu || function () {};
@@ -37,6 +39,7 @@ class Game {
     this.dialogue.hideChoices();
     this.phone.hide();
     this.scene.reset();
+    if (this.portrait) this.portrait.reset();
     this.finished = false;
     this.waitingForChoice = false;
     this.waitingForPhone = false;
@@ -57,6 +60,7 @@ class Game {
     this.dialogue.hideChoices();
     this.phone.hide();
     this.scene.reset();
+    if (this.portrait) this.portrait.reset();
     this.finished = false;
     this.waitingForChoice = false;
     this.waitingForPhone = false;
@@ -74,9 +78,16 @@ class Game {
    */
   _replayInstantly(label, uptoIndex) {
     const steps = STORY[label] || [];
+    // Kayıt bir 'choice'/'phone' adımındaysa öncesindeki 'say' tekrar
+    // oynatılmaz; portrenin boş kalmaması için son konuşmacıyı hatırlıyoruz.
+    let lastSpeaker = null;
     for (let i = 0; i < uptoIndex && i < steps.length; i++) {
       const step = steps[i];
       switch (step.type) {
+        case 'say':
+          // Metin/daktilo tekrar çalıştırılmaz, sadece konuşmacı not edilir.
+          lastSpeaker = step.speaker || '';
+          break;
         case 'bg':
           this.scene.setBackground(step.file);
           break;
@@ -93,8 +104,13 @@ class Game {
           this.audio.playBgm(step.file);
           break;
         default:
-          break; // sfx / camera / say / choice / phone / jump / end tekrar oynatılmaz
+          break; // sfx / camera / choice / phone / jump / end tekrar oynatılmaz
       }
+    }
+
+    // Sahne durumu (occupied) tamamlandıktan sonra portreyi sessizce geri yükle.
+    if (this.portrait && lastSpeaker !== null) {
+      this.portrait.showForSpeaker(lastSpeaker);
     }
   }
 
@@ -148,6 +164,7 @@ class Game {
 
       case 'expr':
         this.scene.changeExpression(step.id, resolveDynamic(step.file, this));
+        if (this.portrait) this.portrait.refreshExpression(step.id);
         this._advanceAuto();
         break;
 
@@ -170,11 +187,15 @@ class Game {
       case 'say':
         this.dialogue.hideChoices();
         this.dialogue.say(step.speaker, resolveDynamic(step.text, this));
+        if (this.portrait) this.portrait.showForSpeaker(step.speaker);
         this._saveProgress();
         break;
 
       case 'choice':
         this.waitingForChoice = true;
+        // Seçim katmanı diyalog kutusunun hemen üstünde açıldığı için
+        // portre gizlenir; choice-layer'ın konumlandırması korunur.
+        if (this.portrait) this.portrait.setChoiceMode(true);
         this.dialogue.showChoices(step.prompt, step.options, (option) => this._onChoiceSelected(option));
         this._saveProgress();
         break;
@@ -242,6 +263,7 @@ class Game {
 
   _returnToMenu() {
     this.audio.stopBgm();
+    if (this.portrait) this.portrait.reset();
     this.onExitToMenu();
   }
 

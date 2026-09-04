@@ -341,12 +341,66 @@ button {
   backdrop-filter: blur(3px);
 }
 
+/* Portre: diyalog kutusunun sol üstünden hafifçe dışarı taşar.
+   Mutlak konumlu olduğu için kutunun yüksekliğini ve metin genişliğini
+   etkilemez; görünüp kaybolurken layout zıplamaz. */
+.portrait-frame {
+  position: absolute;
+  left: 12px;
+  top: -44px;
+  width: 78px;
+  height: 78px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(20, 12, 8, 0.92);
+  border: 1px solid rgba(217, 164, 65, 0.35);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+  pointer-events: none;
+  /* Seçim katmanı (z-index 25) her durumda portrenin üstünde kalsın. */
+  z-index: 1;
+}
+
+.portrait-frame.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Seçim katmanı açılırken anında kaybolsun (fade sırasında butonların
+   arkasında görünmesin). */
+.portrait-frame.instant {
+  transition: none;
+}
+
+.portrait-image {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  /* Karakter SVG'leri 700x1400; baş üst kısımda kaldığı için
+     genişliğe oturtup üstten kırpıyoruz. */
+  background-size: 118% auto;
+  background-position: center -10px;
+}
+
 .speaker-name {
   font-weight: 700;
   font-size: 1rem;
   color: var(--color-accent);
   margin-bottom: 6px;
   min-height: 1.2em;
+}
+
+/* Portre görünürken sadece konuşmacı adı sağa kayar; diyalog metni
+   tam genişliğini korur. */
+.dialogue-box.has-portrait .speaker-name {
+  padding-left: 80px;
+}
+
+.dialogue-text {
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .dialogue-text {
