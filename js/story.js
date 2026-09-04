@@ -145,7 +145,7 @@ const STORY = {
         { app: 'Mesajlar', from: 'Annem', text: 'Süt almayı unutma, tamam mı? :)' },
         { app: 'Hatırlatıcı', text: "İngilizce bilgi yarışması bugün 15.00 — sen de yarışıyorsun, geç kalma." },
         { app: 'Hatırlatıcı', text: 'Matematik ödevini çantaya koy!' },
-        { app: 'Notlar', text: 'Yarışma: geçen sene soruların yarısı deyimlerden gelmişti.' }
+        { app: 'Notlar', text: 'Yarışma: geçen sene soruların yarısı elektrik konusundan gelmişti.' }
       ],
       schedule: [
         { time: '09:00', subject: 'Matematik' },
@@ -253,7 +253,8 @@ const STORY = {
   act1_library: [
     { type: 'say', speaker: '', text: 'Kütüphane sabahları neredeyse boş; ışıkların yarısı bile yanmıyor.' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} defterini açıp geçen seneki yarışma sorularına bakıyor.` },
-    { type: 'say', speaker: '', text: '(İçinden) Deyimler yine çıkar, geçen sene de yarısı oradandı.' },
+    { type: 'say', speaker: '', text: '(İçinden) Sorular İngilizce ama konular fen; geçen sene yarısı elektrikten gelmişti.' },
+    { type: 'say', speaker: '', text: '(İçinden) Direnç, gerilim, akım... İngilizce karşılıkları hâlâ tuhaf oturuyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Ezberlemiyorum, sadece gözüm alışsın istiyorum.' },
     { type: 'say', speaker: '', text: 'Bir sayfa çevirip defteri kapatıyor.' },
     { type: 'sfx', file: 'bell.mp3' },
@@ -701,7 +702,7 @@ const STORY = {
     {
       type: 'say', speaker: '',
       text: (game) => bayragaGore(game, 'sabah_tekrar', {
-        kutuphane: '(İçinden) Sabah baktığım deyimlerden ikisi çıktı. İyi ki bakmışım.',
+        kutuphane: '(İçinden) Sabah baktığım direnç sorularından ikisi çıktı. İyi ki bakmışım.',
         bahce: '(İçinden) Sabah tekrar etseydim o iki soruyu da bilirdim herhalde.'
       }, '(İçinden) Fena gitmedi sayılır.')
     },
