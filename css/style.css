@@ -398,10 +398,18 @@ button {
   background-position: 50% 18%;
 }
 
-/* Öğretmenin gözlüğü kesilmesin diye biraz geniş. */
+/* Öğretmen asseti büst çizimi (diğerleri tam boy placeholder), bu yüzden
+   kendi kirpma değerleri var: yüz kareyi doldursun, gözlük kesilmesin. */
 .portrait-image[data-char="teacher"] {
-  background-size: 134% auto;
-  background-position: 50% 14%;
+  background-size: auto 158%;
+  background-position: 44% 2%;
+}
+
+/* Debate: öğretmen büst olduğu için tam boy figürler gibi taşirilmaz;
+   genişliğe oturtulup slotun altina yaslanir, böylece kesilmeden görünür. */
+#screen-game.debate-mode [data-slot="teacher"] .debate-char-art {
+  background-size: auto 92%;
+  background-position: 42% bottom;
 }
 
 /* Portrenin altındaki isim levhası (referanstaki gibi). */
