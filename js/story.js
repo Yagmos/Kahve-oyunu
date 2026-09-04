@@ -905,6 +905,16 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Dergiyi yine de bırakırım. Bu sayıda kısa hikayeler fena değil.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bakarım.' },
     { type: 'say', speaker: '', text: 'Kapıda ayrılıyorlar. İkisi de tuhaf hissetmiyor.' },
+
+    // Akşam: Yahya eve dönerken. Kendine acımıyor, sadece günü kapatıyor.
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
+    { type: 'bg', file: 'rain_night.jpg' },
+    { type: 'say', speaker: '', text: 'Akşam yağmur başlıyor. Yahya şemsiyesini açıp yürümeye devam ediyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },
+    { type: 'say', speaker: '', text: '(İçinden) Dergiyi masaya bırakırım, gerisi kendi bilir.' },
+    { type: 'bg', file: 'school_gate_evening.svg' },
     { type: 'jump', goto: 'act3_ending' }
   ],
 
