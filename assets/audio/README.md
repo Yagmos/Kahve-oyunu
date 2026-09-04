@@ -5,13 +5,29 @@ Dosya yoksa aynı ses oyunun içinde WebAudio ile üretilir (`js/synth.js`),
 yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 `audioMode` belirler: `'auto'` (varsayılan), `'files'`, `'synth'`.
 
-## Beklenen dosya adları
+## Şu an kullanılan dosyalar
+
+| Dosya                | Nerede çalar                                   |
+|----------------------|------------------------------------------------|
+| `bedroom_theme.mp3`  | ACT I — İnci'nin odası (evden çıkınca biter)    |
+| `club_room.mp3`      | ACT II — dergi kulübü odası                     |
+| `offer.mp3`          | ACT III — kahve teklifi anı                     |
+| `accept.mp3`         | ACT III — teklif kabul edilirse                 |
+| `maybe.mp3`          | ACT III — "önce biraz tanışsak" denirse         |
+| `decline.mp3`        | ACT III — teklif reddedilirse                   |
+
+Hepsi mono / 32 kHz / 64 kbps'e çevrildi, 100-130 saniyeye kırpıldı ve
+loudnorm ile -16 LUFS'a eşitlendi; başta 1.5 sn açılma, sonda 2.5 sn kapanma
+var (döngüye girdiğinde sert kesmesin diye). Tek dosyalık paylaşılabilir
+sürüme bu boyutlarla sığıyor.
+
+## Henüz dosyası olmayanlar (üretilmiş sesle çalıyor)
 
 | Dosya                | Nerede çalar                          | Not                          |
 |----------------------|---------------------------------------|------------------------------|
-| `morning_theme.mp3`  | ACT I — sabah, ev ve yürüyüş          | döngüye girer, sonu başına bağlanmalı |
+| `morning_theme.mp3`  | ACT I — sokak, okul bahçesi           | döngüye girer                |
 | `school_day.mp3`     | ACT II — okul (kulüp, koridor, sınıf) | döngüye girer                |
-| `evening_walk.mp3`   | ACT III — okul çıkışı, akşamüstü      | döngüye girer                |
+| `evening_walk.mp3`   | ACT III — okul çıkışı (teklif öncesi) | döngüye girer                |
 | `alarm.mp3`          | Çalar saat (ACT I başı)               | 1–2 sn                       |
 | `bell.mp3`           | Ders zili (ACT I sonu, ACT II sonu)   | 1–2 sn                       |
 | `page.mp3`           | Dergi sayfası çevirme                 | < 1 sn                       |

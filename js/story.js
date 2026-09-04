@@ -66,7 +66,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '*Trrrn! Trrrn! Trrrn!*' },
     { type: 'bg', file: 'bedroom_morning.svg' },
     { type: 'show', id: 'girl', file: 'girl_sleepy.svg', position: 'center', transition: 'fade' },
-    { type: 'bgm', file: 'morning_theme.mp3' },
+    { type: 'bgm', file: 'bedroom_theme.mp3' },   // İnci'nin odası
     { type: 'camera', effect: 'zoom-in' },
     { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bir dakika daha. Sadece bir dakika.` },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
@@ -202,6 +202,7 @@ const STORY = {
   // 11: Kısa yürüyüş / geçiş sahnesi, sonra okula varış.
   act1_walk: [
     { type: 'bg', file: 'street_morning.svg' },
+    { type: 'bgm', file: 'morning_theme.mp3' },   // sokak: üretilmiş sabah teması
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sokaklar hâlâ yeni uyanıyor; birkaç kişi telaşla yürüyor, bir kedi kaldırımda geriniyor.' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} kulaklığını takıyor, adımlarını hızlandırıyor.` },
@@ -302,7 +303,7 @@ const STORY = {
   // ---- 1) KEREM POV: DERGİ KULÜBÜ ----
   act2_start: [
     { type: 'bg', file: 'club_room.svg' },
-    { type: 'bgm', file: 'school_day.mp3' },
+    { type: 'bgm', file: 'club_room.mp3' },       // kulüp odası: piyano
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Dergi kulübü odası, öğle arasının hemen öncesi.' },
@@ -341,6 +342,7 @@ const STORY = {
 
   act2_club_leave: [
     { type: 'bg', file: 'hallway.svg' },
+    { type: 'bgm', file: 'school_day.mp3' },      // koridor/okul
     { type: 'say', speaker: '', text: 'Dergi yığınını koluna alıp kapıya yöneliyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sınıflara dağıtmaya başlıyorum.' },
     { type: 'say', speaker: ADVISOR_NAME, text: 'Dikkat et, geçen sefer merdivenlerden koşarak inmiştin.' },
@@ -810,6 +812,7 @@ const STORY = {
 
   // Sahne 8 — kahve teklifi, sohbetin doğal bir sonucu olarak (hazır bir bahane cümlesi değil).
   act3_coffee_offer: [
+    { type: 'bgm', file: 'offer.mp3' },           // teklif anı
     { type: 'say', speaker: '', text: 'Yahya bir an duraksıyor, sanki söyleyip söylememek arasında kararsız.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bu arada... seninle konuşmak iyi geldi.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bir ara kahve içmek ister misin?' },
@@ -834,6 +837,7 @@ const STORY = {
 
   // Sahne 9, seçim 1 — EVET. Sakin, gündelik, aşk ilanı değil.
   act3_yes: [
+    { type: 'bgm', file: 'accept.mp3' },
     { type: 'say', speaker: GIRL_NAME, text: 'Olur.' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // teklifi kabul edildi
     { type: 'say', speaker: BOY_NAME, text: 'Cidden mi? Güzel.' },
@@ -845,6 +849,7 @@ const STORY = {
 
   // Sahne 9, seçim 2 — ÖNCE TANIŞALIM. Sınır koyuyor ama kapıyı kapatmıyor; gizli bir "evet" değil.
   act3_getknow: [
+    { type: 'bgm', file: 'maybe.mp3' },
     { type: 'say', speaker: GIRL_NAME, text: 'Belki... önce biraz tanışsak?' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // acele ettirmiyor
     { type: 'say', speaker: BOY_NAME, text: 'Olur, sorun değil.' },
@@ -856,6 +861,7 @@ const STORY = {
 
   // Sahne 9, seçim 3 — HAYIR. Kötü son değil; karşılıklı saygı korunuyor.
   act3_no: [
+    { type: 'bgm', file: 'decline.mp3' },
     { type: 'say', speaker: GIRL_NAME, text: 'Teşekkür ederim ama istemiyorum.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sorun değil.' },
     { type: 'say', speaker: BOY_NAME, text: 'Yine de konuşmak iyiydi, dergiyi de unutma.' },
