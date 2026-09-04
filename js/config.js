@@ -26,9 +26,12 @@ const CONFIG = {
     characterSlide: 450
   },
 
-  // Müzik ve efektler ses dosyası yerine WebAudio ile üretilir (js/synth.js).
-  // Depoya gerçek mp3'ler eklenirse bunu false yapmak yeterli.
-  useSynthAudio: true,
+  // Ses kaynağı:
+  //   'auto'   — assets/audio içinde dosya varsa onu çalar, yoksa WebAudio ile
+  //              üretir (js/synth.js). Dosyaları tek tek eklemek yeterli.
+  //   'files'  — sadece dosyalar; eksik olanlar sessiz kalır.
+  //   'synth'  — dosyaları hiç denemez, hep üretilmiş sesi çalar.
+  audioMode: 'auto',
 
   defaultSettings: {
     musicOn: true,
