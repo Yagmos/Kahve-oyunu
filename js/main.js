@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const portraitManager = new PortraitManager({
     frameEl: document.getElementById('portrait-frame'),
     imageEl: document.getElementById('portrait-image'),
+    badgeEl: document.getElementById('inner-badge'),
     boxEl: document.getElementById('dialogue-box'),
     sceneManager
   });

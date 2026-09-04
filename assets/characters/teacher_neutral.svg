@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1400" width="700" height="1400">
+  <!-- Saç (arka, toplu) -->
+  <path d="M190 400 Q182 175 350 155 Q518 175 510 400 L510 560 Q510 640 350 660 Q190 640 190 560 Z" fill="#4a4a4a"/>
+
+  <!-- Gövde (ceket) -->
+  <path d="M205 760 Q350 695 495 760 L565 1400 L135 1400 Z" fill="#3e3a4a"/>
+  <!-- Gömlek -->
+  <path d="M262 782 Q350 828 438 782 L452 1000 L248 1000 Z" fill="#cfc9bd"/>
+  <!-- Ceket yakaları -->
+  <path d="M262 782 Q318 880 330 1000 L282 1000 Q268 880 240 800 Z" fill="#2f2c3a"/>
+  <path d="M438 782 Q382 880 370 1000 L418 1000 Q432 880 460 800 Z" fill="#2f2c3a"/>
+
+  <!-- Boyun -->
+  <rect x="310" y="560" width="80" height="120" fill="#e2b58c"/>
+
+  <!-- Yüz -->
+  <ellipse cx="350" cy="430" rx="150" ry="164" fill="#e2b58c"/>
+
+  <!-- Saç (ön) -->
+  <path d="M198 372 Q206 190 350 172 Q494 190 502 372 Q474 268 350 264 Q226 268 198 372 Z" fill="#4a4a4a"/>
+
+  <!-- Gözlük -->
+  <circle cx="286" cy="436" r="46" fill="none" stroke="#2b2b2b" stroke-width="8"/>
+  <circle cx="414" cy="436" r="46" fill="none" stroke="#2b2b2b" stroke-width="8"/>
+  <path d="M332 436 Q350 428 368 436" stroke="#2b2b2b" stroke-width="8" fill="none"/>
+
+  <!-- Gözler -->
+  <ellipse cx="286" cy="436" rx="12" ry="14" fill="#1c130c"/>
+  <ellipse cx="414" cy="436" rx="12" ry="14" fill="#1c130c"/>
+
+  <!-- Düz kaşlar -->
+  <path d="M248 378 Q286 368 324 378" stroke="#3d3d3d" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <path d="M376 378 Q414 368 452 378" stroke="#3d3d3d" stroke-width="9" fill="none" stroke-linecap="round"/>
+
+  <!-- Nötr ağız -->
+  <path d="M316 512 Q350 508 384 512" stroke="#7a4a30" stroke-width="9" fill="none" stroke-linecap="round"/>
+
+  <text x="50%" y="1370" text-anchor="middle" font-family="sans-serif" font-size="26"
+        fill="#e2b58c" opacity="0.5">PLACEHOLDER — teacher_neutral</text>
+</svg>

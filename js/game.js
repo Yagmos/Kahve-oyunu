@@ -80,19 +80,21 @@ class Game {
     const steps = STORY[label] || [];
     // Kayıt bir 'choice'/'phone' adımındaysa öncesindeki 'say' tekrar
     // oynatılmaz; portrenin boş kalmaması için son konuşmacıyı hatırlıyoruz.
-    let lastSpeaker = null;
+    let lastSay = null;
     for (let i = 0; i < uptoIndex && i < steps.length; i++) {
       const step = steps[i];
       switch (step.type) {
         case 'say':
-          // Metin/daktilo tekrar çalıştırılmaz, sadece konuşmacı not edilir.
-          lastSpeaker = step.speaker || '';
+          // Metin/daktilo tekrar çalıştırılmaz, sadece portre için gereken
+          // konuşmacı ve metin not edilir.
+          lastSay = { speaker: step.speaker || '', text: resolveDynamic(step.text, this) };
           break;
         case 'bg':
           this.scene.setBackground(step.file);
           break;
         case 'show':
           this.scene.showCharacter(step.id, step);
+          if (this.portrait) this.portrait.noteShown(step.id);
           break;
         case 'expr':
           this.scene.changeExpression(step.id, resolveDynamic(step.file, this));
@@ -109,8 +111,8 @@ class Game {
     }
 
     // Sahne durumu (occupied) tamamlandıktan sonra portreyi sessizce geri yükle.
-    if (this.portrait && lastSpeaker !== null) {
-      this.portrait.showForSpeaker(lastSpeaker);
+    if (this.portrait && lastSay) {
+      this.portrait.update(lastSay.speaker, lastSay.text, label);
     }
   }
 
@@ -159,6 +161,7 @@ class Game {
 
       case 'show':
         this.scene.showCharacter(step.id, step);
+        if (this.portrait) this.portrait.noteShown(step.id);
         this._advanceAuto();
         break;
 
@@ -187,7 +190,7 @@ class Game {
       case 'say':
         this.dialogue.hideChoices();
         this.dialogue.say(step.speaker, resolveDynamic(step.text, this));
-        if (this.portrait) this.portrait.showForSpeaker(step.speaker);
+        if (this.portrait) this.portrait.update(step.speaker, resolveDynamic(step.text, this), this.label);
         this._saveProgress();
         break;
 

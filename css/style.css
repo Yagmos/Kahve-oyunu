@@ -341,22 +341,26 @@ button {
   backdrop-filter: blur(3px);
 }
 
-/* Portre: diyalog kutusunun sol üstünden hafifçe dışarı taşar.
-   Mutlak konumlu olduğu için kutunun yüksekliğini ve metin genişliğini
-   etkilemez; görünüp kaybolurken layout zıplamaz. */
+/* Portre: diyalog kutusunun SAĞINDA büyük kare alan. Mutlak konumlu olduğu
+   için kutunun yüksekliğini etkilemez; metin alanı ise kutuya eklenen
+   padding-right ile korunur, böylece metin portrenin altına girmez. */
+.dialogue-box {
+  --portrait-size: clamp(104px, 31vw, 126px);
+}
+
 .portrait-frame {
   position: absolute;
-  left: 12px;
-  top: -44px;
-  width: 78px;
-  height: 78px;
-  border-radius: 12px;
+  right: 12px;
+  bottom: 10px;
+  width: var(--portrait-size);
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
   overflow: hidden;
-  background: rgba(20, 12, 8, 0.92);
-  border: 1px solid rgba(217, 164, 65, 0.35);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  background: rgba(28, 18, 12, 0.95);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
   opacity: 0;
-  transform: translateY(6px);
+  transform: translateY(8px);
   transition: opacity 220ms ease, transform 220ms ease;
   pointer-events: none;
   /* Seçim katmanı (z-index 25) her durumda portrenin üstünde kalsın. */
@@ -366,6 +370,12 @@ button {
 .portrait-frame.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* İç monologda portre biraz daha sakin dursun. */
+.portrait-frame.inner {
+  border-color: rgba(217, 164, 65, 0.22);
+  opacity: 0.88;
 }
 
 /* Seçim katmanı açılırken anında kaybolsun (fade sırasında butonların
@@ -378,10 +388,50 @@ button {
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
-  /* Karakter SVG'leri 700x1400; baş üst kısımda kaldığı için
-     genişliğe oturtup üstten kırpıyoruz. */
-  background-size: 118% auto;
-  background-position: center -10px;
+  /* Karakter SVG'leri 700x1400 ve gövde çok geniş boşluk bırakıyor.
+     Kareye oturtmak için yatayda da yakınlaştırıp yüz + saç + boyun/omuz
+     hizasını gösterecek şekilde kırpıyoruz. */
+  background-size: 140% auto;
+  background-position: 50% 15%;
+}
+
+/* Yahya'nın saçı daha kısa; üstte boşluk kalmaması için pencere biraz aşağı. */
+.portrait-image[data-char="boy"] {
+  background-position: 50% 18%;
+}
+
+/* Öğretmenin başı İnci ile aynı hizada; gözlük kesilmesin diye biraz geniş. */
+.portrait-image[data-char="teacher"] {
+  background-size: 134% auto;
+  background-position: 50% 14%;
+}
+
+/* Metin, portrenin bulunduğu sütuna girmesin. */
+.dialogue-box.has-portrait .speaker-name,
+.dialogue-box.has-portrait .dialogue-text,
+.dialogue-box.has-portrait .inner-badge {
+  padding-right: calc(var(--portrait-size) + 10px);
+}
+
+/* İç monolog göstergesi: speaker-name yerine geçer. */
+.inner-badge {
+  display: none;
+  font-size: 0.82rem;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: rgba(217, 164, 65, 0.7);
+  margin-bottom: 6px;
+  min-height: 1.2em;
+}
+
+.inner-badge.visible {
+  display: block;
+}
+
+/* İç monologda speaker-name zaten boş; yerini rozet aldığı için
+   çift boşluk oluşmasın. */
+.dialogue-box:has(.inner-badge.visible) .speaker-name {
+  display: none;
 }
 
 .speaker-name {

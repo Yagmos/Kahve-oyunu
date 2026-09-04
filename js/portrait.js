@@ -1,59 +1,131 @@
 /**
- * PortraitManager: diyalog kutusunun sol üstünde, o an konuşan karakterin
- * portresini gösterir (Stardew tarzı).
+ * PortraitManager: diyalog kutusunun sağında, o an konuşan (ya da içinden
+ * geçiren) karakterin büyük kare portresini gösterir.
  *
  * Tasarım notları:
- *  - Kendi karakter/ifade durumunu TUTMAZ. Tek doğruluk kaynağı
- *    SceneManager.occupied'dır; portre oradan okunur. Böylece 'expr'
- *    adımları story.js'e hiç dokunmadan portreyi de sürer.
- *  - MVP: ayrı portre görseli üretilmez; mevcut karakter SVG'leri
- *    CSS ile (background-size + background-position) baş hizasından
- *    kırpılarak kullanılır.
- *  - Portre mutlak konumlandırılmıştır; dialogue-box'ın yüksekliğini ve
- *    metin genişliğini etkilemez, dolayısıyla görünüp kaybolurken
- *    layout zıplamaz.
+ *  - Kendi ifade durumunu TUTMAZ. Tek doğruluk kaynağı SceneManager.occupied'dır;
+ *    mevcut 'expr' adımları story.js'e dokunmadan portreyi de sürer.
+ *  - Portre görselleri mevcut karakter SVG'lerinden CSS ile kırpılır.
+ *  - İç monolog satırlarının hangi karaktere ait olduğu LABEL_POV haritasından,
+ *    orada tanımlı değilse en son sahneye giren karakterden çözülür.
+ *    Böylece story.js'e tek satır eklemeden POV belirlenebiliyor.
  */
 
-/**
- * Bir karakter için GERÇEKTEN var olan ifade dosyaları.
- * Eksik dosyalar CSS background'da sessizce 404 verdiği için
- * (hata fırlatmaz, portre görünmez olur) fallback zinciri bu listeye dayanır.
- */
+/** Bir karakter için gerçekten var olan ifade dosyaları (fallback bu listeye dayanır). */
 const PORTRAIT_ASSETS = {
   girl: ['neutral', 'happy', 'annoyed', 'surprised', 'sleepy'],
-  boy: ['neutral']
+  boy: ['neutral'],
+  teacher: ['neutral', 'serious']
 };
+
+/** Karakter sahnede değilken kullanılacak varsayılan ifade. */
+const PORTRAIT_DEFAULT_EXPRESSION = {
+  girl: 'neutral',
+  boy: 'neutral',
+  teacher: 'serious'
+};
+
+/**
+ * İç monolog ("(İçinden) ...") satırlarının POV sahibi, etiket bazında.
+ * Sadece iç monolog içeren etiketler listelenir. Burada olmayan etiketlerde
+ * POV, en son gösterilen karakterden çözülür — act2_aftermath gibi kendi
+ * içinde POV değiştiren sahneler bilinçli olarak listeye alınmamıştır.
+ */
+const LABEL_POV = {
+  // ---- ACT I: tamamı İnci ----
+  act1_start: 'girl',
+  act1_snooze: 'girl',
+  act1_getup: 'girl',
+  act1_outfit_fav: 'girl',
+  act1_outfit_casual: 'girl',
+  act1_breakfast: 'girl',
+  act1_phone: 'girl',
+  act1_umbrella_yes: 'girl',
+  act1_umbrella_no: 'girl',
+  act1_walk: 'girl',
+
+  // ---- ACT II: Yahya POV (kulüp + koridor + sınıfa giriş) ----
+  act2_start: 'boy',
+  act2_club_cover_font: 'boy',
+  act2_club_leave: 'boy',
+  act2_hallway1_wave: 'boy',
+  act2_hallway1_nod: 'boy',
+  act2_hallway2_chest: 'boy',
+  act2_hallway3_number: 'boy',
+  act2_hallway3_schedule: 'boy',
+  act2_hallway4: 'boy',
+  // Sınıfa girerken İnci sahnede olduğu için "son gösterilen" yanıltıcı olur.
+  act2_kerem_arrives: 'boy',
+
+  // ---- ACT II: İnci POV (tartışma + dergi) ----
+  act2_debate_start: 'girl',
+  act2_debate_turn2: 'girl',
+  act2_first_look: 'girl',
+  act2_debate_turn4b: 'girl',
+  act2_debate_end: 'girl',
+  act2_magazine_ask_stories: 'girl',
+  act2_magazine_ask_events: 'girl',
+  // act2_aftermath: BİLEREK yok — içinde Yahya POV -> İnci POV geçişi var,
+  // sahnedeki show adımlarından doğru şekilde çözülüyor.
+
+  // ---- ACT III ----
+  act3_start: 'girl',
+  act3_girl_notices: 'girl',
+  act3_boy_pov: 'boy',
+  act3_greeting: 'girl',
+  act3_talk_magazine: 'girl',
+  act3_talk_personal: 'girl',
+  act3_pause: 'girl',
+  act3_coffee_offer: 'girl',
+  act3_yes: 'girl',
+  act3_getknow: 'girl',
+  act3_no: 'girl'
+};
+
+/**
+ * "(İçinden) ..." ve "(İnci'nin içinden) ..." biçimlerinin ikisini de yakalar.
+ * Türkçe'de 'İ' harfinin küçültülmesi ortama göre değiştiği için büyük/küçük
+ * varyantlar regex içinde açıkça yazılıyor; /i bayrağına güvenilmiyor.
+ */
+const INNER_THOUGHT_RE = /[İIi]çinden\)/;
 
 class PortraitManager {
   /**
-   * @param {{frameEl:HTMLElement, imageEl:HTMLElement, boxEl:HTMLElement, sceneManager:SceneManager}} refs
+   * @param {{frameEl:HTMLElement, imageEl:HTMLElement, badgeEl:HTMLElement,
+   *          boxEl:HTMLElement, sceneManager:SceneManager}} refs
    */
   constructor(refs) {
     this.frameEl = refs.frameEl;
     this.imageEl = refs.imageEl;
+    this.badgeEl = refs.badgeEl;
     this.boxEl = refs.boxEl;
     this.scene = refs.sceneManager;
 
     this.speakerToId = this._buildSpeakerMap();
     this.currentId = null;
+    this.lastShownId = null;
     // Seçim butonları açıkken portre gizlenir (choice-layer ile çakışmasın diye).
     this.choiceMode = false;
   }
 
   /**
    * Konuşmacı adı -> karakter id eşlemesi. Adlar story.js'teki sabitlerden
-   * türetilir, elle yazılmaz; sabit tanımlı değilse o karakter atlanır.
+   * türetilir, elle yazılmaz.
    */
   _buildSpeakerMap() {
     const map = {};
     if (typeof GIRL_NAME !== 'undefined') map[GIRL_NAME] = 'girl';
     if (typeof BOY_NAME !== 'undefined') map[BOY_NAME] = 'boy';
+    if (typeof TEACHER_NAME !== 'undefined') map[TEACHER_NAME] = 'teacher';
     return map;
   }
 
-  /**
-   * 'girl_happy.svg' -> { id: 'girl', expression: 'happy' }
-   */
+  /** 'show' adımlarında çağrılır; POV çözümlemesinin yedek kaynağı. */
+  noteShown(id) {
+    if (id) this.lastShownId = id;
+  }
+
+  /** 'girl_happy.svg' -> { id: 'girl', expression: 'happy' } */
   _parseFile(file) {
     if (!file) return null;
     const base = String(file).replace(/\.[^.]+$/, '');
@@ -63,62 +135,74 @@ class PortraitManager {
   }
 
   /**
-   * Fallback zinciri: istenen ifade -> neutral -> null (portre gizlenir).
+   * Fallback zinciri: sahnedeki ifade -> karakterin varsayılan ifadesi -> null.
    * @returns {string|null} Kullanılacak dosya adı.
    */
   _resolveFile(id) {
     const available = PORTRAIT_ASSETS[id];
     if (!available || !available.length) return null;
 
-    // 1) Karakter sahnedeyse SceneManager'ın gösterdiği dosyayı kullan.
+    // 1) Karakter sahnedeyse SceneManager'ın gösterdiği ifadeyi kullan.
     const occupant = this.scene && this.scene.occupied ? this.scene.occupied[id] : null;
     if (occupant && occupant.file) {
       const parsed = this._parseFile(occupant.file);
-      if (parsed && available.indexOf(parsed.expression) !== -1) {
-        return occupant.file;
+      if (parsed && available.indexOf(parsed.expression) !== -1) return occupant.file;
+    }
+
+    // 2) Sahnede değilse (ör. Öğretmen hiç 'show' edilmiyor) varsayılana düş.
+    const fallback = PORTRAIT_DEFAULT_EXPRESSION[id];
+    if (fallback && available.indexOf(fallback) !== -1) return id + '_' + fallback + '.svg';
+    return id + '_' + available[0] + '.svg';
+  }
+
+  /**
+   * Bir 'say' adımı için portreyi güncelle.
+   * @param {string} speaker Konuşmacı adı ('' ise anlatım veya iç monolog).
+   * @param {string} text Replik metni (iç monolog tespiti için).
+   * @param {string} label O anki hikaye etiketi (POV çözümlemesi için).
+   */
+  update(speaker, text, label) {
+    // Bir 'say' çalıştıysa seçim ekranı kapanmış demektir.
+    this.choiceMode = false;
+
+    // 1) Adı olan konuşmacı: doğrudan eşle.
+    const named = speaker ? this.speakerToId[speaker] : null;
+    if (named) {
+      this.currentId = named;
+      this._apply(this._resolveFile(named), false);
+      return;
+    }
+
+    // 2) Adı yok: iç monolog mu, düz anlatım mı?
+    const isInner = !speaker && typeof text === 'string' && INNER_THOUGHT_RE.test(text);
+    if (isInner) {
+      const povId = LABEL_POV[label] || this.lastShownId;
+      if (povId && PORTRAIT_ASSETS[povId]) {
+        this.currentId = povId;
+        this._apply(this._resolveFile(povId), true);
+        return;
       }
     }
 
-    // 2) Sahnede değilse ya da ifadesinin portresi yoksa neutral'a düş.
-    if (available.indexOf('neutral') !== -1) return id + '_neutral.svg';
-
-    // 3) Hiçbiri yoksa portre gösterilmez.
-    return null;
+    // 3) Anlatım, perde kartı veya görseli olmayan konuşmacı: portre yok.
+    this.currentId = null;
+    this._apply(null, false);
   }
 
-  /**
-   * Konuşmacıya göre portreyi güncelle. Konuşmacı boşsa (anlatım / iç monolog)
-   * veya görseli olmayan biriyse (Öğretmen vb.) portre gizlenir.
-   */
-  showForSpeaker(speaker) {
-    // Bir 'say' adımı çalıştıysa seçim ekranı kapanmış demektir.
-    this.choiceMode = false;
-    const id = speaker ? this.speakerToId[speaker] : null;
-    if (!id) {
-      this.currentId = null;
-      this._apply(null);
-      return;
-    }
-    this.currentId = id;
-    this._apply(this._resolveFile(id));
-  }
-
-  /**
-   * 'expr' adımından sonra çağrılır. Sadece konuşan karakterin ifadesi
-   * değiştiyse portre yenilenir.
-   */
+  /** 'expr' adımından sonra; sadece portresi görünen karakter için yeniler. */
   refreshExpression(id) {
     if (!id || id !== this.currentId) return;
-    this._apply(this._resolveFile(id));
+    this._apply(this._resolveFile(id), this.frameEl.classList.contains('inner'));
   }
 
-  /** Seçim katmanı açıkken portreyi gizler, kapanınca geri getirir. */
+  /** Seçim katmanı açıkken portreyi gizler. */
   setChoiceMode(active) {
     this.choiceMode = !!active;
-    this._apply(this.currentId ? this._resolveFile(this.currentId) : null);
+    const inner = this.frameEl.classList.contains('inner');
+    this._apply(this.currentId ? this._resolveFile(this.currentId) : null, inner);
   }
 
-  _apply(file) {
+  _apply(file, isInner) {
     const visible = !!file && !this.choiceMode;
 
     if (file) {
@@ -126,21 +210,29 @@ class PortraitManager {
       if (this.imageEl.style.backgroundImage !== url) {
         this.imageEl.style.backgroundImage = url;
       }
+      const parsed = this._parseFile(file);
+      this.imageEl.setAttribute('data-char', parsed ? parsed.id : '');
     }
 
-    // Seçim katmanı açılırken portre animasyonsuz kaybolur; aksi halde
-    // 220ms'lik fade boyunca butonların arkasında görünmeye devam eder.
+    // Seçim katmanı açılırken animasyonsuz kaybolsun; aksi halde fade
+    // boyunca butonların arkasında görünmeye devam eder.
     this.frameEl.classList.toggle('instant', this.choiceMode);
     this.frameEl.classList.toggle('visible', visible);
+    this.frameEl.classList.toggle('inner', visible && !!isInner);
+
+    if (this.badgeEl) this.badgeEl.classList.toggle('visible', visible && !!isInner);
     if (this.boxEl) this.boxEl.classList.toggle('has-portrait', visible);
   }
 
   /** Yeni oyun / devam / menüye dönüş sırasında portre durumunu temizler. */
   reset() {
     this.currentId = null;
+    this.lastShownId = null;
     this.choiceMode = false;
     this.imageEl.style.backgroundImage = '';
-    this.frameEl.classList.remove('visible');
+    this.imageEl.removeAttribute('data-char');
+    this.frameEl.classList.remove('visible', 'inner', 'instant');
+    if (this.badgeEl) this.badgeEl.classList.remove('visible');
     if (this.boxEl) this.boxEl.classList.remove('has-portrait');
   }
 }
