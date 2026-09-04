@@ -794,52 +794,118 @@ const STORY = {
   ],
 
   // ================= ACT III: KONUŞMA (SON PERDE) =================
+  //
+  // Süreklilik notu: Yahya ve İnci ACT II'de zaten karşılaşmış, birbirini
+  // görmüş ve kısaca konuşmuştu (dergi tanıtımı, sınıftaki tartışma).
+  // Yani burada "yabancı -> ilk tanışma" değil, "tanıdık bir yüz -> ilk
+  // gerçek sohbet" var. Yeniden "Ben X, Ben Y, tanışmamıştık" sahnesi YOK.
+  // Yahya, ACT II'de öğretmenin İnci'yi adıyla defalarca çağırmasından
+  // dolayı onun adını zaten biliyor; İnci ise Yahya'nın adını hiç
+  // duymamıştı (Yahya sınıfa girerken sadece "dergi kulübünden geldim"
+  // demişti) — bu yüzden "Bu arada, adın neydi?" sorusu İnci'den doğal ve
+  // gerekçeli şekilde geliyor, yapay bir yeniden tanışma değil.
 
-  // Sahne 1 (kız POV) — ACT II'nin bittiği yerden (koridor, siyah ekran) devam.
+  // Sahne 1 (İnci POV) — ACT II'nin bittiği yerden devam. Önce kendi gününe dair düşünceler.
   act3_start: [
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'camera', effect: 'slide-left' },
-    { type: 'say', speaker: '', text: 'Koridorda yürümeye devam ediyor. Aklında hâlâ biraz kimya, biraz da eve gidince ne yiyeceği var.' },
+    { type: 'say', speaker: '', text: 'Ders bitmiş, koridorlar yavaş yavaş boşalıyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Ödev az değil ama olsun, akşama hallederim.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bugün fena değildi aslında.` },
+    { type: 'say', speaker: '', text: '(İçinden) Dergideki kısa hikayeye bir göz atmayı unutmamalıyım.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
-    { type: 'say', speaker: '', text: 'Az ileride, tanımadığı biri ona doğru yürüyor gibi görünüyor.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bu sabah gördüğüm... öğrenci mi neydi?' },
-    { type: 'say', speaker: '', text: '(İçinden) Neyse, muhtemelen başka bir yere gidiyordur.' },
+    { type: 'say', speaker: '', text: 'Çantasını omzuna atıp yürümeye devam ediyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Eve gidince önce biraz uzanmak var planda.' },
+    { type: 'say', speaker: '', text: 'Az ileride, tanıdık bir siluet dikkatini çekiyor.' },
+    { type: 'jump', goto: 'act3_girl_notices' }
+  ],
+
+  // Sahne 2 (İnci POV) — Yahya'yı fark edip ACT II'den hatırlaması.
+  act3_girl_notices: [
+    { type: 'camera', effect: 'zoom-in' },
+    { type: 'say', speaker: '', text: '(İçinden) Dergi kulübündeki çocuk.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bu sefer elinde dergi yok.' },
+    { type: 'say', speaker: '', text: '(İçinden) Sınıfta hocayla nasıl tartıştığını hâlâ hatırlıyorum.' },
+    { type: 'say', speaker: '', text: 'Aynı yöne doğru yürüyorlar galiba.' },
     { type: 'jump', goto: 'act3_boy_pov' }
   ],
 
-  // Sahne 2 (erkek POV) — tedirgin, saygılı, hafif esprili bir iç ses.
+  // Sahne 3 (Yahya POV) — yaklaşmadan önce, özgüvenli ama doğal. ACT II'ye açık referans var.
   act3_boy_pov: [
     { type: 'camera', effect: 'zoom-out' },
     { type: 'hide', id: 'girl' },
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
-    { type: 'say', speaker: '', text: '(İçinden) Tamam.' },
-    { type: 'say', speaker: '', text: "(İçinden) Sadece 'merhaba' de." },
-    { type: 'say', speaker: '', text: '(İçinden) Bu neden bu kadar zor geliyor ki?' },
-    { type: 'say', speaker: '', text: '(İçinden) Beni tanımıyor. Sorun değil.' },
-    { type: 'say', speaker: '', text: '(İçinden) Sadece soracağım.' },
+    { type: 'say', speaker: '', text: '(İçinden) Az önce sınıfta konuşmuştuk zaten, bahaneye gerek yok.' },
+    { type: 'say', speaker: '', text: "(İçinden) Sadece 'selam' demek bu kadar zor olmamalı." },
     { type: 'camera', effect: 'zoom-in' },
-    { type: 'jump', goto: 'act3_conversation' }
+    { type: 'jump', goto: 'act3_greeting' }
   ],
 
-  // Sahne 3 — ilk kez konuşuyorlar.
-  act3_conversation: [
+  // Sahne 4 — doğal bir selamlaşma, yeniden tanışma yok. İsim asimetrisi burada doğal şekilde kapanıyor.
+  act3_greeting: [
     { type: 'hide', id: 'boy' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },
     { type: 'say', speaker: BOY_NAME, text: 'Selam.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bana mı diyor?' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Selam?' },
-    { type: 'say', speaker: BOY_NAME, text: `Ben ${BOY_NAME}. Sanırım daha önce hiç tanışmadık.` },
-    { type: 'say', speaker: GIRL_NAME, text: `Hayır, sanmıyorum. Ben ${GIRL_NAME}.` },
-    { type: 'say', speaker: BOY_NAME, text: `${GIRL_NAME}. Tamam.` },
-    { type: 'say', speaker: BOY_NAME, text: 'Seni birkaç kere görmüştüm, aynı koridorlardan geçiyoruz galiba.' },
-    { type: 'say', speaker: '', text: '(İçinden) Normal bir şey aslında. Okul pek büyük değil.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Olabilir. Okul pek büyük değil zaten.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Selam.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu sefer dergi yok, azıcık daha hafif geziyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Sınıfta hocayla iyi tartışıyordunuz.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Fena sayılmaz, ama son sözü hep hoca söylüyor.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu arada, adın neydi?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Yahya.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yahya. Tamam.' },
+    { type: 'jump', goto: 'act3_talk_magazine' }
+  ],
+
+  // Sahne 5 — dergi/okul üzerinden doğal sohbet. İnci en az bir kez kendi isteğiyle soru soruyor.
+  act3_talk_magazine: [
+    { type: 'say', speaker: BOY_NAME, text: 'Dergiyi okudun mu bu arada?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kısa hikaye bölümüne bakacaktım ama vakit olmadı.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Acele etme, dergi kaçmıyor bir yere.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: BOY_NAME, text: 'Şey... okulda bir ara kahve içmek ister misin?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kapak resmi kimindi bu sefer, hatırlamıyorum.' },
+    { type: 'say', speaker: BOY_NAME, text: "Yine 10-D'den biri. Bayağı yetenekli çıktı o." },
+    { type: 'say', speaker: GIRL_NAME, text: 'Sen hep dağıtıma gönüllü mü oluyorsun, yoksa illa sana mı kalıyor?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Aslında sırada ben değildim, ama kimse gitmek istemeyince ben çıkıyorum.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Sınıfları gezmek hoşuma gidiyor, o kadar.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Yani severek yapıyorsun ama itiraf etmiyorsun.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Belki.' },
+    { type: 'jump', goto: 'act3_talk_personal' }
+  ],
+
+  // Sahne 6 — sohbet kişisel ama hâlâ gündelik bir noktaya kayıyor. İnci aktif katılıyor.
+  act3_talk_personal: [
+    { type: 'say', speaker: BOY_NAME, text: 'Sınıftaki tartışma hep böyle mi geçiyor?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Genelde daha sakin ama hoca bazen resmen kışkırtıyor.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ben de fırsatı kaçırmıyorum tabii.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Belli oluyordu.' },
+    { type: 'say', speaker: '', text: '(İçinden) Beklediğimden daha kolay konuşuluyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Dergi kulübüne katılmayı hiç düşündün mü?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Pek sayılmaz, ama yazı kısmına bakmayı seviyorum.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Sen hep böyle mi soru sormayı seversin?' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Galiba hep. Cevap verilmeyen bir soru beni rahatsız ediyor.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    { type: 'jump', goto: 'act3_pause' }
+  ],
+
+  // Sahne 7 — kısa sessizlik / doğal ayrılma sinyali.
+  act3_pause: [
+    { type: 'say', speaker: '', text: 'Kısa bir sessizlik oluyor, ikisi de bir şey söylemiyor.' },
+    { type: 'say', speaker: '', text: 'Koridordaki kalabalık iyice azalmış.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Herhalde senin de gitmen gerekiyordur.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Birazdan, evet.' },
+    { type: 'jump', goto: 'act3_coffee_offer' }
+  ],
+
+  // Sahne 8 — kahve teklifi, sohbetin doğal bir sonucu olarak (hazır bir bahane cümlesi değil).
+  act3_coffee_offer: [
+    { type: 'say', speaker: '', text: 'Yahya bir an duraksıyor, sanki söyleyip söylememek arasında kararsız.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu arada... seninle konuşmak iyi geldi.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bir ara kahve içmek ister misin?' },
+    { type: 'say', speaker: '', text: '(İçinden) Bunu bekliyor muydum, beklemiyor muydum, emin değilim.' },
     {
       type: 'choice',
       prompt: 'Ne cevap verse iyi olur?',
@@ -851,40 +917,44 @@ const STORY = {
     }
   ],
 
-  // Sahne 4, seçim 1 — EVET.
+  // Sahne 9, seçim 1 — EVET. Sakin, gündelik, aşk ilanı değil.
   act3_yes: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Tamam, olur.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Gerçekten mi? Tamam... harika.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Ne zaman istersen, haber ver.' },
-    { type: 'say', speaker: '', text: '(İçinden) Fena bir fikir değilmiş aslında.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Olur.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Cidden mi? Güzel.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ama önce kısa hikayeyi okuyayım, sonra ne zaman olacağını konuşuruz.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tabii, acelesi yok.' },
+    { type: 'say', speaker: '', text: '(İçinden) Fena bir fikir değilmiş, kahveyi zaten seviyorum.' },
     { type: 'jump', goto: 'act3_ending' }
   ],
 
-  // Sahne 4, seçim 2 — ÖNCE TANIŞALIM.
+  // Sahne 9, seçim 2 — ÖNCE TANIŞALIM. Sınır koyuyor ama kapıyı kapatmıyor; gizli bir "evet" değil.
   act3_getknow: [
     { type: 'say', speaker: GIRL_NAME, text: 'Belki... önce biraz tanışsak?' },
-    { type: 'say', speaker: BOY_NAME, text: 'Tabii, sorun değil.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Okulda görüşürüz o zaman, biraz konuşuruz.' },
-    { type: 'say', speaker: '', text: '(İçinden) Makul bir teklif.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Olur, sorun değil.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Zaten sınıflarımız yakın, sık karşılaşırız herhalde.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Muhtemelen.' },
+    { type: 'say', speaker: '', text: '(İçinden) Acele etmeme gerek yok, zaman var.' },
     { type: 'jump', goto: 'act3_ending' }
   ],
 
-  // Sahne 4, seçim 3 — HAYIR.
+  // Sahne 9, seçim 3 — HAYIR. Kötü son değil; karşılıklı saygı korunuyor.
   act3_no: [
     { type: 'say', speaker: GIRL_NAME, text: 'Teşekkür ederim ama istemiyorum.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Tabii, sorun değil. Yine de tanıştığımıza memnun oldum.' },
-    { type: 'say', speaker: '', text: '(İçinden) Nazikçe karşıladı. İyi biri gibi duruyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Tamam, sorun değil.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Yine de konuşmak iyiydi, dergiyi de unutma.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Unutmam, merak etme.' },
+    { type: 'say', speaker: '', text: '(İçinden) Rahat biriymiş, cevabımı hiç dert etmedi.' },
     { type: 'jump', goto: 'act3_ending' }
   ],
 
-  // Kapanış — her üç seçim de buraya bağlanır. Oyunun sonu; ACT IV yoktur.
+  // Kapanış — her üç seçim de buraya bağlanır. Sade final; oyuncuya doğrudan mesaj veren meta cümle yok.
   act3_ending: [
     { type: 'hide', id: 'girl' },
     { type: 'hide', id: 'boy' },
     { type: 'bg', file: null },
     { type: 'say', speaker: '', text: 'ACT III — THE CONVERSATION' },
     { type: 'say', speaker: '', text: 'END' },
-    { type: 'say', speaker: '', text: 'Bazen önemli olan cevabı bilmek değil, ilk adımı atabilmektir.' },
     { type: 'end' }
   ]
 };
