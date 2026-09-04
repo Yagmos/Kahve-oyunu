@@ -307,7 +307,6 @@ const STORY = {
     { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Yine gönüllü mü oldun dağıtıma?' },
     { type: 'say', speaker: BOY_NAME, text: 'Gönüllü olmadım, sırada bendim.' },
     { type: 'say', speaker: 'Kulüp arkadaşı', text: 'İlginç, sıra hep sana geliyor bir şekilde.' },
-    { type: 'say', speaker: '', text: '(İçinden) Aslında dağıtımı sevmiyor değilim. Sınıfları gezmek fena değil.' },
     { type: 'jump', goto: 'act2_club_cover' }
   ],
 
@@ -324,80 +323,16 @@ const STORY = {
   ],
   act2_club_cover_colors: [
     { type: 'say', speaker: BOY_NAME, text: 'Renkler bu sefer iyi çıkmış. Geçen sayı biraz fazla cıvık kaçmıştı.' },
-    { type: 'jump', goto: 'act2_club_content' }
+    { type: 'jump', goto: 'act2_club_leave' }
   ],
   act2_club_cover_font: [
     { type: 'say', speaker: BOY_NAME, text: 'Font da okunaklı olmuş. Geçen sayıda üçüncü sayfadan sonra göz kanatıyordu.' },
     { type: 'say', speaker: '', text: '(İçinden) Bu sefer baştan dikkat ettik, iyi ki de etmişiz.' },
-    { type: 'jump', goto: 'act2_club_content' }
-  ],
-
-  act2_club_content: [
-    { type: 'say', speaker: '', text: 'Sayfaları hızlıca karıştırıyor.' },
-    {
-      type: 'choice',
-      prompt: 'Hangi bölüme baksın?',
-      options: [
-        { text: 'Öğrenci yazıları', goto: 'act2_club_content_writing' },
-        { text: 'Çizimler', goto: 'act2_club_content_art' }
-      ]
-    }
-  ],
-  act2_club_content_writing: [
-    { type: 'say', speaker: BOY_NAME, text: 'Bu sayının en iyi yazısı bence şu röportaj olmuş.' },
-    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Onu ben de beğendim, iyi sorular sormuş.' },
-    { type: 'jump', goto: 'act2_club_sort' }
-  ],
-  act2_club_content_art: [
-    { type: 'say', speaker: BOY_NAME, text: 'Kapağı yapan bu sefer bir de çizgi roman sayfası göndermiş, güzel olmuş.' },
-    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Önümüzdeki sayı için ondan bir sayfa daha isteyelim mi?' },
-    { type: 'jump', goto: 'act2_club_sort' }
-  ],
-
-  act2_club_sort: [
-    { type: 'say', speaker: '', text: 'Dergileri sınıflara göre paketlere ayırmaya başlıyor.' },
-    { type: 'say', speaker: 'Kulüp arkadaşı', text: "12-A'ya fazladan birkaç tane koy, geçen sefer yetmemişti." },
-    {
-      type: 'choice',
-      prompt: 'Kaç tane ayırsın?',
-      options: [
-        { text: 'Söylediği kadar', goto: 'act2_club_sort_asked' },
-        { text: 'Biraz daha fazla', goto: 'act2_club_sort_extra' }
-      ]
-    }
-  ],
-  act2_club_sort_asked: [
-    { type: 'say', speaker: BOY_NAME, text: 'Tamam, dediğin kadar ayırayım.' },
-    { type: 'say', speaker: '', text: 'Paketleri hızlıca bantlayıp kenara diziyor.' },
-    { type: 'jump', goto: 'act2_club_route' }
-  ],
-  act2_club_sort_extra: [
-    { type: 'say', speaker: BOY_NAME, text: 'Olsun, birkaç tane daha koyayım, idare eder.' },
-    { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Bak sen, çok düşüncelisin.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Ya da sonra tekrar buraya gelmek istemiyorum, o kadar.' },
-    { type: 'say', speaker: '', text: 'Paketleri hızlıca bantlayıp kenara diziyor.' },
-    { type: 'jump', goto: 'act2_club_route' }
-  ],
-
-  act2_club_route: [
-    { type: 'say', speaker: '', text: 'Paketleri sayıp listeye göz atıyor: bugün üst kat ve doğu koridoru sırada.' },
-    {
-      type: 'choice',
-      prompt: 'Önce hangi taraftan başlasın?',
-      options: [
-        { text: 'Üst kattan', goto: 'act2_club_route_upstairs' },
-        { text: 'Doğu koridorundan', goto: 'act2_club_route_east' }
-      ]
-    }
-  ],
-  act2_club_route_upstairs: [
-    { type: 'say', speaker: BOY_NAME, text: 'Merdivenleri önce hallederim, sonra düz gidilir.' },
     { type: 'jump', goto: 'act2_club_leave' }
   ],
-  act2_club_route_east: [
-    { type: 'say', speaker: BOY_NAME, text: 'Doğu tarafı daha yakın, önce oradan başlayayım.' },
-    { type: 'jump', goto: 'act2_club_leave' }
-  ],
+
+
+
 
   act2_club_leave: [
     { type: 'bg', file: 'hallway.svg' },
@@ -429,61 +364,16 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Selam!' },
     { type: 'say', speaker: '', text: 'Karşıdaki de elini kaldırıp karşılık veriyor, yoluna devam ediyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Kısa ve net, tam istediğim gibi.' },
-    { type: 'jump', goto: 'act2_hallway2' }
+    { type: 'jump', goto: 'act2_hallway4' }
   ],
   act2_hallway1_nod: [
     { type: 'say', speaker: '', text: 'Başıyla selam veriyor, karşı taraf da aynı şekilde karşılık veriyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Eller dolu olunca selamlaşmak biraz tuhaflaşıyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Neyse, teneffüs kalabalığında bu kadarı yeter.' },
-    { type: 'jump', goto: 'act2_hallway2' }
-  ],
-
-  act2_hallway2: [
-    { type: 'say', speaker: '', text: 'Dergi yığını biraz kaymaya başlıyor.' },
-    {
-      type: 'choice',
-      prompt: 'Ne yapsın?',
-      options: [
-        { text: 'Tek koluna sıkıştır', goto: 'act2_hallway2_arm' },
-        { text: 'Göğsüne yasla', goto: 'act2_hallway2_chest' }
-      ]
-    }
-  ],
-  act2_hallway2_arm: [
-    { type: 'say', speaker: '', text: 'Yığını tek koluna sıkıştırıyor, birkaçı neredeyse düşüyor ama toparlıyor.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Az kalsın.' },
-    { type: 'say', speaker: '', text: 'Yoldan geçen biri gülümseyip başını sallıyor, o da hafifçe gülümsüyor.' },
-    { type: 'jump', goto: 'act2_hallway3' }
-  ],
-  act2_hallway2_chest: [
-    { type: 'say', speaker: '', text: 'Yığını göğsüne yaslayıp dengeliyor. Bu sefer daha güvenli.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bunu baştan böyle taşısaymışım.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Tamam, böylesi daha iyiymiş.' },
-    { type: 'jump', goto: 'act2_hallway3' }
-  ],
-
-  act2_hallway3: [
-    { type: 'say', speaker: '', text: 'Bir sınıf kapısının önünde duruyor, tabelaya bakıyor.' },
-    {
-      type: 'choice',
-      prompt: 'Hangi tabelaya baksın?',
-      options: [
-        { text: 'Kapının üstündeki numaraya', goto: 'act2_hallway3_number' },
-        { text: 'Yandaki ders programına', goto: 'act2_hallway3_schedule' }
-      ]
-    }
-  ],
-  act2_hallway3_number: [
-    { type: 'say', speaker: BOY_NAME, text: '11-B... hayır, bu 11-C.' },
-    { type: 'say', speaker: '', text: '(İçinden) Numaralar bazen okulun en kafa karıştırıcı kısmı.' },
     { type: 'jump', goto: 'act2_hallway4' }
   ],
-  act2_hallway3_schedule: [
-    { type: 'say', speaker: '', text: 'Ders programına bakıp bu saatte burada hangi dersin olduğunu kontrol ediyor.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Tamam, burası değil. Bir sonraki.' },
-    { type: 'say', speaker: '', text: '(İçinden) Programa bakmak daha güvenilir, kapı numaraları bazen yanlış asılıyor.' },
-    { type: 'jump', goto: 'act2_hallway4' }
-  ],
+
+
 
   act2_hallway4: [
     { type: 'say', speaker: '', text: 'Birkaç kapı ileride durduğu yer, listedeki sınıflardan biri: hedef burası.' },
@@ -512,8 +402,6 @@ const STORY = {
     { type: 'say', speaker: TEACHER_NAME, text: 'Aferin. Ama bazılarınız hâlâ soru sormayı seviyor galiba.' },
     { type: 'say', speaker: TEACHER_NAME, text: `${GIRL_NAME}, yine mi düşüncelisin bugün?` },
     { type: 'say', speaker: '', text: '(İçinden) Görünüşe göre öyle.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bir dakika... defterimi evde bırakmışım.' },
-    { type: 'say', speaker: '', text: '(İçinden) Neyse, sözlü de olur.' },
     { type: 'jump', goto: 'act2_debate_turn1' }
   ],
 
@@ -537,58 +425,26 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Bilginin aktarılmış olması, onu sorgulamayacağımız anlamına mı geliyor?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Hayır, ama bazı konularda cevap zaten bellidir.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Herkesin tekerleği yeniden icat etmesine gerek yok, İnci.' },
-    { type: 'jump', goto: 'act2_debate_turn1b' }
+    { type: 'jump', goto: 'act2_debate_turn2' }
   ],
   act2_debate_turn1_direct: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yüzyıllardır böyle denmiş olması, doğru olduğu anlamına gelmiyor bence.' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // doğrudan itiraza parmak sallıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Doğruluğu zaten sabit, İnci. Bu konuda kafanı karıştırmana gerek yok.' },
-    { type: 'jump', goto: 'act2_debate_turn1b' }
+    { type: 'jump', goto: 'act2_debate_turn2' }
   ],
   act2_debate_turn1_calm: [
     { type: 'say', speaker: GIRL_NAME, text: 'Ben sadece bunun neden böyle olduğunu anlamaya çalışıyorum, hocam.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Anlamaya çalışmak güzel. Ama bazı şeyleri olduğu gibi kabul etmek de bir erdemdir.' },
-    { type: 'jump', goto: 'act2_debate_turn1b' }
+    { type: 'jump', goto: 'act2_debate_turn2' }
   ],
 
-  // Tur 1, aşama B: İnci cevabın varsayımını sorguluyor, öğretmen daha otoriter.
-  act2_debate_turn1b: [
-    { type: 'say', speaker: '', text: 'Öğretmenin sesi biraz sertleşiyor, sanki bu tartışmayı daha önce de yaşamış gibi.' },
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // ilk gerçek rahatsızlık
-    {
-      type: 'choice',
-      prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
-      options: [
-        { text: '\'Cevap belli\' ne demek?', goto: 'act2_debate_turn1b_philo', add: { felsefi: 1 } },
-        { text: 'Kafam karışık değil, soruyorum', goto: 'act2_debate_turn1b_direct', add: { dogrudan: 1 } },
-        { text: 'Sorgulamak da bir erdem olamaz mı?', goto: 'act2_debate_turn1b_calm', add: { sakin: 1 } }
-      ]
-    }
-  ],
-  act2_debate_turn1b_philo: [
-    { type: 'say', speaker: GIRL_NAME, text: "'Cevap zaten belli' demek, sorunun bir daha sorulmaması gerektiği anlamına mı geliyor?" },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyler sürekli sorgulanmaz, İnci. İnanç dediğimiz şey zaten bunun üzerine kuruludur.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Peki inanç, sorgulanmadığı için mi güçlü, yoksa doğru olduğu için mi?' },
-    { type: 'jump', goto: 'act2_debate_turn2' }
-  ],
-  act2_debate_turn1b_direct: [
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Kafamı karıştırmıyorum hocam, sadece nedenini soruyorum.' },
-    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // uyarı tonu
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı sorular cevap aramaktan çok, itiraz etmek için sorulur. Seninkinin öyle olmadığını umuyorum.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'İtiraz etmiyorum, anlamaya çalışıyorum. İkisi aynı şey değil.' },
-    { type: 'jump', goto: 'act2_debate_turn2' }
-  ],
-  act2_debate_turn1b_calm: [
-    { type: 'say', speaker: GIRL_NAME, text: 'Kabul etmek bir erdemse, sorgulamak neden erdem olmasın?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Çünkü bazı konularda sorgulamanın da bir sınırı vardır.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'O sınırı kim çiziyor peki?' },
-    { type: 'jump', goto: 'act2_debate_turn2' }
-  ],
 
   // Tur 2, aşama A.
   act2_debate_turn2: [
+    { type: 'say', speaker: '', text: 'Öğretmenin sesi biraz sertleşiyor, sanki bu tartışmayı daha önce de yaşamış gibi.' },
+    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // ilk gerçek rahatsızlık
     { type: 'say', speaker: '', text: '(İçinden) Yine aynı yere geldik.' },
     { type: 'say', speaker: '', text: '(İçinden) Ben soru soruyorum, o cevabın zaten belli olduğunu söylüyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Belki de asıl sinir olduğum şey cevap değil.' },
@@ -612,60 +468,26 @@ const STORY = {
   act2_debate_turn2_philo: [
     { type: 'say', speaker: GIRL_NAME, text: 'Yani bir konuda bilimsel bir kanıt olmasa bile, o konu kesin kabul edilebilir mi?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Elbette. Her gerçek laboratuvarda kanıtlanmaz. Bazı gerçekler zaten bize bildirilmiştir.' },
-    { type: 'jump', goto: 'act2_debate_turn2b' }
+    { type: 'jump', goto: 'act2_kerem_arrives' }
   ],
   act2_debate_turn2_direct: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Kanıt yoksa, neden bu kadar emin olabiliyoruz ki?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Çünkü emin olmamız gereken bir kaynaktan geliyor. Bunu sürekli sorgulaman gerekmiyor.' },
-    { type: 'jump', goto: 'act2_debate_turn2b' }
+    { type: 'jump', goto: 'act2_kerem_arrives' }
   ],
   act2_debate_turn2_calm: [
     { type: 'say', speaker: GIRL_NAME, text: 'Ben sadece bilim ile inancın nasıl bir arada durduğunu merak ediyorum.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bir arada dururlar, çünkü ikisi de aynı gerçeğe farklı yerlerden bakar. Ama biri diğerinden üstündür.' },
-    { type: 'jump', goto: 'act2_debate_turn2b' }
+    { type: 'jump', goto: 'act2_kerem_arrives' }
   ],
 
-  // Tur 2, aşama B.
-  act2_debate_turn2b: [
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // toparlanıp itiraza dönüş
-    { type: 'say', speaker: '', text: 'Sınıfta birkaç öğrenci rahatsız kıpırdanıyor; öğretmen bunu fark ediyor ama devam ediyor.' },
-    {
-      type: 'choice',
-      prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
-      options: [
-        { text: 'Üstünlük nasıl kanıtlanıyor?', goto: 'act2_debate_turn2b_philo', add: { felsefi: 1 } },
-        { text: 'Merak etmek sorgulamak değildir', goto: 'act2_debate_turn2b_direct', add: { dogrudan: 1 } },
-        { text: 'Bir yarış olmak zorunda mı?', goto: 'act2_debate_turn2b_calm', add: { sakin: 1 } }
-      ]
-    }
-  ],
-  act2_debate_turn2b_philo: [
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // soğukkanlı akıl yürütme
-    { type: 'say', speaker: GIRL_NAME, text: 'Üstün olan taraf, kendi üstünlüğünü nasıl kanıtlıyor peki?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Kanıtlamaya ihtiyacı yok, İnci. Çünkü zaten mutlak olan odur.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Mutlak olduğunu söylemek, onu mutlak yapmıyor ama.' },
-    { type: 'jump', goto: 'act2_kerem_arrives' }
-  ],
-  act2_debate_turn2b_direct: [
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bunu sormak gereksiz yere sorgulamak değil hocam, sadece merak.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı meraklar seni yanlış yöne götürebilir. Dikkatli ol.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Merak etmek yanlış bir yöne mi götürüyor, yoksa sadece rahatsız edici bir yöne mi?' },
-    { type: 'jump', goto: 'act2_kerem_arrives' }
-  ],
-  act2_debate_turn2b_calm: [
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // ölçülü karşılık
-    { type: 'say', speaker: GIRL_NAME, text: 'Belki de ikisinin bir üstünlük yarışına girmesine gerek yok.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Yarış yok, çünkü zaten belli olan bir sıralama var.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Belli olduğunu düşünmek, herkes için aynı anlama gelmiyor olabilir.' },
-    { type: 'jump', goto: 'act2_kerem_arrives' }
-  ],
 
   // ---- 4) KEREM'İN SINIFA GİRİŞİ — birbirlerini İLK KEZ görüyorlar ----
   act2_kerem_arrives: [
     { type: 'camera', effect: 'slide-left' },
     { type: 'sfx', file: 'door.mp3' },
+    { type: 'say', speaker: '', text: 'Sınıfta birkaç öğrenci rahatsız kıpırdanıyor; öğretmen bunu fark ediyor ama devam ediyor.' },
     { type: 'say', speaker: '', text: 'Kapı hafifçe aralanıyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Umarım ortasına denk gelmemişimdir.' },
     { type: 'hide', id: 'girl' },
@@ -690,14 +512,12 @@ const STORY = {
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' }, // Yahya içeri girdi
     { type: 'say', speaker: '', text: '(İçinden) Yeni biri mi geldi?' },
     { type: 'say', speaker: '', text: '(İçinden) Dergi kulübünden olmalı, elindekilere bakılırsa.' },
-    { type: 'say', speaker: '', text: '(İçinden) Tam da şimdi mi geldiler...' },
     { type: 'say', speaker: '', text: 'Yahya da ona bakıyor. Kısa bir sessizlik.' },
     { type: 'say', speaker: '', text: 'Sınıftaki kimse bu bakışmayı fark etmiyor bile; herkes hâlâ tartışmada.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // dikkatini tartışmaya verir
     { type: 'say', speaker: '', text: '(İçinden) Neyse. Konuya dön.' },
     { type: 'camera', effect: 'zoom-out' },
     { type: 'say', speaker: '', text: 'İnci tekrar öğretmene dönüyor.' },
-    { type: 'say', speaker: '', text: 'Yahya da dergileri tutarak beklemeye devam ediyor.' },
     { type: 'jump', goto: 'act2_debate_turn3' }
   ],
 
@@ -720,59 +540,25 @@ const STORY = {
   act2_debate_turn3_philo: [
     { type: 'say', speaker: GIRL_NAME, text: 'Ama insanlar dini bilmeden önce de iyiyi kötüyü ayırt edebiliyordu. Bu nasıl açıklanır?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'O ayrımın kendisi de zaten bu bilginin bir yansımasıdır, farkında olmasalar da.' },
-    { type: 'jump', goto: 'act2_debate_turn3b' }
+    { type: 'jump', goto: 'act2_debate_turn4' }
   ],
   act2_debate_turn3_direct: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yani dinsiz biri gerçekten ahlaklı olamaz mı diyorsunuz?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Ben öyle demedim. Ama sağlam bir zemine sahip olamayacağını söylüyorum.' },
-    { type: 'jump', goto: 'act2_debate_turn3b' }
+    { type: 'jump', goto: 'act2_debate_turn4' }
   ],
   act2_debate_turn3_calm: [
     { type: 'say', speaker: GIRL_NAME, text: 'Ben sadece kaynağın tek olup olmadığını merak ediyorum, hocam.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Tektir, İnci. Başka bir zemin aramak insanı yanlış yollara sürükleyebilir.' },
-    { type: 'jump', goto: 'act2_debate_turn3b' }
+    { type: 'jump', goto: 'act2_debate_turn4' }
   ],
 
-  // Tur 3, aşama B.
-  act2_debate_turn3b: [
-    { type: 'say', speaker: '', text: 'Öğretmen kollarını kavuşturuyor, sesi biraz daha sertleşiyor.' },
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // öğretmen sertleşiyor
-    {
-      type: 'choice',
-      prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
-      options: [
-        { text: 'Tesadüf olmadığını nereden biliyoruz?', goto: 'act2_debate_turn3b_philo', add: { felsefi: 1 } },
-        { text: 'Bu biraz kestirme bir cevap', goto: 'act2_debate_turn3b_direct', add: { dogrudan: 1 } },
-        { text: 'Sormak da bir yol değil mi?', goto: 'act2_debate_turn3b_calm', add: { sakin: 1 } }
-      ]
-    }
-  ],
-  act2_debate_turn3b_philo: [
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // soğukkanlı akıl yürütme
-    { type: 'say', speaker: GIRL_NAME, text: 'Yansıma olduğunu nasıl ayırt ediyoruz? Tesadüf olmadığını nereden biliyoruz?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bunu bilmek için önce inanmış olman gerekir. Dışarıdan bakınca elbette tesadüf gibi görünür.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Yani önce inanmam mı gerekiyor ki mantıklı gelsin?' },
-    { type: 'jump', goto: 'act2_debate_turn4' }
-  ],
-  act2_debate_turn3b_direct: [
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bu biraz kestirmeden bir cevap gibi geldi bana.' },
-    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // sabrı azalıyor
-    { type: 'say', speaker: TEACHER_NAME, text: 'Her sorunun uzun bir cevabı olması gerekmez. Bazı gerçekler basittir.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Basit olması, tartışmaya kapalı olduğu anlamına gelmiyor bence.' },
-    { type: 'jump', goto: 'act2_debate_turn4' }
-  ],
-  act2_debate_turn3b_calm: [
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // ölçülü karşılık
-    { type: 'say', speaker: GIRL_NAME, text: 'Yanlış yollara sürüklenmekten bahsettiniz, ama sormak da bir yol değil mi?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Doğru yolu zaten biliyorsan, başka yollara bakmana gerek kalmaz.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Ya doğru yolu bildiğimi düşünüp yanılıyorsam?' },
-    { type: 'jump', goto: 'act2_debate_turn4' }
-  ],
 
   // Tur 4, aşama A — son tur.
   act2_debate_turn4: [
+    { type: 'say', speaker: '', text: 'Öğretmen kollarını kavuşturuyor, sesi biraz daha sertleşiyor.' },
+    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // öğretmen sertleşiyor
     { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // tartışmanın tepe noktası
     { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu söylemek istiyorum: bazı sorular, sormak için değil, kabul etmek için vardır.' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' }, // beklenmedik iddia
@@ -789,56 +575,24 @@ const STORY = {
   act2_debate_turn4_philo: [
     { type: 'say', speaker: GIRL_NAME, text: "Bir soru nasıl 'kabul etmek için' olabilir? Bu, soru olmaktan çıkmaz mı?" },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bazı sorular biçim olarak sorudur ama aslında bir daveti içerir: teslim olma daveti.' },
-    { type: 'jump', goto: 'act2_debate_turn4b' }
+    { type: 'jump', goto: 'act2_debate_end' }
   ],
   act2_debate_turn4_direct: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yani bazı sorulara cevap aramamam mı gerekiyor?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Cevabı zaten var. Aramak değil, kabul etmek gerekiyor.' },
-    { type: 'jump', goto: 'act2_debate_turn4b' }
+    { type: 'jump', goto: 'act2_debate_end' }
   ],
   act2_debate_turn4_calm: [
     { type: 'say', speaker: GIRL_NAME, text: 'Bence her soru sorulmayı hak ediyor, cevabı ne olursa olsun.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Güzel bir düşünce. Ama her sorunun sonunda bir teslimiyet olması gerektiğini de unutma.' },
-    { type: 'jump', goto: 'act2_debate_turn4b' }
+    { type: 'jump', goto: 'act2_debate_end' }
   ],
 
-  // Tur 4, aşama B — tartışmanın son sözü, hemen ardından kapanış.
-  act2_debate_turn4b: [
-    { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // toparlanıyor
-    { type: 'say', speaker: '', text: 'Ders bitmek üzere, ama öğretmen son sözü söylemek istiyor gibi duruyor.' },
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // son ciddi karşı çıkış
-    { type: 'say', speaker: '', text: '(İçinden) Tamam. Şimdi cevap verirsem bu tartışma bir saat daha sürer.' },
-    {
-      type: 'choice',
-      prompt: `${GIRL_NAME} sözlerini nasıl tamamlasın?`,
-      options: [
-        { text: 'Teslim olmak ikna olmak değildir', goto: 'act2_debate_turn4b_philo', add: { felsefi: 1 } },
-        { text: 'İkna olmadan kabul edemem', goto: 'act2_debate_turn4b_direct', add: { dogrudan: 1 } },
-        { text: 'Düşünmeye devam edeceğim', goto: 'act2_debate_turn4b_calm', add: { sakin: 1 } }
-      ]
-    }
-  ],
-  act2_debate_turn4b_philo: [
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // soğukkanlı akıl yürütme
-    { type: 'say', speaker: GIRL_NAME, text: 'Teslim olmak ile ikna olmak aynı şey değil bence.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Olabilir. Ama ikisi de seni aynı yere götürebilir, İnci.' },
-    { type: 'jump', goto: 'act2_debate_end' }
-  ],
-  act2_debate_turn4b_direct: [
-    { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Ben ikna olmadan bir şeyi kabul edemem, elimde değil.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bu senin şu anki hâlin. Zamanla değişebilir.' },
-    { type: 'jump', goto: 'act2_debate_end' }
-  ],
-  act2_debate_turn4b_calm: [
-    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // ölçülü karşılık
-    { type: 'say', speaker: GIRL_NAME, text: 'Sanırım bunu düşünmeye devam edeceğim, kabul etsem de etmesem de.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Düşünmeye devam etmen kötü değil. Yeter ki bir yerde durmayı da öğren.' },
-    { type: 'jump', goto: 'act2_debate_end' }
-  ],
 
   act2_debate_end: [
+    { type: 'say', speaker: '', text: 'Ders bitmek üzere, ama öğretmen son sözü söylemek istiyor gibi duruyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Şimdi cevap verirsem bu tartışma bir saat daha sürer.' },
     { type: 'sfx', file: 'bell.mp3' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_calm.png' }, // tartışma kapanıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Neyse, bu konuyu başka bir derste daha açarız.' },
@@ -908,11 +662,8 @@ const STORY = {
     { type: 'show', id: 'girl', file: 'girl_happy.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'İnci çantasını topluyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Yeni çocuk muydu?' },
-    { type: 'say', speaker: '', text: '(İçinden) Dergi kulübündeymiş demek.' },
     { type: 'say', speaker: '', text: '(İçinden) Tartışmanın ortasına düştü ama hiç sıkılmış görünmedi.' },
-    { type: 'say', speaker: '', text: 'Sıradan bir gündü, dergiyi eline alıp koridora çıkıyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Bu sayıya bir şey yetiştiremedim.' },
-    { type: 'say', speaker: '', text: '(İçinden) Neyse, sıradaki derse geç kalmayayım.' },
     { type: 'hide', id: 'girl' },
     { type: 'jump', goto: 'act2_end' }
   ],
@@ -1002,8 +753,6 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Kısa hikaye bölümüne bakacaktım ama vakit olmadı.' },
     { type: 'say', speaker: BOY_NAME, text: 'Acele etme, dergi kaçmıyor bir yere.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Kapak resmi kimindi bu sefer, hatırlamıyorum.' },
-    { type: 'say', speaker: BOY_NAME, text: "Yine 10-D'den biri. Bayağı yetenekli çıktı o." },
     { type: 'say', speaker: GIRL_NAME, text: 'Sen hep dağıtıma gönüllü mü oluyorsun, yoksa illa sana mı kalıyor?' },
     { type: 'say', speaker: BOY_NAME, text: 'Aslında sırada ben değildim, ama kimse gitmek istemeyince ben çıkıyorum.' },
     { type: 'say', speaker: BOY_NAME, text: 'Sınıfları gezmek hoşuma gidiyor, o kadar.' },

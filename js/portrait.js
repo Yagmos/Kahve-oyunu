@@ -43,6 +43,11 @@ const LABEL_POV = {
   act1_umbrella_yes: 'girl',
   act1_umbrella_no: 'girl',
   act1_walk: 'girl',
+  act1_coffee_yes: 'girl',
+  act1_coffee_no: 'girl',
+  act1_schoolyard: 'girl',
+  act1_library: 'girl',
+  act1_yard: 'girl',
 
   // ---- ACT II: Yahya POV (kulüp + koridor + sınıfa giriş) ----
   act2_start: 'boy',
@@ -50,9 +55,6 @@ const LABEL_POV = {
   act2_club_leave: 'boy',
   act2_hallway1_wave: 'boy',
   act2_hallway1_nod: 'boy',
-  act2_hallway2_chest: 'boy',
-  act2_hallway3_number: 'boy',
-  act2_hallway3_schedule: 'boy',
   act2_hallway4: 'boy',
   // Sınıfa girerken İnci sahnede olduğu için "son gösterilen" yanıltıcı olur.
   act2_kerem_arrives: 'boy',
@@ -61,7 +63,6 @@ const LABEL_POV = {
   act2_debate_start: 'girl',
   act2_debate_turn2: 'girl',
   act2_first_look: 'girl',
-  act2_debate_turn4b: 'girl',
   act2_debate_end: 'girl',
   act2_magazine_ask_stories: 'girl',
   act2_magazine_ask_events: 'girl',
