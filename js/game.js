@@ -193,7 +193,7 @@ class Game {
         break;
 
       case 'bgm':
-        this.audio.playBgm(step.file);
+        this.audio.playBgm(step.file, { fadeIn: step.fadeIn, fadeOut: step.fadeOut });
         this._advanceAuto();
         break;
 
@@ -220,6 +220,11 @@ class Game {
 
       case 'hide':
         this.scene.hideCharacter(step.id);
+        this._advanceAuto();
+        break;
+
+      case 'fx':
+        this.scene.playEffect(step.effect);
         this._advanceAuto();
         break;
 

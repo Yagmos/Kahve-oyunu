@@ -101,6 +101,20 @@ class SceneManager {
   }
 
   /**
+   * Ekran efekti: şimdilik yalnızca 'wake' (gözlerin yavaşça açılması).
+   * Animasyon bitince sınıf temizlenir; hikaye akışını bekletmez.
+   */
+  playEffect(name) {
+    const screen = document.getElementById('screen-game');
+    if (!screen || name !== 'wake') return;
+    screen.classList.remove('waking');
+    void screen.offsetWidth;                 // reflow: animasyon yeniden başlasın
+    screen.classList.add('waking');
+    if (this._fxTimer) clearTimeout(this._fxTimer);
+    this._fxTimer = setTimeout(() => screen.classList.remove('waking'), 4400);
+  }
+
+  /**
    * Basit kamera efektleri: 'zoom-in' | 'zoom-out' | 'slide-left' | 'slide-right'
    */
   cameraEffect(type) {

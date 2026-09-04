@@ -810,3 +810,54 @@ button {
 }
 
 
+
+/* ==========================================================================
+   UYANMA EFEKTİ — oyunun ilk saniyeleri
+   İki siyah şerit göz kapağı gibi birkaç kez aralanıp sonunda tamamen açılır.
+   Tıklamayı engellemez; sadece görsel.
+   ========================================================================== */
+
+.eyelids {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.eyelids .lid {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  height: 0;
+  background: #000;
+  box-shadow: 0 0 60px 40px #000;
+}
+
+.eyelids .lid-top { top: 0; }
+.eyelids .lid-bottom { bottom: 0; }
+
+#screen-game.waking .eyelids {
+  opacity: 1;
+  visibility: visible;
+}
+
+#screen-game.waking .lid-top { animation: eyelidOpen 4200ms cubic-bezier(0.4, 0, 0.3, 1) forwards; }
+#screen-game.waking .lid-bottom { animation: eyelidOpen 4200ms cubic-bezier(0.4, 0, 0.3, 1) forwards; }
+
+@keyframes eyelidOpen {
+  0%   { height: 52%; }
+  14%  { height: 38%; }   /* aralanıyor */
+  24%  { height: 50%; }   /* tekrar kapanıyor */
+  44%  { height: 20%; }   /* daha çok açılıyor */
+  56%  { height: 32%; }
+  78%  { height: 6%; }
+  88%  { height: 12%; }
+  100% { height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #screen-game.waking .lid-top,
+  #screen-game.waking .lid-bottom { animation-duration: 600ms; }
+}

@@ -16,7 +16,9 @@
  *
  * Adım (step) tipleri:
  *   bg        { type:'bg', file }            — file boş bırakılırsa ekran siyaha döner
- *   bgm       { type:'bgm', file }
+ *   bgm       { type:'bgm', file, fadeIn?, fadeOut? }
+ *                — fadeIn/fadeOut saniye cinsindendir; verilmezse 2.2 / 1.2
+ *   fx        { type:'fx', effect }           — 'wake': gözlerin yavaşça açılması
  *   sfx       { type:'sfx', file }
  *   show      { type:'show', id, file, position, transition }
  *   expr      { type:'expr', id, file }       — file bir fonksiyon da olabilir: (game) => dosyaAdı
@@ -62,11 +64,14 @@ function bayragaGore(game, key, secenekler, varsayilan) {
 const STORY = {
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
   act1_start: [
-    { type: 'sfx', file: 'alarm.mp3' },
-    { type: 'say', speaker: '', text: '*Trrrn! Trrrn! Trrrn!*' },
     { type: 'bg', file: 'bedroom_morning.svg' },
+    // Alarm oyuncu ekrana dokunana kadar çalmaya devam eder.
+    { type: 'bgm', file: 'alarm_loop.mp3', fadeIn: 0.2 },
+    { type: 'fx', effect: 'wake' },              // gözler yavaşça açılır
     { type: 'show', id: 'girl', file: 'girl_sleepy.svg', position: 'center', transition: 'fade' },
-    { type: 'bgm', file: 'bedroom_theme.mp3' },   // İnci'nin odası
+    { type: 'say', speaker: '', text: '*Trrrn! Trrrn! Trrrn!*' },
+    // İlk dokunuşta alarm susar, oda müziği yumuşakça girer.
+    { type: 'bgm', file: 'bedroom_theme.mp3', fadeOut: 0.35, fadeIn: 3.5 },
     { type: 'camera', effect: 'zoom-in' },
     { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bir dakika daha. Sadece bir dakika.` },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },

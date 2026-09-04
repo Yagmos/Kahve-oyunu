@@ -9,7 +9,9 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 
 | Dosya                | Nerede çalar                                   |
 |----------------------|------------------------------------------------|
-| `bedroom_theme.mp3`  | ACT I — İnci'nin odası (evden çıkınca biter)    |
+| `alarm_loop.mp3`     | ACT I — açılış; oyuncu ekrana dokunana kadar döner |
+| `alarm.mp3`          | Erteleyince kısa bir kez daha çalar              |
+| `bedroom_theme.mp3`  | ACT I — ilk dokunuştan sonra, İnci'nin odası     |
 | `club_room.mp3`      | ACT II — dergi kulübü odası                     |
 | `offer.mp3`          | ACT III — kahve teklifi anı                     |
 | `accept.mp3`         | ACT III — teklif kabul edilirse                 |
@@ -34,6 +36,12 @@ sürüme bu boyutlarla sığıyor.
 | `door.mp3`           | Sınıf kapısının açılması              | < 1 sn                       |
 
 Sadece bazılarını koyabilirsin; koymadıklarında üretilmiş ses devreye girer.
+
+## Geçişler
+
+Parçalar arasında çapraz geçiş var: yeni parça yumuşakça açılırken eski parça
+kısılıyor. Varsayılan süreler 2.2 sn açılma / 1.2 sn kapanma; hikâyede bir
+`bgm` adımına `fadeIn` / `fadeOut` (saniye) yazarak değiştirilebilir.
 
 ## Öneriler
 
