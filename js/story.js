@@ -35,9 +35,10 @@
  *
  * "goto" bir etiket adıdır ve her zaman ilgili etiketin 0. adımına atlar.
  */
+const ADVISOR_NAME = 'Cemal Hoca';
 const GIRL_NAME = 'İnci';
 const BOY_NAME = 'Yahya';
-const TEACHER_NAME = 'Öğretmen';
+const TEACHER_NAME = 'Badem Öziş';
 
 /**
  * Tartışmada en çok seçilen tavır. Seçenekler 'add' ile sayaç artırdığı için
@@ -157,7 +158,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Yarışma bugünmüş. Hatırlatıcıyı kendim kurmuşum, demek ki gerçekten gideceğim.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bir de bu var tabii.' },
-    { type: 'say', speaker: '', text: '(İçinden) Geçen hafta soru sorduğumda "bu tartışmaya açık bir konu değil" demişti.' },
+    { type: 'say', speaker: '', text: '(İçinden) Geçen hafta soru sorduğumda Badem Hoca "bu tartışmaya açık bir konu değil" demişti.' },
     { type: 'say', speaker: '', text: '(İçinden) Bakalım bugün ne kadar dayanabileceğim.' },
     { type: 'jump', goto: 'act1_bag' }
   ],
@@ -342,7 +343,7 @@ const STORY = {
     { type: 'bg', file: 'hallway.svg' },
     { type: 'say', speaker: '', text: 'Dergi yığınını koluna alıp kapıya yöneliyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sınıflara dağıtmaya başlıyorum.' },
-    { type: 'say', speaker: 'Kulüp danışmanı', text: 'Dikkat et, geçen sefer merdivenlerden koşarak inmiştin.' },
+    { type: 'say', speaker: ADVISOR_NAME, text: 'Dikkat et, geçen sefer merdivenlerden koşarak inmiştin.' },
     { type: 'say', speaker: BOY_NAME, text: 'O bir kereydi hocam, söz veriyorum.' },
     { type: 'say', speaker: '', text: '(İçinden) İki kereydi aslında, ama bunu şimdi açıklamaya gerek yok.' },
     { type: 'hide', id: 'boy' },
@@ -453,7 +454,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Ben soru soruyorum, o cevabın zaten belli olduğunu söylüyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Belki de asıl sinir olduğum şey cevap değil.' },
     { type: 'say', speaker: '', text: '(İçinden) Soruyu sormama izin verilmemesi.' },
-    { type: 'say', speaker: '', text: 'Öğretmen tahtaya iki kelime daha yazıyor: Bilim ve Sınırları.' },
+    { type: 'say', speaker: '', text: 'Badem Hoca tahtaya iki kelime daha yazıyor: Bilim ve Sınırları.' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // sınıfa dönüp iddiayı vurguluyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bilim size nasıl sorusuna cevap verir. Ama bazı konularda cevap zaten dinen bellidir.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bilimin buna bir şey söylemesine gerek yoktur.', emphasis: true },
@@ -527,7 +528,7 @@ const STORY = {
 
   // ---- 6) Tartışma devam ediyor (Yahya sınıfta, sessiz) ----
   act2_debate_turn3: [
-    { type: 'say', speaker: '', text: 'Öğretmen sıraların arasında yürümeye başlıyor.' },
+    { type: 'say', speaker: '', text: 'Badem Hoca sıraların arasında yürümeye başlıyor.' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // tartışmaya geri dönüş
     { type: 'say', speaker: TEACHER_NAME, text: 'Ahlakın kaynağı konusunda kafanız karışmasın: iyi ve kötü, bize dinen bildirilmiştir.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bunun dışında bir zemin aramaya gerek yok.', emphasis: true },
