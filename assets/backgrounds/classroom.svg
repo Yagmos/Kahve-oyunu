@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="cwall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4b3524"/><stop offset="100%" stop-color="#33210f"/>
+    </linearGradient>
+    <linearGradient id="cwin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cfd9c9"/><stop offset="60%" stop-color="#9fb39a"/><stop offset="100%" stop-color="#6d7f6c"/>
+    </linearGradient>
+    <linearGradient id="cboard" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#20362c"/><stop offset="100%" stop-color="#16261f"/>
+    </linearGradient>
+    <linearGradient id="cfloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6a4630"/><stop offset="100%" stop-color="#2a1810"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="#2a1810"/>
+  <rect width="1080" height="1360" fill="url(#cwall)"/>
+
+  <!-- Pencere sırası (sol) -->
+  <g>
+    <rect x="40" y="300" width="300" height="620" rx="10" fill="#241408"/>
+    <rect x="62" y="322" width="256" height="576" fill="url(#cwin)"/>
+    <rect x="186" y="322" width="8" height="576" fill="#241408"/>
+    <rect x="62" y="600" width="256" height="8" fill="#241408"/>
+    <rect x="30" y="920" width="320" height="26" rx="6" fill="#1d1108"/>
+  </g>
+
+  <!-- Kara tahta (telefon kadrajında ortada kalsın diye biraz solda) -->
+  <g transform="translate(-70,0)">
+  <rect x="430" y="330" width="600" height="470" rx="14" fill="#3a2718"/>
+  <rect x="452" y="352" width="556" height="426" rx="8" fill="url(#cboard)"/>
+  <!-- Tahtadaki başlık ve alt çizgi (yazı değil, iz) -->
+  <rect x="500" y="420" width="330" height="12" rx="6" fill="#cbd8cd" opacity="0.5"/>
+  <rect x="500" y="452" width="210" height="8" rx="4" fill="#cbd8cd" opacity="0.3"/>
+  <rect x="500" y="560" width="270" height="10" rx="5" fill="#cbd8cd" opacity="0.35"/>
+  <rect x="500" y="592" width="160" height="8" rx="4" fill="#cbd8cd" opacity="0.25"/>
+  <!-- Tebeşir kanalı -->
+  <rect x="452" y="782" width="556" height="20" rx="6" fill="#4b3524"/>
+  <rect x="520" y="786" width="70" height="8" rx="4" fill="#e8e2d4" opacity="0.7"/>
+  </g>
+
+  <!-- Öğretmen masası -->
+  <rect x="560" y="1080" width="420" height="150" rx="10" fill="#5a3b2a"/>
+  <rect x="580" y="1230" width="24" height="120" fill="#3f2a1c"/>
+  <rect x="936" y="1230" width="24" height="120" fill="#3f2a1c"/>
+
+  <!-- Zemin -->
+  <rect x="0" y="1360" width="1080" height="560" fill="url(#cfloor)"/>
+  <g opacity="0.18" fill="#f5e9da">
+    <rect x="0" y="1450" width="1080" height="4"/>
+    <rect x="0" y="1600" width="1080" height="4"/>
+    <rect x="0" y="1780" width="1080" height="4"/>
+  </g>
+
+  <!-- Ön sıralar (silüet) -->
+  <g fill="#241408" opacity="0.92">
+    <rect x="-40" y="1560" width="420" height="120" rx="12"/>
+    <rect x="700" y="1560" width="440" height="120" rx="12"/>
+  </g>
+</svg>

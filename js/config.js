@@ -26,6 +26,10 @@ const CONFIG = {
     characterSlide: 450
   },
 
+  // Müzik ve efektler ses dosyası yerine WebAudio ile üretilir (js/synth.js).
+  // Depoya gerçek mp3'ler eklenirse bunu false yapmak yeterli.
+  useSynthAudio: true,
+
   defaultSettings: {
     musicOn: true,
     sfxOn: true,

@@ -43,6 +43,10 @@ class Game {
     this.waitingForPhone = false;
     this.finished = false;
     this.noteScore = 0; // ACT II not alma mini oyunu için basit puan sayacı
+    // Oyuncunun seçimlerinden taşınan durum. Seçenekler 'set' (üzerine yaz) ve
+    // 'add' (sayaç artır) ile buraya yazar; ilerleyen sahneler okur.
+    this.flags = {};
+    this.currentBg = null; // en son gösterilen arka plan (kayıt/yükleme için)
   }
 
   newGame() {
@@ -57,6 +61,8 @@ class Game {
     this.waitingForChoice = false;
     this.waitingForPhone = false;
     this.noteScore = 0;
+    this.flags = {};
+    this.currentBg = null;
     this.label = STORY_START_LABEL;
     this.index = 0;
     this._executeCurrent();
@@ -79,7 +85,11 @@ class Game {
     this.waitingForChoice = false;
     this.waitingForPhone = false;
     this.noteScore = (save.vars && typeof save.vars.noteScore === 'number') ? save.vars.noteScore : 0;
+    this.flags = (save.vars && save.vars.flags && typeof save.vars.flags === 'object')
+      ? Object.assign({}, save.vars.flags) : {};
 
+    this.currentBg = (save.vars && typeof save.vars.bg === 'string') ? save.vars.bg : null;
+    if (this.currentBg) this.scene.setBackground(this.currentBg);
     this._replayInstantly(save.label, save.index);
     this.label = save.label;
     this.index = save.index;
@@ -110,6 +120,7 @@ class Game {
           if (step.speaker) lastNamedSpeaker = step.speaker;
           break;
         case 'bg':
+          this.currentBg = step.file || null;
           this.scene.setBackground(step.file);
           break;
         case 'show':
@@ -176,6 +187,7 @@ class Game {
 
     switch (step.type) {
       case 'bg':
+        this.currentBg = step.file || null;
         this.scene.setBackground(step.file);
         this._advanceAuto();
         break;
@@ -270,6 +282,14 @@ class Game {
     if (typeof option.points === 'number') {
       this.noteScore += option.points;
     }
+    if (option.set) {
+      Object.keys(option.set).forEach((key) => { this.flags[key] = option.set[key]; });
+    }
+    if (option.add) {
+      Object.keys(option.add).forEach((key) => {
+        this.flags[key] = (this.flags[key] || 0) + option.add[key];
+      });
+    }
     this.label = option.goto;
     this.index = 0;
     this._executeCurrent();
@@ -283,7 +303,11 @@ class Game {
   }
 
   _saveProgress() {
-    SaveManager.save({ label: this.label, index: this.index, vars: { noteScore: this.noteScore } });
+    SaveManager.save({
+      label: this.label,
+      index: this.index,
+      vars: { noteScore: this.noteScore, flags: this.flags, bg: this.currentBg }
+    });
   }
 
   /**

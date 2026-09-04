@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="kwall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#54392a"/><stop offset="100%" stop-color="#32200f"/>
+    </linearGradient>
+    <linearGradient id="kwin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dcd0b4"/><stop offset="100%" stop-color="#8e9a86"/>
+    </linearGradient>
+    <linearGradient id="kfloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6f4b32"/><stop offset="100%" stop-color="#2a1810"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="#2a1810"/>
+  <rect width="1080" height="1340" fill="url(#kwall)"/>
+
+  <!-- Pencere (sağ) -->
+  <rect x="720" y="260" width="320" height="520" rx="10" fill="#241408"/>
+  <rect x="742" y="282" width="276" height="476" fill="url(#kwin)"/>
+  <rect x="878" y="282" width="8" height="476" fill="#241408"/>
+
+  <!-- Duvarda asılı dergi kapakları / panolar -->
+  <g>
+    <rect x="90" y="300" width="200" height="260" rx="8" fill="#c9a227" opacity="0.85"/>
+    <rect x="112" y="330" width="156" height="14" rx="7" fill="#3a2718" opacity="0.6"/>
+    <rect x="112" y="360" width="110" height="10" rx="5" fill="#3a2718" opacity="0.4"/>
+    <rect x="112" y="420" width="156" height="110" rx="6" fill="#3a2718" opacity="0.25"/>
+
+    <rect x="330" y="330" width="180" height="230" rx="8" fill="#8d6a45"/>
+    <rect x="350" y="358" width="140" height="12" rx="6" fill="#f5e9da" opacity="0.5"/>
+    <rect x="350" y="386" width="96" height="10" rx="5" fill="#f5e9da" opacity="0.3"/>
+
+    <rect x="90" y="620" width="420" height="10" rx="5" fill="#241408" opacity="0.7"/>
+  </g>
+
+  <!-- Uzun kulüp masası -->
+  <rect x="120" y="1040" width="840" height="150" rx="12" fill="#6f4e37"/>
+  <rect x="120" y="1190" width="840" height="26" fill="#4a3222"/>
+  <rect x="170" y="1216" width="30" height="140" fill="#3f2a1c"/>
+  <rect x="880" y="1216" width="30" height="140" fill="#3f2a1c"/>
+
+  <!-- Masadaki dergi yığınları -->
+  <g>
+    <rect x="200" y="960" width="220" height="84" rx="6" fill="#d9a441"/>
+    <rect x="210" y="944" width="220" height="24" rx="6" fill="#e8c274"/>
+    <rect x="220" y="922" width="220" height="24" rx="6" fill="#d9a441"/>
+    <rect x="640" y="980" width="200" height="62" rx="6" fill="#b98a3c"/>
+    <rect x="650" y="962" width="200" height="22" rx="6" fill="#d9a441"/>
+  </g>
+
+  <!-- Sandalye silüetleri -->
+  <g fill="#241408" opacity="0.85">
+    <rect x="260" y="1240" width="150" height="30" rx="10"/>
+    <rect x="680" y="1240" width="150" height="30" rx="10"/>
+  </g>
+
+  <!-- Zemin -->
+  <rect x="0" y="1340" width="1080" height="580" fill="url(#kfloor)"/>
+</svg>

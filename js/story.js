@@ -36,6 +36,25 @@ const GIRL_NAME = 'İnci';
 const BOY_NAME = 'Yahya';
 const TEACHER_NAME = 'Öğretmen';
 
+/**
+ * Tartışmada en çok seçilen tavır. Seçenekler 'add' ile sayaç artırdığı için
+ * ACT III'ün kapanışı oyuncunun nasıl tartıştığını hatırlayabiliyor.
+ * @returns {'felsefi'|'dogrudan'|'sakin'}
+ */
+function baskinTavir(game) {
+  const f = (game && game.flags) || {};
+  const sirali = [['felsefi', f.felsefi || 0], ['dogrudan', f.dogrudan || 0], ['sakin', f.sakin || 0]];
+  sirali.sort((a, b) => b[1] - a[1]);
+  return sirali[0][1] > 0 ? sirali[0][0] : 'felsefi';
+}
+
+/** Bir bayrağa göre metin seçer; bayrak yoksa ilk seçeneğe düşer. */
+function bayragaGore(game, key, secenekler, varsayilan) {
+  const deger = ((game && game.flags) || {})[key];
+  if (deger !== undefined && secenekler[String(deger)] !== undefined) return secenekler[String(deger)];
+  return varsayilan;
+}
+
 const STORY = {
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
   act1_start: [
@@ -53,8 +72,8 @@ const STORY = {
       type: 'choice',
       prompt: 'Alarm hâlâ çalıyor.',
       options: [
-        { text: 'Kalk', goto: 'act1_getup' },
-        { text: 'Beş dakika daha', goto: 'act1_snooze' }
+        { text: 'Kalk', goto: 'act1_getup', set: { alarm: 'kalkti' } },
+        { text: 'Beş dakika daha', goto: 'act1_snooze', set: { alarm: 'erteledi' } }
       ]
     }
   ],
@@ -82,8 +101,8 @@ const STORY = {
       type: 'choice',
       prompt: 'Ne giyse iyi olur?',
       options: [
-        { text: 'Favori tişörtü', goto: 'act1_outfit_fav' },
-        { text: 'İlk eline geleni', goto: 'act1_outfit_casual' }
+        { text: 'Favori tişörtü', goto: 'act1_outfit_fav', set: { kiyafet: 'favori' } },
+        { text: 'İlk eline geleni', goto: 'act1_outfit_casual', set: { kiyafet: 'rastgele' } }
       ]
     }
   ],
@@ -146,8 +165,8 @@ const STORY = {
       type: 'choice',
       prompt: 'Şemsiyeyi alsın mı?',
       options: [
-        { text: 'Şemsiyeyi al', goto: 'act1_umbrella_yes' },
-        { text: 'Almadan çık', goto: 'act1_umbrella_no' }
+        { text: 'Şemsiyeyi al', goto: 'act1_umbrella_yes', set: { semsiye: true } },
+        { text: 'Almadan çık', goto: 'act1_umbrella_no', set: { semsiye: false } }
       ]
     }
   ],
@@ -186,8 +205,8 @@ const STORY = {
 
   // 12: Perde sonu kartı. ACT II hazır olduğu için doğrudan ona bağlanıyor.
   act1_end: [
-    { type: 'say', speaker: '', text: 'ACT I — MORNING' },
-    { type: 'say', speaker: '', text: 'END' },
+    { type: 'say', speaker: '', text: 'Perde I — Sabah' },
+    { type: 'say', speaker: '', text: 'Perde II — Okul' },
     { type: 'end', next: 'act2_start' }
   ],
 
@@ -210,6 +229,8 @@ const STORY = {
 
   // ---- 1) KEREM POV: DERGİ KULÜBÜ ----
   act2_start: [
+    { type: 'bg', file: 'club_room.svg' },
+    { type: 'bgm', file: 'school_day.mp3' },
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Dergi kulübü odası, öğle arasının hemen öncesi.' },
@@ -312,6 +333,7 @@ const STORY = {
   ],
 
   act2_club_leave: [
+    { type: 'bg', file: 'hallway.svg' },
     { type: 'say', speaker: '', text: 'Dergi yığınını koluna alıp kapıya yöneliyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sınıflara dağıtmaya başlıyorum.' },
     { type: 'say', speaker: 'Kulüp danışmanı', text: 'Dikkat et, geçen sefer merdivenlerden koşarak inmiştin.' },
@@ -409,6 +431,7 @@ const STORY = {
 
   // ---- 3) İNCİ + ÖĞRETMEN TARTIŞMASI (Yahya henüz yok) ----
   act2_debate_start: [
+    { type: 'bg', file: 'classroom.svg' },
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
@@ -437,9 +460,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl sorsun?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn1_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn1_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn1_calm' }
+        { text: 'Sorgulamak neden yasak?', goto: 'act2_debate_turn1_philo', add: { felsefi: 1 } },
+        { text: 'Eskiden beri böyle olması kanıt değil', goto: 'act2_debate_turn1_direct', add: { dogrudan: 1 } },
+        { text: 'Sadece nedenini anlamak istiyorum', goto: 'act2_debate_turn1_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -470,9 +493,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn1b_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn1b_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn1b_calm' }
+        { text: '\'Cevap belli\' ne demek?', goto: 'act2_debate_turn1b_philo', add: { felsefi: 1 } },
+        { text: 'Kafam karışık değil, soruyorum', goto: 'act2_debate_turn1b_direct', add: { dogrudan: 1 } },
+        { text: 'Sorgulamak da bir erdem olamaz mı?', goto: 'act2_debate_turn1b_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -513,9 +536,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn2_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn2_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn2_calm' }
+        { text: 'Kanıtsız da kesinlik olur mu?', goto: 'act2_debate_turn2_philo', add: { felsefi: 1 } },
+        { text: 'Kanıt yoksa bu eminlik nereden?', goto: 'act2_debate_turn2_direct', add: { dogrudan: 1 } },
+        { text: 'İkisi nasıl bir arada duruyor?', goto: 'act2_debate_turn2_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -544,9 +567,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn2b_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn2b_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn2b_calm' }
+        { text: 'Üstünlük nasıl kanıtlanıyor?', goto: 'act2_debate_turn2b_philo', add: { felsefi: 1 } },
+        { text: 'Merak etmek sorgulamak değildir', goto: 'act2_debate_turn2b_direct', add: { dogrudan: 1 } },
+        { text: 'Bir yarış olmak zorunda mı?', goto: 'act2_debate_turn2b_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -575,6 +598,7 @@ const STORY = {
   // ---- 4) KEREM'İN SINIFA GİRİŞİ — birbirlerini İLK KEZ görüyorlar ----
   act2_kerem_arrives: [
     { type: 'camera', effect: 'slide-left' },
+    { type: 'sfx', file: 'door.mp3' },
     { type: 'say', speaker: '', text: 'Kapı hafifçe aralanıyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Umarım ortasına denk gelmemişimdir.' },
     { type: 'hide', id: 'girl' },
@@ -620,9 +644,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn3_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn3_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn3_calm' }
+        { text: 'Dinden önce de ahlak vardı', goto: 'act2_debate_turn3_philo', add: { felsefi: 1 } },
+        { text: 'Dinsiz biri ahlaklı olamaz mı?', goto: 'act2_debate_turn3_direct', add: { dogrudan: 1 } },
+        { text: 'Kaynak tek mi, onu merak ediyorum', goto: 'act2_debate_turn3_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -651,9 +675,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} buna nasıl karşılık versin?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn3b_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn3b_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn3b_calm' }
+        { text: 'Tesadüf olmadığını nereden biliyoruz?', goto: 'act2_debate_turn3b_philo', add: { felsefi: 1 } },
+        { text: 'Bu biraz kestirme bir cevap', goto: 'act2_debate_turn3b_direct', add: { dogrudan: 1 } },
+        { text: 'Sormak da bir yol değil mi?', goto: 'act2_debate_turn3b_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -689,9 +713,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn4_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn4_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn4_calm' }
+        { text: 'Soru, soru olmaktan çıkar mı?', goto: 'act2_debate_turn4_philo', add: { felsefi: 1 } },
+        { text: 'Cevap aramamam mı gerekiyor?', goto: 'act2_debate_turn4_direct', add: { dogrudan: 1 } },
+        { text: 'Her soru sorulmayı hak eder', goto: 'act2_debate_turn4_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -722,9 +746,9 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} sözlerini nasıl tamamlasın?`,
       options: [
-        { text: 'Daha felsefi bir cevap', goto: 'act2_debate_turn4b_philo' },
-        { text: 'Daha doğrudan bir cevap', goto: 'act2_debate_turn4b_direct' },
-        { text: 'Daha sakin/ölçülü bir cevap', goto: 'act2_debate_turn4b_calm' }
+        { text: 'Teslim olmak ikna olmak değildir', goto: 'act2_debate_turn4b_philo', add: { felsefi: 1 } },
+        { text: 'İkna olmadan kabul edemem', goto: 'act2_debate_turn4b_direct', add: { dogrudan: 1 } },
+        { text: 'Düşünmeye devam edeceğim', goto: 'act2_debate_turn4b_calm', add: { sakin: 1 } }
       ]
     }
   ],
@@ -748,6 +772,7 @@ const STORY = {
   ],
 
   act2_debate_end: [
+    { type: 'sfx', file: 'bell.mp3' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_calm.png' }, // tartışma kapanıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Neyse, bu konuyu başka bir derste daha açarız.' },
     { type: 'say', speaker: 'Bir öğrenci', text: 'Hocam, bu da mı sınava girecek?' },
@@ -766,6 +791,7 @@ const STORY = {
     { type: 'say', speaker: TEACHER_NAME, text: 'Evet, sanırım sıra dergi kulübünde.' },
     { type: 'say', speaker: BOY_NAME, text: 'Teşekkürler hocam.' },
     { type: 'expr', id: 'boy', file: 'boy_neutral.svg' }, // sıra ona geldi, işine döner
+    { type: 'sfx', file: 'page.mp3' },
     { type: 'say', speaker: '', text: 'Yahya öne çıkıp dergiyi gösteriyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bu ayki sayı çıktı. İçinde öğrenci yazıları, birkaç çizim, okul etkinliklerinden haberler ve kısa hikayeler var.' },
     { type: 'say', speaker: BOY_NAME, text: 'İsteyen teneffüste kulüp masasından alabilir.' },
@@ -776,8 +802,8 @@ const STORY = {
       type: 'choice',
       prompt: `${GIRL_NAME} hangisini sorsun?`,
       options: [
-        { text: 'Kısa hikayeleri', goto: 'act2_magazine_ask_stories' },
-        { text: 'Okul etkinliklerini', goto: 'act2_magazine_ask_events' }
+        { text: 'Kısa hikayeleri', goto: 'act2_magazine_ask_stories', set: { dergi: 'hikaye' } },
+        { text: 'Okul etkinliklerini', goto: 'act2_magazine_ask_events', set: { dergi: 'etkinlik' } }
       ]
     }
   ],
@@ -826,8 +852,8 @@ const STORY = {
 
   // ---- 9) Perde sonu kartı. ACT III hazır olduğu için doğrudan ona bağlanıyor. ----
   act2_end: [
-    { type: 'say', speaker: '', text: 'ACT II — SCHOOL' },
-    { type: 'say', speaker: '', text: 'END' },
+    { type: 'say', speaker: '', text: 'Perde II — Okul' },
+    { type: 'say', speaker: '', text: 'Perde III — Konuşma' },
     { type: 'end', next: 'act3_start' }
   ],
 
@@ -845,6 +871,8 @@ const STORY = {
 
   // Sahne 1 (İnci POV) — ACT II'nin bittiği yerden devam. Önce kendi gününe dair düşünceler.
   act3_start: [
+    { type: 'bg', file: 'school_gate_evening.svg' },
+    { type: 'bgm', file: 'evening_walk.mp3' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'camera', effect: 'slide-left' },
     { type: 'say', speaker: '', text: 'Ders bitmiş, koridorlar yavaş yavaş boşalıyor.' },
@@ -962,9 +990,9 @@ const STORY = {
       type: 'choice',
       prompt: 'Ne cevap verse iyi olur?',
       options: [
-        { text: 'Olur.', goto: 'act3_yes' },
-        { text: 'Belki... önce biraz tanışsak?', goto: 'act3_getknow' },
-        { text: 'Teşekkür ederim ama istemiyorum.', goto: 'act3_no' }
+        { text: 'Olur.', goto: 'act3_yes', set: { kahve: 'olur' } },
+        { text: 'Belki... önce biraz tanışsak?', goto: 'act3_getknow', set: { kahve: 'belki' } },
+        { text: 'Teşekkür ederim ama istemiyorum.', goto: 'act3_no', set: { kahve: 'hayir' } }
       ]
     }
   ],
@@ -977,7 +1005,7 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Ama önce kısa hikayeyi okuyayım, sonra ne zaman olacağını konuşuruz.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tabii, acelesi yok.' },
     { type: 'say', speaker: '', text: '(İçinden) Fena bir fikir değilmiş, kahveyi zaten seviyorum.' },
-    { type: 'jump', goto: 'act3_ending' }
+    { type: 'jump', goto: 'act3_end_olur' }
   ],
 
   // Sahne 9, seçim 2 — ÖNCE TANIŞALIM. Sınır koyuyor ama kapıyı kapatmıyor; gizli bir "evet" değil.
@@ -988,7 +1016,7 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Zaten sınıflarımız yakın, sık karşılaşırız herhalde.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Muhtemelen.' },
     { type: 'say', speaker: '', text: '(İçinden) Acele etmeme gerek yok, zaman var.' },
-    { type: 'jump', goto: 'act3_ending' }
+    { type: 'jump', goto: 'act3_end_belki' }
   ],
 
   // Sahne 9, seçim 3 — HAYIR. Kötü son değil; karşılıklı saygı korunuyor.
@@ -999,16 +1027,87 @@ const STORY = {
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Unutmam, merak etme.' },
     { type: 'say', speaker: '', text: '(İçinden) Rahat biriymiş, cevabımı hiç dert etmedi.' },
-    { type: 'jump', goto: 'act3_ending' }
+    { type: 'jump', goto: 'act3_end_hayir' }
   ],
 
   // Kapanış — her üç seçim de buraya bağlanır. Sade final; oyuncuya doğrudan mesaj veren meta cümle yok.
+  // ---- Kapanış: kahve cevabına göre üç ayrı sahne, sonra ortak final ----
+
+  act3_end_olur: [
+    { type: 'say', speaker: '', text: 'İkisi bahçe kapısına doğru yürümeye başlıyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Peki nasıl haberleşiyoruz? Kulüp masasına not mu bırakayım?' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Not bırakmak sana daha çok yakışır ama numara daha hızlı.' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' },
+    { type: 'say', speaker: BOY_NAME, text: 'Haftaya bir gün derim o zaman.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: '"Bir gün" demek yerine gün söyle, ben ona göre bakayım.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Perşembe.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Perşembe olur.' },
+    { type: 'jump', goto: 'act3_ending' }
+  ],
+
+  act3_end_belki: [
+    { type: 'say', speaker: '', text: 'Acelesi olmayan bir tempoyla kapıya doğru yürüyorlar.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Dergiyi kulüp masasında bırakırım, teneffüste uğrarsın.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Uğrarım.' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bir de şu at yazısının devamı gelecek mi?' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Gelirse haber veririm.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    { type: 'jump', goto: 'act3_ending' }
+  ],
+
+  act3_end_hayir: [
+    { type: 'say', speaker: '', text: 'Yahya çantasını omzuna atıyor; ısrar etmiyor, konuyu da uzatmıyor.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Dergiyi yine de bırakırım. Bu sayıda kısa hikayeler fena değil.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bakarım.' },
+    { type: 'say', speaker: '', text: 'Kapıda ayrılıyorlar. İkisi de tuhaf hissetmiyor.' },
+    { type: 'jump', goto: 'act3_ending' }
+  ],
+
+  // Ortak final: oyuncunun bugün verdiği kararları hatırlar.
   act3_ending: [
     { type: 'hide', id: 'girl' },
     { type: 'hide', id: 'boy' },
+    { type: 'camera', effect: 'zoom-out' },
+    { type: 'say', speaker: '', text: 'Okulun bahçe kapısı. Gün, sabah düşündüğünden uzun sürdü.' },
+    {
+      type: 'say', speaker: '',
+      text: (game) => bayragaGore(game, 'semsiye', {
+        'true': 'Şemsiye bütün gün çantanın dibinde durdu; bir kez bile açılmadı.',
+        'false': 'Hava kapanmadı. Şemsiyeyi almamak bugünlük doğru karar çıktı.'
+      }, 'Hava akşama doğru serinlemiş.')
+    },
+    {
+      type: 'say', speaker: '',
+      text: (game) => ({
+        felsefi: '(İçinden) Sorduğum soruların cevabını alamadım. Soruları geri de almadım.',
+        dogrudan: '(İçinden) Bugün lafı dolandırmadım. Yarın da dolandırmam herhalde.',
+        sakin: '(İçinden) Sesimi hiç yükseltmeden söyleyeceğimi söyledim.'
+      })[baskinTavir(game)]
+    },
+    {
+      type: 'say', speaker: '',
+      text: (game) => bayragaGore(game, 'dergi', {
+        hikaye: '(İçinden) Akşam şu kısa hikayelere bakarım.',
+        etkinlik: '(İçinden) Sergi fotoğraflarına bakarım bari.'
+      }, '(İçinden) Dergiyi çantadan çıkarmayı unutmasam.')
+    },
+    {
+      type: 'say', speaker: '',
+      text: (game) => bayragaGore(game, 'kahve', {
+        olur: '(İçinden) Perşembe. Tamam, not aldım sayılır.',
+        belki: '(İçinden) Acelesi yok. Zaten olacaksa acelesi olmaz.',
+        hayir: '(İçinden) Bugün birkaç kez hayır dedim. Hepsi aynı sebepten değildi.'
+      }, '(İçinden) Uzun bir gündü.')
+    },
+    { type: 'say', speaker: '', text: 'Çantasını omzuna alıp kapıdan çıkıyor.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Eve giderken bir kahve daha alırım.' },
     { type: 'bg', file: null },
-    { type: 'say', speaker: '', text: 'ACT III — THE CONVERSATION' },
-    { type: 'say', speaker: '', text: 'END' },
+    { type: 'say', speaker: '', text: 'Kahve Oyunu' },
+    { type: 'say', speaker: '', text: '— Son —' },
     { type: 'end' }
   ]
 };

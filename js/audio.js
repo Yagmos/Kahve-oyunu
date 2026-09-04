@@ -5,6 +5,8 @@
  */
 class AudioManager {
   constructor() {
+    // Ses dosyası yoksa (varsayılan) bütün sesler WebAudio ile üretilir.
+    this.synth = (CONFIG.useSynthAudio && typeof SynthAudio === 'function') ? new SynthAudio() : null;
     this.bgmEl = new Audio();
     this.bgmEl.loop = true;
     this.currentBgmFile = null;
@@ -42,6 +44,11 @@ class AudioManager {
   }
 
   playBgm(filename) {
+    if (this.synth) {
+      this.currentBgmFile = filename || null;
+      if (this.musicOn) this.synth.playBgm(filename); else this.synth.stopBgm();
+      return;
+    }
     if (!filename || this._unavailable.has(filename)) return;
     if (this.currentBgmFile === filename) return;
 
@@ -57,13 +64,16 @@ class AudioManager {
   }
 
   stopBgm() {
+    if (this.synth) { this.synth.stopBgm(); this.currentBgmFile = null; return; }
     this.bgmEl.pause();
     this.bgmEl.currentTime = 0;
     this.currentBgmFile = null;
   }
 
   playSfx(filename) {
-    if (!this.sfxOn || !filename || this._unavailable.has(filename)) return;
+    if (!this.sfxOn || !filename) return;
+    if (this.synth) { this.synth.playSfx(filename); return; }
+    if (this._unavailable.has(filename)) return;
 
     const el = new Audio(assetPath('audio', filename));
     el.volume = this.sfxVolume;
@@ -77,6 +87,10 @@ class AudioManager {
 
   setMusicOn(on) {
     this.musicOn = !!on;
+    if (this.synth) {
+      if (this.musicOn) this.synth.playBgm(this.currentBgmFile); else this.synth.stopBgm();
+      return;
+    }
     if (!this.musicOn) {
       this.bgmEl.pause();
     } else if (this.currentBgmFile && !this._unavailable.has(this.currentBgmFile)) {
@@ -94,9 +108,11 @@ class AudioManager {
   setMusicVolume(v) {
     this.musicVolume = v;
     this.bgmEl.volume = v;
+    if (this.synth) this.synth.setMusicVolume(v);
   }
 
   setSfxVolume(v) {
     this.sfxVolume = v;
+    if (this.synth) this.synth.setSfxVolume(v);
   }
 }
