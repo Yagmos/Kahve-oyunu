@@ -237,7 +237,7 @@ const STORY = {
 
   // 11c: Okul bahçesi — zilden önceki on dakika. İnci'nin yazarlığı burada kuruluyor.
   act1_schoolyard: [
-    { type: 'bg', file: 'school_yard_morning.svg' },
+    { type: 'bg', file: 'school_yard.jpg' },
     { type: 'say', speaker: '', text: 'Birkaç dakika sonra okulun bahçesinde. Zile daha var.' },
     { type: 'say', speaker: '', text: 'Bahçede birkaç kişi: kimi ödev yetiştiriyor, kimi sadece bekliyor.' },
     { type: 'say', speaker: '', text: '(İçinden) On dakika. Ya kütüphanede yarışma için son bir tekrar yaparım, ya burada oturur beklerim.' },
