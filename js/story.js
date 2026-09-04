@@ -412,6 +412,8 @@ const STORY = {
     { type: 'say', speaker: TEACHER_NAME, text: 'Aferin. Ama bazılarınız hâlâ soru sormayı seviyor galiba.' },
     { type: 'say', speaker: TEACHER_NAME, text: `${GIRL_NAME}, yine mi düşüncelisin bugün?` },
     { type: 'say', speaker: '', text: '(İçinden) Görünüşe göre öyle.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bir dakika... defterimi evde bırakmışım.' },
+    { type: 'say', speaker: '', text: '(İçinden) Neyse, sözlü de olur.' },
     { type: 'jump', goto: 'act2_debate_turn1' }
   ],
 
@@ -483,9 +485,14 @@ const STORY = {
 
   // Tur 2, aşama A.
   act2_debate_turn2: [
+    { type: 'say', speaker: '', text: '(İçinden) Yine aynı yere geldik.' },
+    { type: 'say', speaker: '', text: '(İçinden) Ben soru soruyorum, o cevabın zaten belli olduğunu söylüyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Belki de asıl sinir olduğum şey cevap değil.' },
+    { type: 'say', speaker: '', text: '(İçinden) Soruyu sormama izin verilmemesi.' },
     { type: 'say', speaker: '', text: 'Öğretmen tahtaya iki kelime daha yazıyor: Bilim ve Sınırları.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bilim size nasıl sorusuna cevap verir. Ama bazı konularda cevap zaten dinen bellidir.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bilimin buna bir şey söylemesine gerek yoktur.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bunu gerçekten söyledi mi şimdi?' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} nasıl cevap versin?`,
@@ -678,6 +685,7 @@ const STORY = {
   // Tur 4, aşama B — tartışmanın son sözü, hemen ardından kapanış.
   act2_debate_turn4b: [
     { type: 'say', speaker: '', text: 'Ders bitmek üzere, ama öğretmen son sözü söylemek istiyor gibi duruyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Tamam. Şimdi cevap verirsem bu tartışma bir saat daha sürer.' },
     {
       type: 'choice',
       prompt: `${GIRL_NAME} sözlerini nasıl tamamlasın?`,
@@ -712,6 +720,7 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Sınıftan hafif bir kahkaha yükseliyor.' },
     { type: 'say', speaker: TEACHER_NAME, text: `${GIRL_NAME}, düşünmeye devam et. Ama bir gün bir yerde karar kılman gerekecek.` },
     { type: 'say', speaker: GIRL_NAME, text: 'Belki.' },
+    { type: 'say', speaker: '', text: '(İçinden) Ders bitse de şu yazıyı tamamlasam.' },
     { type: 'say', speaker: '', text: '(İçinden) Ya da hiç karar kılmam gerekmez, sadece sormaya devam ederim.' },
     { type: 'jump', goto: 'act2_magazine_intro' }
   ],
