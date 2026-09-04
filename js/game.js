@@ -196,9 +196,9 @@ class Game {
 
       case 'choice':
         this.waitingForChoice = true;
-        // Seçim katmanı diyalog kutusunun hemen üstünde açıldığı için
-        // portre gizlenir; choice-layer'ın konumlandırması korunur.
-        if (this.portrait) this.portrait.setChoiceMode(true);
+        // Portre artık diyalog kutusunun İÇİNDE olduğu ve seçim katmanı
+        // kutunun üstünde konumlandığı için çakışma yapısal olarak imkânsız;
+        // portre seçim sırasında da görünür kalır.
         this.dialogue.showChoices(step.prompt, step.options, (option) => this._onChoiceSelected(option));
         this._saveProgress();
         break;

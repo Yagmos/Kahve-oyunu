@@ -91,21 +91,21 @@ const INNER_THOUGHT_RE = /[İIi]çinden\)/;
 
 class PortraitManager {
   /**
-   * @param {{frameEl:HTMLElement, imageEl:HTMLElement, badgeEl:HTMLElement,
-   *          boxEl:HTMLElement, sceneManager:SceneManager}} refs
+   * @param {{frameEl:HTMLElement, imageEl:HTMLElement, colEl:HTMLElement,
+   *          nameplateEl:HTMLElement, boxEl:HTMLElement,
+   *          sceneManager:SceneManager}} refs
    */
   constructor(refs) {
     this.frameEl = refs.frameEl;
     this.imageEl = refs.imageEl;
-    this.badgeEl = refs.badgeEl;
+    this.colEl = refs.colEl;
+    this.nameplateEl = refs.nameplateEl;
     this.boxEl = refs.boxEl;
     this.scene = refs.sceneManager;
 
     this.speakerToId = this._buildSpeakerMap();
     this.currentId = null;
     this.lastShownId = null;
-    // Seçim butonları açıkken portre gizlenir (choice-layer ile çakışmasın diye).
-    this.choiceMode = false;
   }
 
   /**
@@ -162,14 +162,11 @@ class PortraitManager {
    * @param {string} label O anki hikaye etiketi (POV çözümlemesi için).
    */
   update(speaker, text, label) {
-    // Bir 'say' çalıştıysa seçim ekranı kapanmış demektir.
-    this.choiceMode = false;
-
     // 1) Adı olan konuşmacı: doğrudan eşle.
     const named = speaker ? this.speakerToId[speaker] : null;
     if (named) {
       this.currentId = named;
-      this._apply(this._resolveFile(named), false);
+      this._apply(this._resolveFile(named), false, speaker);
       return;
     }
 
@@ -179,31 +176,25 @@ class PortraitManager {
       const povId = LABEL_POV[label] || this.lastShownId;
       if (povId && PORTRAIT_ASSETS[povId]) {
         this.currentId = povId;
-        this._apply(this._resolveFile(povId), true);
+        this._apply(this._resolveFile(povId), true, 'İçinden');
         return;
       }
     }
 
     // 3) Anlatım, perde kartı veya görseli olmayan konuşmacı: portre yok.
     this.currentId = null;
-    this._apply(null, false);
+    this._apply(null, false, '');
   }
 
   /** 'expr' adımından sonra; sadece portresi görünen karakter için yeniler. */
   refreshExpression(id) {
     if (!id || id !== this.currentId) return;
-    this._apply(this._resolveFile(id), this.frameEl.classList.contains('inner'));
+    const inner = this.colEl.classList.contains('inner');
+    this._apply(this._resolveFile(id), inner, this.nameplateEl.textContent);
   }
 
-  /** Seçim katmanı açıkken portreyi gizler. */
-  setChoiceMode(active) {
-    this.choiceMode = !!active;
-    const inner = this.frameEl.classList.contains('inner');
-    this._apply(this.currentId ? this._resolveFile(this.currentId) : null, inner);
-  }
-
-  _apply(file, isInner) {
-    const visible = !!file && !this.choiceMode;
+  _apply(file, isInner, label) {
+    const visible = !!file;
 
     if (file) {
       const url = `url("${assetPath('characters', file)}")`;
@@ -214,13 +205,8 @@ class PortraitManager {
       this.imageEl.setAttribute('data-char', parsed ? parsed.id : '');
     }
 
-    // Seçim katmanı açılırken animasyonsuz kaybolsun; aksi halde fade
-    // boyunca butonların arkasında görünmeye devam eder.
-    this.frameEl.classList.toggle('instant', this.choiceMode);
-    this.frameEl.classList.toggle('visible', visible);
-    this.frameEl.classList.toggle('inner', visible && !!isInner);
-
-    if (this.badgeEl) this.badgeEl.classList.toggle('visible', visible && !!isInner);
+    if (this.nameplateEl) this.nameplateEl.textContent = visible ? (label || '') : '';
+    if (this.colEl) this.colEl.classList.toggle('inner', visible && !!isInner);
     if (this.boxEl) this.boxEl.classList.toggle('has-portrait', visible);
   }
 
@@ -228,11 +214,10 @@ class PortraitManager {
   reset() {
     this.currentId = null;
     this.lastShownId = null;
-    this.choiceMode = false;
     this.imageEl.style.backgroundImage = '';
     this.imageEl.removeAttribute('data-char');
-    this.frameEl.classList.remove('visible', 'inner', 'instant');
-    if (this.badgeEl) this.badgeEl.classList.remove('visible');
+    if (this.nameplateEl) this.nameplateEl.textContent = '';
+    if (this.colEl) this.colEl.classList.remove('inner');
     if (this.boxEl) this.boxEl.classList.remove('has-portrait');
   }
 }

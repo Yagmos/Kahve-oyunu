@@ -333,64 +333,60 @@ button {
   z-index: 20;
   margin: 0 calc(var(--safe-right) + 12px) calc(var(--safe-bottom) + 14px) calc(var(--safe-left) + 12px);
   margin-top: auto;
-  padding: 16px 18px 20px;
-  min-height: 118px;
+  padding: 14px 16px 16px;
+  /* Portre kutunun İÇİNDE durduğu için yükseklik ona göre sabitlenir;
+     portre olmayan satırlarda da kutu aynı boyda kalır, layout zıplamaz. */
+  min-height: calc(var(--portrait-size) + 62px);
   background: rgba(20, 12, 8, 0.82);
   border: 1px solid rgba(217, 164, 65, 0.25);
   border-radius: 16px;
   backdrop-filter: blur(3px);
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
 }
 
-/* Portre: diyalog kutusunun SAĞINDA büyük kare alan. Mutlak konumlu olduğu
-   için kutunun yüksekliğini etkilemez; metin alanı ise kutuya eklenen
-   padding-right ile korunur, böylece metin portrenin altına girmez. */
+/* Metin sütunu: portre olsa da olmasa da taşmaz. */
+.dialogue-main {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Portre: tek büyük diyalog kutusunun İÇİNDE, sağ sütunda.
+   Ayrı bir kutu değil; metin ve portre aynı çerçevenin iki sütunu. */
 .dialogue-box {
-  --portrait-size: clamp(104px, 31vw, 126px);
+  --portrait-size: clamp(104px, 31vw, 132px);
+}
+
+.portrait-col {
+  display: none;
+  flex: 0 0 auto;
+  width: var(--portrait-size);
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dialogue-box.has-portrait .portrait-col {
+  display: flex;
 }
 
 .portrait-frame {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  width: var(--portrait-size);
+  width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 14px;
+  border-radius: 10px;
   overflow: hidden;
-  background: rgba(28, 18, 12, 0.95);
-  border: 1px solid rgba(217, 164, 65, 0.4);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 220ms ease, transform 220ms ease;
-  pointer-events: none;
-  /* Seçim katmanı (z-index 25) her durumda portrenin üstünde kalsın. */
-  z-index: 1;
-}
-
-.portrait-frame.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* İç monologda portre biraz daha sakin dursun. */
-.portrait-frame.inner {
-  border-color: rgba(217, 164, 65, 0.22);
-  opacity: 0.88;
-}
-
-/* Seçim katmanı açılırken anında kaybolsun (fade sırasında butonların
-   arkasında görünmesin). */
-.portrait-frame.instant {
-  transition: none;
+  background: rgba(46, 30, 20, 0.9);
+  border: 1px solid rgba(217, 164, 65, 0.45);
+  box-shadow: inset 0 0 0 2px rgba(20, 12, 8, 0.55);
 }
 
 .portrait-image {
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
-  /* Karakter SVG'leri 700x1400 ve gövde çok geniş boşluk bırakıyor.
-     Kareye oturtmak için yatayda da yakınlaştırıp yüz + saç + boyun/omuz
-     hizasını gösterecek şekilde kırpıyoruz. */
+  /* Karakter SVG'leri 700x1400 ve yanlarda çok boşluk var; kareye
+     oturması için yatayda da yakınlaştırılıp yüz hizasından kırpılıyor. */
   background-size: 140% auto;
   background-position: 50% 15%;
 }
@@ -400,52 +396,43 @@ button {
   background-position: 50% 18%;
 }
 
-/* Öğretmenin başı İnci ile aynı hizada; gözlük kesilmesin diye biraz geniş. */
+/* Öğretmenin gözlüğü kesilmesin diye biraz geniş. */
 .portrait-image[data-char="teacher"] {
   background-size: 134% auto;
   background-position: 50% 14%;
 }
 
-/* Metin, portrenin bulunduğu sütuna girmesin. */
-.dialogue-box.has-portrait .speaker-name,
-.dialogue-box.has-portrait .dialogue-text,
-.dialogue-box.has-portrait .inner-badge {
-  padding-right: calc(var(--portrait-size) + 10px);
-}
-
-/* İç monolog göstergesi: speaker-name yerine geçer. */
-.inner-badge {
-  display: none;
-  font-size: 0.82rem;
-  font-style: italic;
-  letter-spacing: 0.02em;
-  color: rgba(217, 164, 65, 0.7);
-  margin-bottom: 6px;
-  min-height: 1.2em;
-}
-
-.inner-badge.visible {
-  display: block;
-}
-
-/* İç monologda speaker-name zaten boş; yerini rozet aldığı için
-   çift boşluk oluşmasın. */
-.dialogue-box:has(.inner-badge.visible) .speaker-name {
-  display: none;
-}
-
-.speaker-name {
-  font-weight: 700;
-  font-size: 1rem;
+/* Portrenin altındaki isim levhası (referanstaki gibi). */
+.portrait-nameplate {
+  min-height: 24px;
+  padding: 3px 6px;
+  border-radius: 8px;
+  background: rgba(46, 30, 20, 0.85);
+  border: 1px solid rgba(217, 164, 65, 0.3);
   color: var(--color-accent);
-  margin-bottom: 6px;
-  min-height: 1.2em;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Portre görünürken sadece konuşmacı adı sağa kayar; diyalog metni
-   tam genişliğini korur. */
+/* İç monologda levha "İçinden" yazar ve daha sakin görünür. */
+.portrait-col.inner .portrait-nameplate {
+  font-weight: 600;
+  font-style: italic;
+  color: rgba(217, 164, 65, 0.75);
+}
+
+.portrait-col.inner .portrait-frame {
+  border-color: rgba(217, 164, 65, 0.25);
+}
+
+/* Portre varken adı levha gösterdiği için üstteki başlık gizlenir. */
 .dialogue-box.has-portrait .speaker-name {
-  padding-left: 80px;
+  display: none;
 }
 
 .dialogue-text {
@@ -481,7 +468,9 @@ button {
   position: absolute;
   left: calc(var(--safe-left) + 16px);
   right: calc(var(--safe-right) + 16px);
-  bottom: calc(var(--safe-bottom) + 150px);
+  /* Kutu yüksekliği portreyle birlikte değiştiği için sabit yerine
+     ölçülen yükseklik kullanılır (--dialogue-h main.js'te güncellenir). */
+  bottom: calc(var(--safe-bottom) + var(--dialogue-h, 150px) + 26px);
   z-index: 25;
   display: flex;
   flex-direction: column;

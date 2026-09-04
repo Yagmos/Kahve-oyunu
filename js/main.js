@@ -34,11 +34,23 @@ document.addEventListener('DOMContentLoaded', () => {
     historyListEl: document.getElementById('history-list')
   });
 
+  // Seçim katmanı diyalog kutusunun üstünde durur. Kutunun yüksekliği
+  // portreyle birlikte değiştiği için sabit bir offset yerine gerçek
+  // yükseklik CSS değişkenine yazılır.
+  const dialogueBoxEl = document.getElementById('dialogue-box');
+  const gameScreenEl = document.getElementById('screen-game');
+  if (window.ResizeObserver && dialogueBoxEl && gameScreenEl) {
+    new ResizeObserver(() => {
+      gameScreenEl.style.setProperty('--dialogue-h', dialogueBoxEl.offsetHeight + 'px');
+    }).observe(dialogueBoxEl);
+  }
+
   const portraitManager = new PortraitManager({
     frameEl: document.getElementById('portrait-frame'),
     imageEl: document.getElementById('portrait-image'),
-    badgeEl: document.getElementById('inner-badge'),
-    boxEl: document.getElementById('dialogue-box'),
+    colEl: document.getElementById('portrait-col'),
+    nameplateEl: document.getElementById('portrait-nameplate'),
+    boxEl: dialogueBoxEl,
     sceneManager
   });
 
