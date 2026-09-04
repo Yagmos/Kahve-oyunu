@@ -45,10 +45,10 @@ const STORY = {
     { type: 'show', id: 'girl', file: 'girl_sleepy.svg', position: 'center', transition: 'fade' },
     { type: 'bgm', file: 'morning_theme.mp3' },
     { type: 'camera', effect: 'zoom-in' },
-    { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bir dakika daha... sadece bir dakika...` },
+    { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bir dakika daha. Sadece bir dakika.` },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Ah, of... yine mi.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Tamam, tamam. Duydum seni.' },
+    { type: 'say', speaker: '', text: '(İçinden) Her sabah aynı pazarlığı yapıyorum ve her sabah kaybediyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Tamam. Duydum seni.' },
     {
       type: 'choice',
       prompt: 'Alarm hâlâ çalıyor.',
@@ -62,13 +62,13 @@ const STORY = {
   // "Beş dakika daha" seçilirse: kısa, komik bir gecikme sahnesi.
   act1_snooze: [
     { type: 'expr', id: 'girl', file: 'girl_sleepy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Sadece beş dakika. Kimse fark etmez.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Beş dakika. Bu sefer gerçekten beş dakika.' },
     { type: 'sfx', file: 'alarm.mp3' },
     { type: 'say', speaker: '', text: '*Trrrn! Trrrn!*' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'camera', effect: 'zoom-in' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bu... bu beş dakika değildi galiba.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Tamam, cidden kalkmam lazım.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu beş dakika değildi.' },
+    { type: 'say', speaker: '', text: '(İçinden) Kendime bile yalan söylüyorum, bari inandırıcı olsaydı.' },
     { type: 'jump', goto: 'act1_getup' }
   ],
 
@@ -76,7 +76,8 @@ const STORY = {
   act1_getup: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} esneyerek yataktan kalkıyor.` },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bugün ne giysem...' },
+    { type: 'say', speaker: '', text: '(İçinden) Dolabın önünde en fazla on saniye harcayacağım.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ne giysem...' },
     {
       type: 'choice',
       prompt: 'Ne giyse iyi olur?',
@@ -89,14 +90,15 @@ const STORY = {
 
   act1_outfit_fav: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Favori tişörtümü giyeyim. Gün daha iyi geçecekmiş gibi hissettiriyor.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Favori tişört olsun.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bilimsel bir dayanağı yok ama günü kurtardığı kesin.' },
     { type: 'jump', goto: 'act1_breakfast' }
   ],
 
   act1_outfit_casual: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Neyse, ilk eline geleni giysin. Zaman kaybetmeye gerek yok.' },
-    { type: 'say', speaker: '', text: '(İçinden) Kot ile çizgili tişört... olsun, kimse fark etmez herhalde.' },
+    { type: 'say', speaker: '', text: '(İçinden) Kot, çizgili tişört, bitti.' },
+    { type: 'say', speaker: '', text: '(İçinden) Sabahın yedisinde estetik kaygı fazla lüks.' },
     { type: 'jump', goto: 'act1_breakfast' }
   ],
 
@@ -104,7 +106,8 @@ const STORY = {
   act1_breakfast: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} mutfağa iniyor, aceleyle bir şeyler atıştırıyor.` },
-    { type: 'say', speaker: GIRL_NAME, text: 'Kahve olmadan hiçbir şey yapamam ben.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Önce kahve.' },
+    { type: 'say', speaker: '', text: '(İçinden) Düşünebilmem için bir bardak gerekiyor, bu kadar basit.' },
     { type: 'say', speaker: '', text: `(İçinden) Bardağı yıkamayı unutma ${GIRL_NAME}, dün de unutmuştun.` },
     { type: 'jump', goto: 'act1_phone' }
   ],
@@ -118,18 +121,23 @@ const STORY = {
       date: 'Salı',
       notifications: [
         { app: 'Mesajlar', from: 'Annem', text: 'Süt almayı unutma, tamam mı? :)' },
-        { app: 'Hatırlatıcı', text: 'Kimya ödevini teslim etmeyi unutma!' }
+        { app: 'Dergi Kulübü', text: 'Yeni sayı bugün sınıflara dağıtılacak.' },
+        { app: 'Hatırlatıcı', text: 'Matematik ödevini çantaya koy!' }
       ],
       schedule: [
         { time: '09:00', subject: 'Matematik' },
         { time: '10:00', subject: 'Türkçe Edebiyatı' },
-        { time: '11:00', subject: 'Kimya', highlight: true },
+        { time: '11:00', subject: 'Din Kültürü', highlight: true },
         { time: '13:00', subject: 'Beden Eğitimi' }
       ]
     },
+    { type: 'say', speaker: '', text: '(İçinden) Yeni sayı bugün çıkıyor demek.' },
+    { type: 'say', speaker: '', text: '(İçinden) Geçen sayıda benim yazım vardı. Atlarla ilgili.' },
+    { type: 'say', speaker: '', text: '(İçinden) Kimse bir şey demedi, ben de sormadım.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Ugh... yine o ders.' },
-    { type: 'say', speaker: '', text: '(İçinden) Bugünkü kimya dersini hiç düşünmek istemiyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bir de bu var tabii.' },
+    { type: 'say', speaker: '', text: '(İçinden) Geçen hafta soru sorduğumda "bu tartışmaya açık bir konu değil" demişti.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bakalım bugün ne kadar dayanabileceğim.' },
     { type: 'jump', goto: 'act1_bag' }
   ],
 
@@ -148,20 +156,22 @@ const STORY = {
 
   act1_umbrella_yes: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Yağmur yağarsa diye şemsiyeyi de alayım. Tedbiri elden bırakmayalım.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Şemsiyeyi alayım.' },
+    { type: 'say', speaker: '', text: '(İçinden) Sonra pişman olmaktansa gün boyu taşırım.' },
     { type: 'jump', goto: 'act1_leave' }
   ],
 
   act1_umbrella_no: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Hava açık görünüyor. Şemsiyeye gerek yok herhalde.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Hava açık, gerek yok.' },
+    { type: 'say', speaker: '', text: '(İçinden) Islanırsam da kendi hatam olur.' },
     { type: 'jump', goto: 'act1_leave' }
   ],
 
   // 10: Evden çıkış.
   act1_leave: [
     { type: 'say', speaker: '', text: 'Ayakkabılarını giyip kapıya yöneliyor.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Tamam... bugün de başlıyoruz.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Tamam. Bugün de başlıyoruz.' },
     { type: 'hide', id: 'girl' },
     { type: 'bg', file: null },
     { type: 'jump', goto: 'act1_walk' }
@@ -171,6 +181,8 @@ const STORY = {
   act1_walk: [
     { type: 'say', speaker: '', text: 'Sokaklar hâlâ yeni uyanıyor; birkaç kişi telaşla yürüyor, bir kedi kaldırımda geriniyor.' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} kulaklığını takıyor, adımlarını hızlandırıyor.` },
+    { type: 'say', speaker: '', text: '(İçinden) Yazıyı okuyan biri çıkmıştır belki. Belki de çıkmamıştır.' },
+    { type: 'say', speaker: '', text: '(İçinden) Neyse, önemli değil.' },
     { type: 'say', speaker: '', text: 'Birkaç dakika sonra okulun bahçesine giriyor.' },
     { type: 'jump', goto: 'act1_end' }
   ],
@@ -779,7 +791,7 @@ const STORY = {
     { type: 'say', speaker: '', text: 'İnci çantasını topluyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Yeni çocuk muydu?' },
     { type: 'say', speaker: '', text: '(İçinden) Dergi kulübündeymiş demek.' },
-    { type: 'say', speaker: '', text: '(İçinden) Beklediğimden daha rahat konuştu, öğretmene karşı bile.' },
+    { type: 'say', speaker: '', text: '(İçinden) Tartışmanın ortasına düştü ama hiç sıkılmış görünmedi.' },
     { type: 'say', speaker: '', text: 'Sıradan bir gündü, dergiyi eline alıp koridora çıkıyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Neyse, sıradaki derse geç kalmayayım.' },
     { type: 'hide', id: 'girl' },
@@ -825,7 +837,7 @@ const STORY = {
     { type: 'camera', effect: 'zoom-in' },
     { type: 'say', speaker: '', text: '(İçinden) Dergi kulübündeki çocuk.' },
     { type: 'say', speaker: '', text: '(İçinden) Bu sefer elinde dergi yok.' },
-    { type: 'say', speaker: '', text: '(İçinden) Sınıfta hocayla nasıl tartıştığını hâlâ hatırlıyorum.' },
+    { type: 'say', speaker: '', text: '(İçinden) Tartışmanın tam ortasına girip hiç bozuntuya vermemişti.' },
     { type: 'say', speaker: '', text: 'Aynı yöne doğru yürüyorlar galiba.' },
     { type: 'jump', goto: 'act3_boy_pov' }
   ],
@@ -850,8 +862,10 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Selam.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Selam.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bu sefer dergi yok, azıcık daha hafif geziyorum.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Sınıfta hocayla iyi tartışıyordunuz.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Fena sayılmaz, ama son sözü hep hoca söylüyor.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Sınıfa girdiğinde ortalık biraz karışıktı.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Fark ettim. Kapıyı açtığımda bir an geri çıkmayı düşündüm.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Ama sen hiç geri adım atmıyordun, o yüzden kaldım.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Hoca da atmıyor. Sorun da orada zaten.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bu arada, adın neydi?' },
     { type: 'say', speaker: BOY_NAME, text: 'Yahya.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yahya. Tamam.' },
@@ -872,6 +886,14 @@ const STORY = {
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yani severek yapıyorsun ama itiraf etmiyorsun.' },
     { type: 'say', speaker: BOY_NAME, text: 'Belki.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu arada, geçen sayıdaki atlarla ilgili yazı senindi değil mi?' },
+    { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
+    { type: 'say', speaker: '', text: '(İçinden) Okumuş demek.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Benimdi. Kimsenin okuduğunu sanmıyordum.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Ben okudum. Toynak kısmını üç kere okudum, hâlâ tam anlamadım.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'O kısmı ben de üç kere yazdım zaten.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'jump', goto: 'act3_talk_personal' }
   ],
 
