@@ -83,7 +83,12 @@ button {
   justify-content: center;
   gap: 28px;
   padding: calc(var(--safe-top) + 24px) calc(var(--safe-right) + 24px) calc(var(--safe-bottom) + 24px) calc(var(--safe-left) + 24px);
-  background: radial-gradient(circle at 50% 20%, var(--coffee-dark), var(--color-bg) 70%);
+  /* Sabah sokağı, koyulaştırılmış: menü artık düz bir zemin değil. */
+  background:
+    linear-gradient(180deg, rgba(26, 15, 9, 0.35) 0%, rgba(22, 13, 8, 0.62) 45%, rgba(18, 11, 6, 0.93) 78%, var(--color-bg) 100%),
+    radial-gradient(circle at 50% 22%, rgba(217, 164, 65, 0.16), transparent 62%),
+    url('../assets/backgrounds/street_morning.svg') center 26% / cover no-repeat,
+    var(--color-bg);
   text-align: center;
 }
 
