@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="ssky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2f3550"/><stop offset="40%" stop-color="#7d6a74"/>
+      <stop offset="70%" stop-color="#d99a68"/><stop offset="100%" stop-color="#f3c489"/>
+    </linearGradient>
+    <linearGradient id="sfar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2c2a"/><stop offset="100%" stop-color="#28201d"/>
+    </linearGradient>
+    <linearGradient id="sroad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3b33"/><stop offset="100%" stop-color="#221812"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="#241408"/>
+  <rect width="1080" height="1180" fill="url(#ssky)"/>
+  <circle cx="240" cy="1010" r="90" fill="#ffe2ad" opacity="0.75"/>
+
+  <!-- Arka sıra binalar -->
+  <g fill="url(#sfar)">
+    <rect x="-20" y="640" width="240" height="560"/>
+    <rect x="230" y="740" width="180" height="460"/>
+    <rect x="420" y="600" width="220" height="600"/>
+    <rect x="650" y="780" width="170" height="420"/>
+    <rect x="830" y="660" width="270" height="540"/>
+  </g>
+  <g fill="#f3c489" opacity="0.45">
+    <rect x="30" y="700" width="46" height="60" rx="5"/>
+    <rect x="120" y="700" width="46" height="60" rx="5"/>
+    <rect x="30" y="820" width="46" height="60" rx="5"/>
+    <rect x="460" y="670" width="50" height="64" rx="5"/>
+    <rect x="550" y="670" width="50" height="64" rx="5"/>
+    <rect x="880" y="730" width="50" height="64" rx="5"/>
+    <rect x="980" y="730" width="50" height="64" rx="5"/>
+  </g>
+
+  <!-- Köşedeki büfe (kahve kokusu buradan) -->
+  <g>
+    <rect x="640" y="900" width="380" height="300" rx="10" fill="#3d2a1c"/>
+    <rect x="670" y="930" width="320" height="150" rx="8" fill="#d9a441" opacity="0.85"/>
+    <rect x="700" y="960" width="180" height="16" rx="8" fill="#3a2718" opacity="0.6"/>
+    <rect x="700" y="992" width="120" height="12" rx="6" fill="#3a2718" opacity="0.4"/>
+    <rect x="670" y="1100" width="320" height="100" rx="6" fill="#2b1d12"/>
+    <circle cx="1005" cy="1010" r="26" fill="#ffe2ad" opacity="0.55"/>
+  </g>
+
+  <!-- Kaldırım ve yol -->
+  <rect x="0" y="1180" width="1080" height="120" fill="#584438"/>
+  <rect x="0" y="1180" width="1080" height="12" fill="#7a5f4d"/>
+  <rect x="0" y="1300" width="1080" height="620" fill="url(#sroad)"/>
+  <g fill="#f5e9da" opacity="0.18">
+    <rect x="60" y="1520" width="150" height="14" rx="7"/>
+    <rect x="330" y="1520" width="150" height="14" rx="7"/>
+    <rect x="600" y="1520" width="150" height="14" rx="7"/>
+    <rect x="870" y="1520" width="150" height="14" rx="7"/>
+  </g>
+
+  <!-- Sokak lambası -->
+  <g fill="#2b1d12">
+    <rect x="150" y="760" width="16" height="440"/>
+    <rect x="150" y="760" width="110" height="14" rx="7"/>
+  </g>
+  <circle cx="258" cy="786" r="20" fill="#ffe2ad" opacity="0.7"/>
+</svg>

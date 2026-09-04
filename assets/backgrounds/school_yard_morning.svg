@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="ysky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5b6f86"/><stop offset="45%" stop-color="#9fb0b8"/>
+      <stop offset="75%" stop-color="#d9cba6"/><stop offset="100%" stop-color="#efe0bd"/>
+    </linearGradient>
+    <linearGradient id="gbuild" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2617"/><stop offset="100%" stop-color="#241609"/>
+    </linearGradient>
+    <linearGradient id="ggnd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c422e"/><stop offset="100%" stop-color="#241408"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Gökyüzü + batan güneş -->
+  <rect width="1080" height="1240" fill="url(#ysky)"/>
+  <circle cx="880" cy="880" r="70" fill="#fff6dd" opacity="0.7"/>
+  <circle cx="880" cy="880" r="160" fill="#fff6dd" opacity="0.14"/>
+
+  <!-- Uzaktaki ağaçlar -->
+  <g fill="#2f2114" opacity="0.85">
+    <ellipse cx="120" cy="1080" rx="150" ry="120"/>
+    <ellipse cx="300" cy="1120" rx="120" ry="95"/>
+    <rect x="105" y="1150" width="26" height="120"/>
+    <rect x="290" y="1180" width="22" height="90"/>
+  </g>
+
+  <!-- Okul binası (sol arka) -->
+  <g>
+    <rect x="0" y="620" width="420" height="640" fill="url(#gbuild)"/>
+    <g fill="#e8dcc0" opacity="0.35">
+      <rect x="50" y="700" width="70" height="90" rx="6"/>
+      <rect x="160" y="700" width="70" height="90" rx="6"/>
+      <rect x="270" y="700" width="70" height="90" rx="6"/>
+      <rect x="50" y="850" width="70" height="90" rx="6"/>
+      <rect x="160" y="850" width="70" height="90" rx="6"/>
+      <rect x="270" y="850" width="70" height="90" rx="6"/>
+    </g>
+  </g>
+
+  <!-- Bahçe kapısı (telefon kadrajında ortada kalsın diye biraz solda) -->
+  <g transform="translate(-90,0)">
+    <rect x="470" y="820" width="34" height="450" rx="8" fill="#2b1d12"/>
+    <rect x="1000" y="820" width="34" height="450" rx="8" fill="#2b1d12"/>
+    <rect x="470" y="820" width="564" height="26" rx="10" fill="#2b1d12"/>
+    <g fill="#2b1d12" opacity="0.9">
+      <rect x="560" y="880" width="14" height="390" rx="6"/>
+      <rect x="640" y="880" width="14" height="390" rx="6"/>
+      <rect x="720" y="880" width="14" height="390" rx="6"/>
+      <rect x="800" y="880" width="14" height="390" rx="6"/>
+      <rect x="880" y="880" width="14" height="390" rx="6"/>
+      <rect x="960" y="880" width="14" height="390" rx="6"/>
+    </g>
+  </g>
+
+  <!-- Zemin -->
+  <rect x="0" y="1240" width="1080" height="680" fill="url(#ggnd)"/>
+  <rect x="0" y="1240" width="1080" height="16" fill="#7a5539" opacity="0.5"/>
+  <!-- Güneşin yerdeki yansıması -->
+  <ellipse cx="880" cy="1320" rx="240" ry="55" fill="#fff6dd" opacity="0.08"/>
+</svg>

@@ -141,7 +141,8 @@ const STORY = {
       notifications: [
         { app: 'Mesajlar', from: 'Annem', text: 'Süt almayı unutma, tamam mı? :)' },
         { app: 'Dergi Kulübü', text: 'Yeni sayı bugün sınıflara dağıtılacak.' },
-        { app: 'Hatırlatıcı', text: 'Matematik ödevini çantaya koy!' }
+        { app: 'Hatırlatıcı', text: 'Matematik ödevini çantaya koy!' },
+        { app: 'Notlar', text: 'Atlar — 2. bölüm (taslak): toynak kısmını yeniden yaz.' }
       ],
       schedule: [
         { time: '09:00', subject: 'Matematik' },
@@ -196,15 +197,81 @@ const STORY = {
 
   // 11: Kısa yürüyüş / geçiş sahnesi, sonra okula varış.
   act1_walk: [
+    { type: 'bg', file: 'street_morning.svg' },
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sokaklar hâlâ yeni uyanıyor; birkaç kişi telaşla yürüyor, bir kedi kaldırımda geriniyor.' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} kulaklığını takıyor, adımlarını hızlandırıyor.` },
     { type: 'say', speaker: '', text: '(İçinden) On dakika erken varırsam kütüphanede oturabilirim.' },
-    { type: 'say', speaker: '', text: 'Birkaç dakika sonra okulun bahçesine giriyor.' },
+    { type: 'say', speaker: '', text: 'Köşedeki büfenin önünden geçerken kahve kokusu geliyor.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    {
+      type: 'choice',
+      prompt: 'Kahve alsın mı?',
+      options: [
+        { text: 'Bir kahve al', goto: 'act1_coffee_yes', set: { sabah_kahve: true } },
+        { text: 'Boş ver, okulda içerim', goto: 'act1_coffee_no', set: { sabah_kahve: false } }
+      ]
+    }
+  ],
+
+  // 11b: Sabah kahvesi — ACT III'teki kahve teklifine ve finale bağlanıyor.
+  act1_coffee_yes: [
+    { type: 'say', speaker: GIRL_NAME, text: 'Bir orta boy, sade.' },
+    { type: 'say', speaker: '', text: '(İçinden) Haftalığımın epey bir kısmı buraya gidiyor ama bu pazarlığı da çoktan kaybettim.' },
+    { type: 'say', speaker: '', text: 'Bardağı iki eliyle tutarak yürümeye devam ediyor.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: '', text: '(İçinden) Günün en iyi on dakikası galiba bu.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    { type: 'jump', goto: 'act1_schoolyard' }
+  ],
+
+  act1_coffee_no: [
+    { type: 'say', speaker: '', text: '(İçinden) Kuyruk uzun, kahve de sıcak olur; yürürken içemem zaten.' },
+    { type: 'say', speaker: '', text: '(İçinden) Okulda bir yerden bir bardak bulurum.' },
+    { type: 'jump', goto: 'act1_schoolyard' }
+  ],
+
+  // 11c: Okul bahçesi — zilden önceki on dakika. İnci'nin yazarlığı burada kuruluyor.
+  act1_schoolyard: [
+    { type: 'bg', file: 'school_yard_morning.svg' },
+    { type: 'say', speaker: '', text: 'Birkaç dakika sonra okulun bahçesinde. Zile daha var.' },
+    { type: 'say', speaker: '', text: 'Bahçede birkaç kişi: kimi ödev yetiştiriyor, kimi sadece bekliyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) On dakika. Ya kütüphanede yazının ikinci bölümüne bakarım, ya burada oturur beklerim.' },
+    {
+      type: 'choice',
+      prompt: 'On dakikayı nasıl geçirsin?',
+      options: [
+        { text: 'Kütüphaneye uğra', goto: 'act1_library', set: { sabah_yazi: 'kutuphane' } },
+        { text: 'Bahçede otur', goto: 'act1_yard', set: { sabah_yazi: 'bahce' } }
+      ]
+    }
+  ],
+
+  act1_library: [
+    { type: 'say', speaker: '', text: 'Kütüphane sabahları neredeyse boş; ışıkların yarısı bile yanmıyor.' },
+    { type: 'say', speaker: '', text: `${GIRL_NAME} defterini açıp geçen sayıdaki yazısının devamına bakıyor.` },
+    { type: 'say', speaker: '', text: '(İçinden) Toynak kısmını çok kısa geçmişim. İkinci bölümde düzeltirim.' },
+    { type: 'say', speaker: '', text: '(İçinden) Kimse okumuyordur muhtemelen. Olsun, ben yazarken anlıyorum.' },
+    { type: 'say', speaker: '', text: 'İki paragraf karalayıp defteri kapatıyor.' },
+    { type: 'sfx', file: 'bell.mp3' },
+    { type: 'say', speaker: '', text: 'Zil çalıyor.' },
+    { type: 'jump', goto: 'act1_end' }
+  ],
+
+  act1_yard: [
+    { type: 'say', speaker: '', text: 'Duvarın dibindeki banka oturuyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Yazının ikinci bölümü aklımda ama bugün olmayacak.' },
+    { type: 'say', speaker: '', text: 'Bahçenin uğultusunu dinliyor: bir gülüşme, uzaktan bir top sesi.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bazen sadece oturmak da bir şey yapmak sayılır.' },
+    { type: 'sfx', file: 'bell.mp3' },
+    { type: 'say', speaker: '', text: 'Zil çalıyor.' },
     { type: 'jump', goto: 'act1_end' }
   ],
 
   // 12: Perde sonu kartı. ACT II hazır olduğu için doğrudan ona bağlanıyor.
   act1_end: [
+    { type: 'hide', id: 'girl' },
+    { type: 'bg', file: null },
     { type: 'say', speaker: '', text: 'Perde I — Sabah' },
     { type: 'say', speaker: '', text: 'Perde II — Okul' },
     { type: 'end', next: 'act2_start' }
@@ -947,6 +1014,13 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Bu arada, geçen sayıdaki atlarla ilgili yazı senindi değil mi?' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'say', speaker: '', text: '(İçinden) Okumuş demek.' },
+    {
+      type: 'say', speaker: '',
+      text: (game) => bayragaGore(game, 'sabah_yazi', {
+        kutuphane: '(İçinden) Sabah kütüphanede tam da onun ikinci bölümünü karalıyordum.',
+        bahce: '(İçinden) İkinci bölümü hâlâ yazmadım. Belki bu hafta sonu.'
+      }, '(İçinden) Devamını yazsam mı acaba.')
+    },
     { type: 'say', speaker: GIRL_NAME, text: 'Benimdi. Kimsenin okuduğunu sanmıyordum.' },
     { type: 'say', speaker: BOY_NAME, text: 'Ben okudum. Toynak kısmını üç kere okudum, hâlâ tam anlamadım.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
@@ -986,6 +1060,13 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Bu arada... seninle konuşmak iyi geldi.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bir ara kahve içmek ister misin?' },
     { type: 'say', speaker: '', text: '(İçinden) Bunu bekliyor muydum, beklemiyor muydum, emin değilim.' },
+    {
+      type: 'say', speaker: '',
+      text: (game) => bayragaGore(game, 'sabah_kahve', {
+        'true': '(İçinden) Bugünün ikinci kahvesi olurdu.',
+        'false': '(İçinden) Sabah almadım zaten; bugün hiç kahve içmedim.'
+      }, '(İçinden) Kahve kısmına itirazım yok.')
+    },
     {
       type: 'choice',
       prompt: 'Ne cevap verse iyi olur?',
@@ -1104,7 +1185,13 @@ const STORY = {
       }, '(İçinden) Uzun bir gündü.')
     },
     { type: 'say', speaker: '', text: 'Çantasını omzuna alıp kapıdan çıkıyor.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Eve giderken bir kahve daha alırım.' },
+    {
+      type: 'say', speaker: GIRL_NAME,
+      text: (game) => bayragaGore(game, 'sabah_kahve', {
+        'true': 'Eve giderken bir kahve daha alırım.',
+        'false': 'Eve giderken bir kahve alırım. Bugün hiç içmedim.'
+      }, 'Eve giderken bir kahve alırım.')
+    },
     { type: 'bg', file: null },
     { type: 'say', speaker: '', text: 'Kahve Oyunu' },
     { type: 'say', speaker: '', text: '— Son —' },
