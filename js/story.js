@@ -32,8 +32,8 @@
  *
  * "goto" bir etiket adıdır ve her zaman ilgili etiketin 0. adımına atlar.
  */
-const GIRL_NAME = 'Elif';
-const BOY_NAME = 'Kerem';
+const GIRL_NAME = 'İnci';
+const BOY_NAME = 'Yahya';
 const TEACHER_NAME = 'Öğretmen';
 
 const STORY = {
@@ -45,7 +45,7 @@ const STORY = {
     { type: 'show', id: 'girl', file: 'girl_sleepy.svg', position: 'center', transition: 'fade' },
     { type: 'bgm', file: 'morning_theme.mp3' },
     { type: 'camera', effect: 'zoom-in' },
-    { type: 'say', speaker: '', text: `(${GIRL_NAME}'in içinden) Bir dakika daha... sadece bir dakika...` },
+    { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bir dakika daha... sadece bir dakika...` },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Ah, of... yine mi.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Tamam, tamam. Duydum seni.' },
@@ -185,18 +185,18 @@ const STORY = {
   // ================= ACT II: OKUL =================
   //
   // Yapı:
-  //  1) Kerem POV — dergi kulübü (küçük, hikayeyi kilitlemeyen etkileşimler)
+  //  1) Yahya POV — dergi kulübü (küçük, hikayeyi kilitlemeyen etkileşimler)
   //  2) Koridor — dergileri sınıflara dağıtmaya giderken küçük etkileşimler
-  //  3) Elif + Din Kültürü öğretmeni tartışması (Kerem YOK) — ana sekans,
-  //     4 turdan oluşur; her turda Elif'in cevap ÜSLUBU seçilir (felsefi /
+  //  3) İnci + Din Kültürü öğretmeni tartışması (Yahya YOK) — ana sekans,
+  //     4 turdan oluşur; her turda İnci'nin cevap ÜSLUBU seçilir (felsefi /
   //     doğrudan / sakin). Bu seçimler doğru/yanlış olarak puanlanmaz,
-  //     sadece öğretmenin bir sonraki repliğini ve Elif'in tonunu etkiler.
-  //  4) Kerem, tartışmanın ortasında (2. tur sonunda) sınıfa girer — bu,
+  //     sadece öğretmenin bir sonraki repliğini ve İnci'nin tonunu etkiler.
+  //  4) Yahya, tartışmanın ortasında (2. tur sonunda) sınıfa girer — bu,
   //     iki karakterin BİRBİRİNİ İLK KEZ GÖRDÜĞÜ an.
   //  5) İlk bakış — kısa, sakin, romantikleştirilmemiş.
-  //  6) Tartışma 3. ve 4. turla (Kerem sessizce sınıfta) devam edip biter.
-  //  7) Kerem dergiyi tanıtır — ilk doğal (romantik olmayan) diyalog.
-  //  8) Kısa ders sonrası: Kerem POV + Elif POV, birer küçük gözlem.
+  //  6) Tartışma 3. ve 4. turla (Yahya sessizce sınıfta) devam edip biter.
+  //  7) Yahya dergiyi tanıtır — ilk doğal (romantik olmayan) diyalog.
+  //  8) Kısa ders sonrası: Yahya POV + İnci POV, birer küçük gözlem.
   //  9) Perde sonu kartı — mevcut act2_end → act3_start bağlantısı korunur.
 
   // ---- 1) KEREM POV: DERGİ KULÜBÜ ----
@@ -398,7 +398,7 @@ const STORY = {
     { type: 'jump', goto: 'act2_debate_start' }
   ],
 
-  // ---- 3) ELİF + ÖĞRETMEN TARTIŞMASI (Kerem henüz yok) ----
+  // ---- 3) İNCİ + ÖĞRETMEN TARTIŞMASI (Yahya henüz yok) ----
   act2_debate_start: [
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
@@ -415,7 +415,7 @@ const STORY = {
     { type: 'jump', goto: 'act2_debate_turn1' }
   ],
 
-  // Tur 1, aşama A: Elif'in ilk sorgulaması + öğretmenin kesin cevabı.
+  // Tur 1, aşama A: İnci'nin ilk sorgulaması + öğretmenin kesin cevabı.
   act2_debate_turn1: [
     { type: 'say', speaker: TEACHER_NAME, text: 'Bize aktarılmış açık bilgiler var. Bunlar yüzyıllardır orada; üzerinde durulmuş, sağlamlığı belli gerçekler.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyleri sürekli sorgulamak zorunda değilsiniz.' },
@@ -433,13 +433,13 @@ const STORY = {
   act2_debate_turn1_philo: [
     { type: 'say', speaker: GIRL_NAME, text: 'Bilginin aktarılmış olması, onu sorgulamayacağımız anlamına mı geliyor?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Hayır, ama bazı konularda cevap zaten bellidir.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Herkesin tekerleği yeniden icat etmesine gerek yok, Elif.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Herkesin tekerleği yeniden icat etmesine gerek yok, İnci.' },
     { type: 'jump', goto: 'act2_debate_turn1b' }
   ],
   act2_debate_turn1_direct: [
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yüzyıllardır böyle denmiş olması, doğru olduğu anlamına gelmiyor bence.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Doğruluğu zaten sabit, Elif. Bu konuda kafanı karıştırmana gerek yok.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Doğruluğu zaten sabit, İnci. Bu konuda kafanı karıştırmana gerek yok.' },
     { type: 'jump', goto: 'act2_debate_turn1b' }
   ],
   act2_debate_turn1_calm: [
@@ -448,7 +448,7 @@ const STORY = {
     { type: 'jump', goto: 'act2_debate_turn1b' }
   ],
 
-  // Tur 1, aşama B: Elif cevabın varsayımını sorguluyor, öğretmen daha otoriter.
+  // Tur 1, aşama B: İnci cevabın varsayımını sorguluyor, öğretmen daha otoriter.
   act2_debate_turn1b: [
     { type: 'say', speaker: '', text: 'Öğretmenin sesi biraz sertleşiyor, sanki bu tartışmayı daha önce de yaşamış gibi.' },
     {
@@ -463,7 +463,7 @@ const STORY = {
   ],
   act2_debate_turn1b_philo: [
     { type: 'say', speaker: GIRL_NAME, text: "'Cevap zaten belli' demek, sorunun bir daha sorulmaması gerektiği anlamına mı geliyor?" },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyler sürekli sorgulanmaz, Elif. İnanç dediğimiz şey zaten bunun üzerine kuruludur.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyler sürekli sorgulanmaz, İnci. İnanç dediğimiz şey zaten bunun üzerine kuruludur.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Peki inanç, sorgulanmadığı için mi güçlü, yoksa doğru olduğu için mi?' },
     { type: 'jump', goto: 'act2_debate_turn2' }
   ],
@@ -528,7 +528,7 @@ const STORY = {
   ],
   act2_debate_turn2b_philo: [
     { type: 'say', speaker: GIRL_NAME, text: 'Üstün olan taraf, kendi üstünlüğünü nasıl kanıtlıyor peki?' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Kanıtlamaya ihtiyacı yok, Elif. Çünkü zaten mutlak olan odur.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Kanıtlamaya ihtiyacı yok, İnci. Çünkü zaten mutlak olan odur.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Mutlak olduğunu söylemek, onu mutlak yapmıyor ama.' },
     { type: 'jump', goto: 'act2_kerem_arrives' }
   ],
@@ -559,7 +559,7 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Dergi kulübünden gelmiştim. Yeni sayıyı tanıtıp dağıtacaktım.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Tabii, bir dakika bekleyebilirsin.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tabii, sorun değil.' },
-    { type: 'say', speaker: '', text: 'Kerem sınıfın kenarında, elinde dergilerle bekliyor.' },
+    { type: 'say', speaker: '', text: 'Yahya sınıfın kenarında, elinde dergilerle bekliyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Ortasına denk gelmişim işte. Olsun, beklerim.' },
     { type: 'jump', goto: 'act2_first_look' }
   ],
@@ -567,20 +567,20 @@ const STORY = {
   // ---- 5) İLK BAKIŞ — kısa, sakin, romantikleştirilmemiş ----
   act2_first_look: [
     { type: 'camera', effect: 'zoom-in' },
-    { type: 'say', speaker: '', text: 'Konuşma bir anlığına devam ederken, Elif bir an başını çeviriyor.' },
+    { type: 'say', speaker: '', text: 'Konuşma bir anlığına devam ederken, İnci bir an başını çeviriyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Yeni biri mi geldi?' },
     { type: 'say', speaker: '', text: '(İçinden) Dergi kulübünden olmalı, elindekilere bakılırsa.' },
     { type: 'say', speaker: '', text: '(İçinden) Tam da şimdi mi geldiler...' },
-    { type: 'say', speaker: '', text: 'Kerem de ona bakıyor. Kısa bir sessizlik.' },
+    { type: 'say', speaker: '', text: 'Yahya da ona bakıyor. Kısa bir sessizlik.' },
     { type: 'say', speaker: '', text: 'Sınıftaki kimse bu bakışmayı fark etmiyor bile; herkes hâlâ tartışmada.' },
     { type: 'say', speaker: '', text: '(İçinden) Neyse. Konuya dön.' },
     { type: 'camera', effect: 'zoom-out' },
-    { type: 'say', speaker: '', text: 'Elif tekrar öğretmene dönüyor.' },
-    { type: 'say', speaker: '', text: 'Kerem de dergileri tutarak beklemeye devam ediyor.' },
+    { type: 'say', speaker: '', text: 'İnci tekrar öğretmene dönüyor.' },
+    { type: 'say', speaker: '', text: 'Yahya da dergileri tutarak beklemeye devam ediyor.' },
     { type: 'jump', goto: 'act2_debate_turn3' }
   ],
 
-  // ---- 6) Tartışma devam ediyor (Kerem sınıfta, sessiz) ----
+  // ---- 6) Tartışma devam ediyor (Yahya sınıfta, sessiz) ----
   act2_debate_turn3: [
     { type: 'say', speaker: '', text: 'Öğretmen sıraların arasında yürümeye başlıyor.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Ahlakın kaynağı konusunda kafanız karışmasın: iyi ve kötü, bize dinen bildirilmiştir.' },
@@ -608,7 +608,7 @@ const STORY = {
   ],
   act2_debate_turn3_calm: [
     { type: 'say', speaker: GIRL_NAME, text: 'Ben sadece kaynağın tek olup olmadığını merak ediyorum, hocam.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Tektir, Elif. Başka bir zemin aramak insanı yanlış yollara sürükleyebilir.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Tektir, İnci. Başka bir zemin aramak insanı yanlış yollara sürükleyebilir.' },
     { type: 'jump', goto: 'act2_debate_turn3b' }
   ],
 
@@ -690,7 +690,7 @@ const STORY = {
   ],
   act2_debate_turn4b_philo: [
     { type: 'say', speaker: GIRL_NAME, text: 'Teslim olmak ile ikna olmak aynı şey değil bence.' },
-    { type: 'say', speaker: TEACHER_NAME, text: 'Olabilir. Ama ikisi de seni aynı yere götürebilir, Elif.' },
+    { type: 'say', speaker: TEACHER_NAME, text: 'Olabilir. Ama ikisi de seni aynı yere götürebilir, İnci.' },
     { type: 'jump', goto: 'act2_debate_end' }
   ],
   act2_debate_turn4b_direct: [
@@ -720,7 +720,7 @@ const STORY = {
   act2_magazine_intro: [
     { type: 'say', speaker: TEACHER_NAME, text: 'Evet, sanırım sıra dergi kulübünde.' },
     { type: 'say', speaker: BOY_NAME, text: 'Teşekkürler hocam.' },
-    { type: 'say', speaker: '', text: 'Kerem öne çıkıp dergiyi gösteriyor.' },
+    { type: 'say', speaker: '', text: 'Yahya öne çıkıp dergiyi gösteriyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bu ayki sayı çıktı. İçinde öğrenci yazıları, birkaç çizim, okul etkinliklerinden haberler ve kısa hikayeler var.' },
     { type: 'say', speaker: BOY_NAME, text: 'İsteyen teneffüste kulüp masasından alabilir.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Kapak kimin işi?' },
@@ -759,7 +759,7 @@ const STORY = {
     { type: 'hide', id: 'boy' },
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
-    { type: 'say', speaker: '', text: 'Kerem koridorda, elinde kalan birkaç dergiyle.' },
+    { type: 'say', speaker: '', text: 'Yahya koridorda, elinde kalan birkaç dergiyle.' },
     { type: 'say', speaker: '', text: '(İçinden) İçeri girdiğimde böyle bir tartışmanın ortasına düşeceğimi düşünmemiştim.' },
     { type: 'say', speaker: BOY_NAME, text: 'Sınıfın yarısı hocayla tartışıyor sandım, az kalsın geri kapıdan çıkıyordum.' },
     { type: 'say', speaker: '', text: '(İçinden) Ama iyi ki çıkmamışım, ilginç bir dersmiş.' },
@@ -767,7 +767,7 @@ const STORY = {
     { type: 'hide', id: 'boy' },
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'girl', file: 'girl_happy.svg', position: 'center', transition: 'fade' },
-    { type: 'say', speaker: '', text: 'Elif çantasını topluyor.' },
+    { type: 'say', speaker: '', text: 'İnci çantasını topluyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Yeni çocuk muydu?' },
     { type: 'say', speaker: '', text: '(İçinden) Dergi kulübündeymiş demek.' },
     { type: 'say', speaker: '', text: '(İçinden) Beklediğimden daha rahat konuştu, öğretmene karşı bile.' },
@@ -792,7 +792,7 @@ const STORY = {
     { type: 'camera', effect: 'slide-left' },
     { type: 'say', speaker: '', text: 'Koridorda yürümeye devam ediyor. Aklında hâlâ biraz kimya, biraz da eve gidince ne yiyeceği var.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: '', text: `(${GIRL_NAME}'in içinden) Bugün fena değildi aslında.` },
+    { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bugün fena değildi aslında.` },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'say', speaker: '', text: 'Az ileride, tanımadığı biri ona doğru yürüyor gibi görünüyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Bu sabah gördüğüm... öğrenci mi neydi?' },
