@@ -140,7 +140,7 @@ const STORY = {
       date: 'Salı',
       notifications: [
         { app: 'Mesajlar', from: 'Annem', text: 'Süt almayı unutma, tamam mı? :)' },
-        { app: 'Dergi Kulübü', text: 'Yeni sayı bugün sınıflara dağıtılacak.' },
+        { app: 'Okul Duyuruları', text: "İngilizce Bilgi Yarışması bugün 15.00'te konferans salonunda." },
         { app: 'Hatırlatıcı', text: 'Matematik ödevini çantaya koy!' },
         { app: 'Notlar', text: 'Atlar — 2. bölüm (taslak): toynak kısmını yeniden yaz.' }
       ],
@@ -151,7 +151,7 @@ const STORY = {
         { time: '13:00', subject: 'Beden Eğitimi' }
       ]
     },
-    { type: 'say', speaker: '', text: '(İçinden) Yeni sayı bugün çıkıyor demek.' },
+    { type: 'say', speaker: '', text: '(İçinden) İngilizce yarışması bugünmüş; bizim sınıftan kim çıkacak acaba.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bir de bu var tabii.' },
     { type: 'say', speaker: '', text: '(İçinden) Geçen hafta soru sorduğumda "bu tartışmaya açık bir konu değil" demişti.' },
