@@ -54,7 +54,11 @@ class SynthAudio {
     return this.ctx;
   }
 
-  /** Bir akoru yumuşak giriş/çıkışla çalar. */
+  /**
+   * Bir akoru çalar. Zarf bilerek "yumuşak giriş - uzun sürüş - yumuşak çıkış"
+   * biçiminde: akorlar üst üste bindiği için arada sessizlik kalmıyor, arka
+   * planda sürekli bir ped duyuluyor.
+   */
   _chord(freqs, at, dur, cutoff) {
     const ctx = this.ctx;
     const filter = ctx.createBiquadFilter();
@@ -62,14 +66,18 @@ class SynthAudio {
     filter.frequency.value = cutoff;
     filter.connect(this.musicGain);
 
+    const attack = Math.min(0.9, dur * 0.2);
+    const release = Math.min(1.8, dur * 0.35);
+
     freqs.forEach((f, i) => {
       const osc = ctx.createOscillator();
       osc.type = i === 0 ? 'triangle' : 'sine';
       osc.frequency.value = f;
       const gain = ctx.createGain();
-      const peak = i === 0 ? 0.10 : 0.06;
+      const peak = i === 0 ? 0.26 : 0.16;
       gain.gain.setValueAtTime(0.0001, at);
-      gain.gain.exponentialRampToValueAtTime(peak, at + dur * 0.35);
+      gain.gain.linearRampToValueAtTime(peak, at + attack);
+      gain.gain.setValueAtTime(peak, at + Math.max(attack, dur - release));
       gain.gain.exponentialRampToValueAtTime(0.0001, at + dur);
       osc.connect(gain); gain.connect(filter);
       osc.start(at); osc.stop(at + dur + 0.05);
@@ -79,7 +87,7 @@ class SynthAudio {
   /** Bir döngü boyunca akorları planlar. */
   _scheduleLoop(track, startAt) {
     track.chords.forEach((chord, i) => {
-      this._chord(chord, startAt + i * track.beat, track.beat * 1.25, track.cutoff);
+      this._chord(chord, startAt + i * track.beat, track.beat * 1.6, track.cutoff);
     });
   }
 
@@ -96,7 +104,7 @@ class SynthAudio {
     this._scheduleLoop(track, this.ctx.currentTime + 0.05);
     this.musicGain.gain.cancelScheduledValues(this.ctx.currentTime);
     this.musicGain.gain.setValueAtTime(0.0001, this.ctx.currentTime);
-    this.musicGain.gain.linearRampToValueAtTime(0.22 * this.musicVolume, this.ctx.currentTime + 2.5);
+    this.musicGain.gain.linearRampToValueAtTime(0.45 * this.musicVolume, this.ctx.currentTime + 2.5);
     this.timer = setInterval(() => {
       if (!this.ctx) return;
       this._scheduleLoop(track, this.ctx.currentTime + 0.05);
@@ -119,7 +127,7 @@ class SynthAudio {
     if (this.ctx && this.musicGain && this.trackName) {
       const t = this.ctx.currentTime;
       this.musicGain.gain.cancelScheduledValues(t);
-      this.musicGain.gain.linearRampToValueAtTime(0.22 * v, t + 0.2);
+      this.musicGain.gain.linearRampToValueAtTime(0.45 * v, t + 0.2);
     }
   }
 
@@ -141,7 +149,7 @@ class SynthAudio {
         osc.frequency.value = 880;
         const g = ctx.createGain();
         g.gain.setValueAtTime(0.0001, at);
-        g.gain.exponentialRampToValueAtTime(0.12 * vol, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.24 * vol, at + 0.01);
         g.gain.exponentialRampToValueAtTime(0.0001, at + 0.16);
         osc.connect(g); g.connect(this.master);
         osc.start(at); osc.stop(at + 0.2);
@@ -155,7 +163,7 @@ class SynthAudio {
         osc.type = 'sine';
         osc.frequency.value = f;
         const g = ctx.createGain();
-        const peak = (0.10 / (i + 1)) * vol;
+        const peak = (0.22 / (i + 1)) * vol;
         g.gain.setValueAtTime(0.0001, now);
         g.gain.exponentialRampToValueAtTime(peak, now + 0.02);
         g.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
@@ -178,7 +186,7 @@ class SynthAudio {
       filter.type = key === 'page' ? 'bandpass' : 'lowpass';
       filter.frequency.value = key === 'page' ? 2200 : 320;
       const g = ctx.createGain();
-      g.gain.value = (key === 'page' ? 0.28 : 0.45) * vol;
+      g.gain.value = (key === 'page' ? 0.40 : 0.60) * vol;
       src.connect(filter); filter.connect(g); g.connect(this.master);
       src.start(now);
 
@@ -188,7 +196,7 @@ class SynthAudio {
         osc.frequency.setValueAtTime(150, now);
         osc.frequency.exponentialRampToValueAtTime(70, now + 0.18);
         const og = ctx.createGain();
-        og.gain.setValueAtTime(0.22 * vol, now);
+        og.gain.setValueAtTime(0.34 * vol, now);
         og.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
         osc.connect(og); og.connect(this.master);
         osc.start(now); osc.stop(now + 0.3);
