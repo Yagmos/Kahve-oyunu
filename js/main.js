@@ -54,6 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
     sceneManager
   });
 
+  const debateManager = new DebateManager({
+    layerEl: document.getElementById('debate-layer'),
+    screenEl: gameScreenEl,
+    portraitManager,
+    sceneManager
+  });
+
   const audioManager = new AudioManager();
 
   const phoneManager = new PhoneManager({
@@ -68,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sceneManager,
     dialogueManager,
     portraitManager,
+    debateManager,
     audioManager,
     phoneManager,
     onExitToMenu: () => {

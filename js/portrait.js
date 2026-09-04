@@ -122,6 +122,16 @@ class PortraitManager {
     return map;
   }
 
+  /** Konuşmacı adından karakter id'si (DebateManager da kullanır). */
+  idForSpeaker(speaker) {
+    return speaker ? (this.speakerToId[speaker] || null) : null;
+  }
+
+  /** Karakter id'sinden görünen ad. */
+  nameForId(id) {
+    return this.idToName[id] || '';
+  }
+
   /** 'show' adımlarında çağrılır; POV çözümlemesinin yedek kaynağı. */
   noteShown(id) {
     if (id) this.lastShownId = id;
@@ -138,9 +148,10 @@ class PortraitManager {
 
   /**
    * Fallback zinciri: sahnedeki ifade -> karakterin varsayılan ifadesi -> null.
+   * DebateManager da ifadeyi buradan çözer; ikinci bir ifade sistemi yoktur.
    * @returns {string|null} Kullanılacak dosya adı.
    */
-  _resolveFile(id) {
+  resolveFileFor(id) {
     const available = PORTRAIT_ASSETS[id];
     if (!available || !available.length) return null;
 
@@ -173,7 +184,7 @@ class PortraitManager {
     const named = speaker ? this.speakerToId[speaker] : null;
     if (named) {
       this.currentId = named;
-      this._apply(this._resolveFile(named), false, speaker);
+      this._apply(this.resolveFileFor(named), false, speaker);
       return;
     }
 
@@ -182,7 +193,7 @@ class PortraitManager {
       const povId = LABEL_POV[label] || this.lastShownId;
       if (povId && PORTRAIT_ASSETS[povId]) {
         this.currentId = povId;
-        this._apply(this._resolveFile(povId), true, this.idToName[povId] || '');
+        this._apply(this.resolveFileFor(povId), true, this.idToName[povId] || '');
         return;
       }
     }
@@ -196,7 +207,7 @@ class PortraitManager {
   refreshExpression(id) {
     if (!id || id !== this.currentId) return;
     const inner = this.colEl.classList.contains('inner');
-    this._apply(this._resolveFile(id), inner, this.nameplateEl.textContent);
+    this._apply(this.resolveFileFor(id), inner, this.nameplateEl.textContent);
   }
 
   _apply(file, isInner, label) {

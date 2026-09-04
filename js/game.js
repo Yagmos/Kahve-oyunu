@@ -31,6 +31,8 @@ class Game {
     this.dialogue = deps.dialogueManager;
     // Portre katmanı opsiyoneldir; yoksa motor aynen çalışmaya devam eder.
     this.portrait = deps.portraitManager || null;
+    // Debate katmanı da opsiyoneldir; yoksa oyun normal modda çalışır.
+    this.debate = deps.debateManager || null;
     this.audio = deps.audioManager;
     this.phone = deps.phoneManager;
     this.onExitToMenu = deps.onExitToMenu || function () {};
@@ -50,6 +52,7 @@ class Game {
     this.phone.hide();
     this.scene.reset();
     if (this.portrait) this.portrait.reset();
+    if (this.debate) this.debate.reset();
     this.finished = false;
     this.waitingForChoice = false;
     this.waitingForPhone = false;
@@ -71,6 +74,7 @@ class Game {
     this.phone.hide();
     this.scene.reset();
     if (this.portrait) this.portrait.reset();
+    if (this.debate) this.debate.reset();
     this.finished = false;
     this.waitingForChoice = false;
     this.waitingForPhone = false;
@@ -91,6 +95,7 @@ class Game {
     // Kayıt bir 'choice'/'phone' adımındaysa öncesindeki 'say' tekrar
     // oynatılmaz; portrenin boş kalmaması için son konuşmacıyı hatırlıyoruz.
     let lastSay = null;
+    let lastSayIndex = 0;
     for (let i = 0; i < uptoIndex && i < steps.length; i++) {
       const step = steps[i];
       switch (step.type) {
@@ -98,6 +103,7 @@ class Game {
           // Metin/daktilo tekrar çalıştırılmaz, sadece portre için gereken
           // konuşmacı ve metin not edilir.
           lastSay = { speaker: step.speaker || '', text: resolveDynamic(step.text, this) };
+          lastSayIndex = i;
           break;
         case 'bg':
           this.scene.setBackground(step.file);
@@ -123,6 +129,11 @@ class Game {
     // Sahne durumu (occupied) tamamlandıktan sonra portreyi sessizce geri yükle.
     if (this.portrait && lastSay) {
       this.portrait.update(lastSay.speaker, lastSay.text, label);
+    }
+    // Kayıt bir choice/phone adımındaysa tartışma sahnesi de boş kalmasın.
+    if (this.debate) {
+      this.debate.syncMode(label);
+      if (lastSay) this.debate.update(lastSay.speaker, label, lastSayIndex);
     }
   }
 
@@ -153,6 +164,9 @@ class Game {
       return;
     }
 
+    // Debate Mode yalnızca etiket adından çözülür; story.js'e dokunulmaz.
+    if (this.debate) this.debate.syncMode(this.label);
+
     switch (step.type) {
       case 'bg':
         this.scene.setBackground(step.file);
@@ -178,6 +192,7 @@ class Game {
       case 'expr':
         this.scene.changeExpression(step.id, resolveDynamic(step.file, this));
         if (this.portrait) this.portrait.refreshExpression(step.id);
+        if (this.debate) this.debate.refreshExpression(step.id);
         this._advanceAuto();
         break;
 
@@ -203,6 +218,7 @@ class Game {
           const rawText = resolveDynamic(step.text, this);
           this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText));
           if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
+          if (this.debate) this.debate.update(step.speaker, this.label, this.index);
         }
         this._saveProgress();
         break;
@@ -280,6 +296,8 @@ class Game {
   _returnToMenu() {
     this.audio.stopBgm();
     if (this.portrait) this.portrait.reset();
+    if (this.debate) this.debate.reset();
+    if (this.debate) this.debate.reset();
     this.onExitToMenu();
   }
 
