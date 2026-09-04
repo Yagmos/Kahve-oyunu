@@ -252,6 +252,16 @@ button {
   pointer-events: none;
 }
 
+/* İnci'nin çizimi büst kadrajlı; tam boy placeholder'larla aynı kutuda küçük
+   kalmasın diye kendi ölçüsü var. */
+.character-slot[data-char="girl"] {
+  width: 74%;
+  height: 58%;
+  /* Büst kadrajı olduğu için tabana yaslanmaz; yüzü diyalog kutusunun
+     üstünde kalsın diye biraz yukarıdan başlar. */
+  bottom: 16%;
+}
+
 .character-slot.visible {
   opacity: 1;
   transform: translate(var(--tx), 0);
@@ -391,6 +401,12 @@ button {
      oturması için yatayda da yakınlaştırılıp yüz hizasından kırpılıyor. */
   background-size: 140% auto;
   background-position: 50% 15%;
+}
+
+/* İnci'nin çizimi büst; kare portrede yüz ortalanır. */
+.portrait-image[data-char="girl"] {
+  background-size: auto 122%;
+  background-position: 50% 4%;
 }
 
 /* Yahya'nın saçı daha kısa; üstte boşluk kalmaması için pencere biraz aşağı. */

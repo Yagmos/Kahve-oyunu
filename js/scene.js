@@ -33,6 +33,7 @@ class SceneManager {
     const el = this.slots[position];
     if (!el) return;
     el.style.backgroundImage = '';
+    delete el.dataset.char;
     el.classList.remove('visible', 'slide-in-left', 'slide-in-right', 'slide-in-center');
   }
 
@@ -63,6 +64,8 @@ class SceneManager {
     if (!slotEl || !file) return;
 
     slotEl.style.backgroundImage = `url("${assetPath('characters', file)}")`;
+    // Karakter başına kadraj farkı CSS'ten ayarlanabilsin (portre çizim vs tam boy).
+    slotEl.dataset.char = id;
     slotEl.classList.remove('visible', 'slide-in-left', 'slide-in-right', 'slide-in-center');
 
     requestAnimationFrame(() => {
