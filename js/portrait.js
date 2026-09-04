@@ -104,6 +104,8 @@ class PortraitManager {
     this.scene = refs.sceneManager;
 
     this.speakerToId = this._buildSpeakerMap();
+    this.idToName = {};
+    Object.keys(this.speakerToId).forEach((name) => { this.idToName[this.speakerToId[name]] = name; });
     this.currentId = null;
     this.lastShownId = null;
   }
@@ -162,6 +164,11 @@ class PortraitManager {
    * @param {string} label O anki hikaye etiketi (POV çözümlemesi için).
    */
   update(speaker, text, label) {
+    // İç ses, metnin kendi stiliyle (soluk + italik) belli edilir; bu yüzden
+    // portre çözülemese bile kutuya inner-thought sınıfı uygulanır.
+    const isInner = !speaker && typeof text === 'string' && INNER_THOUGHT_RE.test(text);
+    if (this.boxEl) this.boxEl.classList.toggle('inner-thought', isInner);
+
     // 1) Adı olan konuşmacı: doğrudan eşle.
     const named = speaker ? this.speakerToId[speaker] : null;
     if (named) {
@@ -170,13 +177,12 @@ class PortraitManager {
       return;
     }
 
-    // 2) Adı yok: iç monolog mu, düz anlatım mı?
-    const isInner = !speaker && typeof text === 'string' && INNER_THOUGHT_RE.test(text);
+    // 2) Adı yok ama iç monologsa, POV sahibinin portresi ve adı gösterilir.
     if (isInner) {
       const povId = LABEL_POV[label] || this.lastShownId;
       if (povId && PORTRAIT_ASSETS[povId]) {
         this.currentId = povId;
-        this._apply(this._resolveFile(povId), true, 'İçinden');
+        this._apply(this._resolveFile(povId), true, this.idToName[povId] || '');
         return;
       }
     }
@@ -218,6 +224,6 @@ class PortraitManager {
     this.imageEl.removeAttribute('data-char');
     if (this.nameplateEl) this.nameplateEl.textContent = '';
     if (this.colEl) this.colEl.classList.remove('inner');
-    if (this.boxEl) this.boxEl.classList.remove('has-portrait');
+    if (this.boxEl) this.boxEl.classList.remove('has-portrait', 'inner-thought');
   }
 }

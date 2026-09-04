@@ -9,6 +9,16 @@ function resolveDynamic(value, game) {
 }
 
 /**
+ * İç monolog satırlarındaki "(İçinden)" / "(İnci'nin içinden)" önekini
+ * EKRANDA gizler. Hikaye verisi olduğu gibi kalır; iç ses olduğu artık
+ * metnin soluk/italik stilinden anlaşılır. Portre katmanı POV'u çözmek
+ * için ham metni almaya devam eder.
+ */
+function stripInnerThoughtPrefix(text) {
+  return typeof text === 'string' ? text.replace(/^\([^)]*[İIi]çinden\)\s*/, '') : text;
+}
+
+/**
  * Game: hikaye adımlarını (STORY) sırayla oynatan ana motor.
  * Sahne/diyalog/ses yöneticilerini birbirine bağlar.
  */
@@ -189,8 +199,11 @@ class Game {
 
       case 'say':
         this.dialogue.hideChoices();
-        this.dialogue.say(step.speaker, resolveDynamic(step.text, this));
-        if (this.portrait) this.portrait.update(step.speaker, resolveDynamic(step.text, this), this.label);
+        {
+          const rawText = resolveDynamic(step.text, this);
+          this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText));
+          if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
+        }
         this._saveProgress();
         break;
 

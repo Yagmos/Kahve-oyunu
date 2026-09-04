@@ -421,11 +421,15 @@ button {
   text-overflow: ellipsis;
 }
 
-/* İç monologda levha "İçinden" yazar ve daha sakin görünür. */
+/* İç monologda levha yine karakterin adını yazar, sadece biraz daha sakin. */
 .portrait-col.inner .portrait-nameplate {
-  font-weight: 600;
+  color: rgba(217, 164, 65, 0.72);
+}
+
+/* İç ses: ayrı bir etiket yerine metnin kendisi soluk ve italik olur. */
+.dialogue-box.inner-thought .dialogue-text {
   font-style: italic;
-  color: rgba(217, 164, 65, 0.75);
+  color: rgba(245, 233, 218, 0.68);
 }
 
 .portrait-col.inner {
