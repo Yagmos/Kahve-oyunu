@@ -132,8 +132,6 @@ const STORY = {
       ]
     },
     { type: 'say', speaker: '', text: '(İçinden) Yeni sayı bugün çıkıyor demek.' },
-    { type: 'say', speaker: '', text: '(İçinden) Geçen sayıda benim yazım vardı. Atlarla ilgili.' },
-    { type: 'say', speaker: '', text: '(İçinden) Kimse bir şey demedi, ben de sormadım.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bir de bu var tabii.' },
     { type: 'say', speaker: '', text: '(İçinden) Geçen hafta soru sorduğumda "bu tartışmaya açık bir konu değil" demişti.' },
@@ -181,8 +179,7 @@ const STORY = {
   act1_walk: [
     { type: 'say', speaker: '', text: 'Sokaklar hâlâ yeni uyanıyor; birkaç kişi telaşla yürüyor, bir kedi kaldırımda geriniyor.' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} kulaklığını takıyor, adımlarını hızlandırıyor.` },
-    { type: 'say', speaker: '', text: '(İçinden) Yazıyı okuyan biri çıkmıştır belki. Belki de çıkmamıştır.' },
-    { type: 'say', speaker: '', text: '(İçinden) Neyse, önemli değil.' },
+    { type: 'say', speaker: '', text: '(İçinden) On dakika erken varırsam kütüphanede oturabilirim.' },
     { type: 'say', speaker: '', text: 'Birkaç dakika sonra okulun bahçesine giriyor.' },
     { type: 'jump', goto: 'act1_end' }
   ],
@@ -793,6 +790,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Dergi kulübündeymiş demek.' },
     { type: 'say', speaker: '', text: '(İçinden) Tartışmanın ortasına düştü ama hiç sıkılmış görünmedi.' },
     { type: 'say', speaker: '', text: 'Sıradan bir gündü, dergiyi eline alıp koridora çıkıyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Bu sayıya bir şey yetiştiremedim.' },
     { type: 'say', speaker: '', text: '(İçinden) Neyse, sıradaki derse geç kalmayayım.' },
     { type: 'hide', id: 'girl' },
     { type: 'jump', goto: 'act2_end' }
