@@ -96,6 +96,9 @@ class Game {
     // oynatılmaz; portrenin boş kalmaması için son konuşmacıyı hatırlıyoruz.
     let lastSay = null;
     let lastSayIndex = 0;
+    // Debate sahnesi tek görsel gösterdiği için son ADI OLAN konuşmacı ayrıca tutulur;
+    // kayıt bir anlatım satırındaysa sahne boş kalmaz.
+    let lastNamedSpeaker = '';
     for (let i = 0; i < uptoIndex && i < steps.length; i++) {
       const step = steps[i];
       switch (step.type) {
@@ -104,6 +107,7 @@ class Game {
           // konuşmacı ve metin not edilir.
           lastSay = { speaker: step.speaker || '', text: resolveDynamic(step.text, this) };
           lastSayIndex = i;
+          if (step.speaker) lastNamedSpeaker = step.speaker;
           break;
         case 'bg':
           this.scene.setBackground(step.file);
@@ -112,9 +116,12 @@ class Game {
           this.scene.showCharacter(step.id, step);
           if (this.portrait) this.portrait.noteShown(step.id);
           break;
-        case 'expr':
-          this.scene.changeExpression(step.id, resolveDynamic(step.file, this));
+        case 'expr': {
+          const exprFile = resolveDynamic(step.file, this);
+          this.scene.changeExpression(step.id, exprFile);
+          if (this.debate) this.debate.noteExpression(step.id, exprFile);
           break;
+        }
         case 'hide':
           this.scene.hideCharacter(step.id);
           break;
@@ -133,7 +140,7 @@ class Game {
     // Kayıt bir choice/phone adımındaysa tartışma sahnesi de boş kalmasın.
     if (this.debate) {
       this.debate.syncMode(label);
-      if (lastSay) this.debate.update(lastSay.speaker, label, lastSayIndex);
+      if (lastSay) this.debate.update(lastNamedSpeaker || lastSay.speaker, label, lastSayIndex);
     }
   }
 
@@ -189,12 +196,15 @@ class Game {
         this._advanceAuto();
         break;
 
-      case 'expr':
-        this.scene.changeExpression(step.id, resolveDynamic(step.file, this));
+      case 'expr': {
+        const exprFile = resolveDynamic(step.file, this);
+        this.scene.changeExpression(step.id, exprFile);
         if (this.portrait) this.portrait.refreshExpression(step.id);
-        if (this.debate) this.debate.refreshExpression(step.id);
+        // Öğretmen sahneye 'show' edilmediği için pozu dosya adından gider.
+        if (this.debate) this.debate.refreshExpression(step.id, exprFile);
         this._advanceAuto();
         break;
+      }
 
       case 'hide':
         this.scene.hideCharacter(step.id);

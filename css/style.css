@@ -405,13 +405,6 @@ button {
   background-position: 44% 2%;
 }
 
-/* Debate: öğretmen büst olduğu için tam boy figürler gibi taşirilmaz;
-   genişliğe oturtulup slotun altina yaslanir, böylece kesilmeden görünür. */
-#screen-game.debate-mode [data-slot="teacher"] .debate-char-art {
-  background-size: auto 92%;
-  background-position: 42% bottom;
-}
-
 /* Portrenin altındaki isim levhası (referanstaki gibi). */
 .portrait-nameplate {
   flex: 0 0 auto;
@@ -723,73 +716,38 @@ button {
   font-size: 0.9rem;
 }
 
-/* ---- Karakterler: ekranın ana görseli ---- */
+/* ---- Sahne: ekranın ana görseli, konuşan karakter ---- */
 
-.debate-char {
+/* Tek görsel; metin kutusunun üstündeki tüm alanı kaplar. Bütün pozlar aynı
+   tuvale (aynı kafa boyutu/konumu) göre üretildiği için poz değişince
+   karakter yer değiştirmez, boyut atlamaz. */
+.debate-stage {
   position: absolute;
-  bottom: calc(var(--dialogue-h, 150px) + var(--safe-bottom) + 20px);
-  width: 50%;
-  height: 60%;
+  left: 0;
+  right: 0;
+  top: 0;
+  /* SABİT: metin kutusunun yüksekliği replikten replige değişse bile
+     karakter yerinden oynamasın diye --dialogue-h'e bağlanmaz. */
+  bottom: calc(var(--safe-bottom) + 96px);
   opacity: 0;
-  transform: translateY(10px) scale(0.97);
-  transition: opacity 260ms ease, transform 260ms ease, filter 260ms ease;
-  will-change: opacity, transform;
+  transition: opacity 200ms ease;
 }
 
-.debate-char.present { opacity: 0.62; }
-
-.debate-char.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: none;
-}
-
-.debate-char.dim {
-  opacity: 0.58;
-  transform: translateY(0) scale(0.965);
-  filter: brightness(0.72) saturate(0.9);
-}
-
-.debate-left { left: 0.5%; }
-.debate-right { right: 0.5%; }
+.debate-stage.present { opacity: 1; }
 
 .debate-char-art {
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
-  /* Figürü dikeyde biraz taşırıp alttan kırpıyoruz: yüz büyük kalır,
-     placeholder SVG'lerin alt kenarındaki filigran görünmez. */
-  background-size: auto 114%;
-  background-position: center top;
+  background-size: auto 72%;
+  background-position: center bottom;
 }
 
-.debate-char-name {
-  position: absolute;
-  top: -22px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(217, 164, 65, 0.85);
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+/* Yahya'nın tartışma görseli yok; placeholder SVG tam boy figür olduğu için
+   biraz taşırılıp alttan kırpılır. */
+.debate-stage[data-char="boy"] .debate-char-art {
+  background-size: auto 95%;
 }
-
-/* Tartışmanın ortasında içeri giren Yahya: kenarda, küçük, arkada. */
-.debate-entrant {
-  left: 50%;
-  width: 30%;
-  height: 34%;
-  transform: translate(-50%, 10px) scale(0.97);
-  z-index: -1;
-}
-
-.debate-entrant.present { opacity: 0.5; }
-.debate-entrant.active { opacity: 0.95; transform: translate(-50%, 0) scale(1); }
-.debate-entrant.dim { opacity: 0.45; transform: translate(-50%, 0) scale(0.965); }
-.debate-entrant .debate-char-name { font-size: 0.7rem; top: -18px; }
 
 /* ---- Vurgu: seçilen karşı çıkış repliğinde kısa sarsıntı + flash ---- */
 
@@ -825,8 +783,4 @@ button {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
 }
 
-/* Alçak ekranlarda karakterleri biraz kısalt, taşma olmasın. */
-@media (max-height: 720px) {
-  .debate-char { height: 52%; }
-  .debate-entrant { height: 30%; }
-}
+

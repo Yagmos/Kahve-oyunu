@@ -3,27 +3,45 @@
  * "Debate Mode" sunumunu yönetir.
  *
  * Tasarım notları:
- *  - Oyunun geri kalanı (Act I, Act II'nin diğer bölümleri, Act III) normal
- *    sahne + Stardew tarzı portre sistemiyle çalışmaya DEVAM eder. Debate Mode
- *    yalnızca aşağıdaki etiketlerde devreye girer.
- *  - İkinci bir ifade sistemi KURMAZ. Hangi karakterin hangi ifade dosyasını
- *    kullanacağını PortraitManager'a sorar; o da tek doğruluk kaynağı olan
- *    SceneManager.occupied'ı okur.
- *  - story.js'e hiç dokunulmaz; mod tamamen etiket adından çözülür.
+ *  - Sahnede TEK görsel vardır: o an konuşan karakter. Altta ince diyalog
+ *    kutusu durur. Karakterler yer/boyut değiştirmez; bütün pozlar aynı
+ *    kadraja (aynı tuval, aynı kafa boyutu ve konumu) göre üretilmiştir.
+ *  - İkinci bir ifade sistemi KURMAZ. Tek sinyal kaynağı story.js'teki 'expr'
+ *    adımlarıdır: İnci'nin ifadesi PortraitManager (SceneManager.occupied)
+ *    üzerinden, sahneye hiç 'show' edilmeyen öğretmenin pozu 'expr' adımının
+ *    dosya adından çözülür.
+ *  - Modun açılması tamamen etiket adından gelir; story.js'te mod anahtarı yok.
  */
 
 /** Tartışmanın geçtiği etiketler: act2_debate* + Yahya'nın girdiği iki sahne. */
 const DEBATE_LABEL_PREFIX = 'act2_debate';
 const DEBATE_EXTRA_LABELS = ['act2_kerem_arrives', 'act2_first_look'];
 
-/** Sahnedeki roller: solda tartışan öğrenci, sağda öğretmen. */
-const DEBATE_LEFT_ID = 'girl';
-const DEBATE_RIGHT_ID = 'teacher';
-/** Tartışmanın ortasında içeri giren karakter (küçük, kenarda). */
-const DEBATE_ENTRANT_ID = 'boy';
-
 /** İnci'nin seçilen karşı çıkış repliği bu etiketlerin ilk sözüdür. */
 const REBUTTAL_LABEL_RE = /_(philo|direct|calm)$/;
+
+/**
+ * Debate Mode'a özel tam ekran görseller. Diyalog kutusundaki küçük portre
+ * ayrı bir görsel ailesi kullandığı için bu dosyalar yalnızca tartışma
+ * sahnesinde görünür.
+ *  - Öğretmen: poz adı doğrudan 'expr' dosyasından gelir.
+ *  - İnci: PortraitManager'ın çözdüğü ifade (neutral/annoyed/surprised) eşlenir.
+ */
+const DEBATE_ART = {
+  teacher: {
+    calm: 'teacher_debate_calm.png',
+    stern: 'teacher_debate_stern.png',
+    point: 'teacher_debate_point.png'
+  },
+  girl: {
+    neutral: 'girl_debate_neutral.png',
+    annoyed: 'girl_debate_annoyed.png',
+    surprised: 'girl_debate_surprised.png'
+  }
+};
+
+/** Poz/ifade çözülemezse kullanılacak duruş. */
+const DEBATE_DEFAULT_POSE = { teacher: 'stern', girl: 'neutral' };
 
 class DebateManager {
   /**
@@ -37,18 +55,13 @@ class DebateManager {
     this.scene = refs.sceneManager;
 
     this.active = false;
-    this.slots = {};
+    this.poses = {};
+    this.currentId = null;
+    this.currentFile = null;
     this.shakeTimer = null;
 
-    if (this.layerEl) {
-      [DEBATE_LEFT_ID, DEBATE_RIGHT_ID, DEBATE_ENTRANT_ID].forEach((id) => {
-        this.slots[id] = {
-          root: this.layerEl.querySelector(`[data-slot="${id}"]`),
-          art: this.layerEl.querySelector(`[data-slot="${id}"] .debate-char-art`),
-          name: this.layerEl.querySelector(`[data-slot="${id}"] .debate-char-name`)
-        };
-      });
-    }
+    this.stageEl = this.layerEl ? this.layerEl.querySelector('[data-slot="stage"]') : null;
+    this.artEl = this.layerEl ? this.layerEl.querySelector('.debate-char-art') : null;
   }
 
   /** Bu etiket tartışmanın parçası mı? */
@@ -63,11 +76,12 @@ class DebateManager {
     if (want === this.active) return;
     this.active = want;
     if (this.screenEl) this.screenEl.classList.toggle('debate-mode', want);
-    if (!want) this._clearSlots();
+    if (!want) this._clearStage();
   }
 
   /**
-   * Bir 'say' adımı için tartışma sahnesini güncelle.
+   * Bir 'say' adımı için sahneyi güncelle: konuşan karakterin görseli.
+   * Anlatım/iç monolog satırlarında görsel değişmez (son konuşan kalır).
    * @param {string} speaker Konuşmacı adı ('' ise anlatım/iç monolog).
    * @param {string} label O anki etiket.
    * @param {number} index Etiket içindeki adım sırası (vurgu için).
@@ -76,55 +90,63 @@ class DebateManager {
     if (!this.active) return;
 
     const speakingId = speaker && this.portrait ? this.portrait.idForSpeaker(speaker) : null;
-
-    this._renderSlot(DEBATE_LEFT_ID, speakingId);
-    this._renderSlot(DEBATE_RIGHT_ID, speakingId);
-    // Yahya yalnızca sahneye girdikten sonra, kenarda ve küçük görünür.
-    const boyOnStage = !!(this.scene && this.scene.occupied && this.scene.occupied[DEBATE_ENTRANT_ID]);
-    this._renderSlot(DEBATE_ENTRANT_ID, speakingId, !boyOnStage);
+    if (speakingId) this.currentId = speakingId;
+    // Anlatımla başlayan bir sahneye kayıttan dönüldüyse boş kalmasın: tartışma İnci'nin sahnesi.
+    if (!this.currentId) this.currentId = 'girl';
+    this._render();
 
     // Vurgu: İnci'nin seçilen karşı çıkış repliği (branch etiketinin ilk sözü).
-    if (index === 0 && REBUTTAL_LABEL_RE.test(label || '') &&
-        speakingId === DEBATE_LEFT_ID) {
+    if (index === 0 && REBUTTAL_LABEL_RE.test(label || '') && speakingId === 'girl') {
       this._emphasize();
     }
   }
 
-  /** 'expr' adımından sonra çağrılır; ifade PortraitManager üzerinden çözülür. */
-  refreshExpression(id) {
-    if (!this.active || !this.slots[id]) return;
-    this._renderSlot(id, this._activeId);
+  /**
+   * 'expr' adımından sonra çağrılır.
+   * @param {string} id Karakter id'si.
+   * @param {string} [file] 'expr' adımının dosya adı.
+   */
+  refreshExpression(id, file) {
+    this.noteExpression(id, file);
+    if (!this.active) return;
+    this._render();
   }
 
-  _renderSlot(id, speakingId, forceHide) {
-    const slot = this.slots[id];
-    if (!slot || !slot.root) return;
+  /** Pozu kaydeder ama çizim yapmaz (kayıttan yükleme sırasında kullanılır). */
+  noteExpression(id, file) {
+    const poses = DEBATE_ART[id];
+    if (!poses || !file) return;
+    const pose = Object.keys(poses).filter((key) => poses[key] === file)[0];
+    if (pose) this.poses[id] = pose;
+  }
 
-    if (forceHide) {
-      slot.root.classList.remove('present', 'active', 'dim');
-      return;
+  /** Karakterin o anki tam ekran görseli. */
+  _artFor(id) {
+    const poses = DEBATE_ART[id];
+    if (!poses) {
+      // Yahya'nın tartışma görseli yok; portre çizimine düşülür.
+      return this.portrait ? this.portrait.resolveFileFor(id) : null;
     }
-
-    const file = this.portrait ? this.portrait.resolveFileFor(id) : null;
-    if (!file) {
-      slot.root.classList.remove('present', 'active', 'dim');
-      return;
+    let pose = this.poses[id];
+    // İnci'nin pozu sahnedeki ifadesinden gelir (girl_annoyed.svg -> annoyed).
+    if (id === 'girl' && this.portrait) {
+      const file = this.portrait.resolveFileFor('girl');
+      const expr = file ? String(file).replace(/\.[^.]+$/, '').split('_').slice(1).join('_') : '';
+      if (poses[expr]) pose = expr;
     }
+    return poses[pose || DEBATE_DEFAULT_POSE[id]] || poses[DEBATE_DEFAULT_POSE[id]] || null;
+  }
 
-    const url = `url("${assetPath('characters', file)}")`;
-    if (slot.art.style.backgroundImage !== url) slot.art.style.backgroundImage = url;
-    if (slot.name && this.portrait) {
-      const label = this.portrait.nameForId(id);
-      if (label && slot.name.textContent !== label) slot.name.textContent = label;
+  _render() {
+    if (!this.stageEl || !this.artEl || !this.currentId) return;
+    const file = this._artFor(this.currentId);
+    if (!file) return;
+    if (file !== this.currentFile) {
+      this.artEl.style.backgroundImage = `url("${assetPath('characters', file)}")`;
+      this.currentFile = file;
     }
-
-    slot.root.classList.add('present');
-    // Konuşan öne çıkar, dinleyen soluklaşır. Kimse konuşmuyorsa (anlatım /
-    // iç monolog) ikisi de nötr kalır.
-    const isSpeaking = !!speakingId && speakingId === id;
-    slot.root.classList.toggle('active', isSpeaking);
-    slot.root.classList.toggle('dim', !!speakingId && !isSpeaking);
-    if (isSpeaking) this._activeId = id;
+    if (this.stageEl.dataset.char !== this.currentId) this.stageEl.dataset.char = this.currentId;
+    this.stageEl.classList.add('present');
   }
 
   /** Kısa, tek seferlik vurgu: hafif sarsıntı + flash. */
@@ -140,25 +162,20 @@ class DebateManager {
     }, 480);
   }
 
-  _clearSlots() {
-    Object.keys(this.slots).forEach((id) => {
-      const slot = this.slots[id];
-      if (slot && slot.root) slot.root.classList.remove('present', 'active', 'dim');
-    });
-    this._activeId = null;
+  _clearStage() {
+    if (this.stageEl) this.stageEl.classList.remove('present');
+    this.currentId = null;
+    this.currentFile = null;
+    if (this.artEl) this.artEl.style.backgroundImage = '';
     if (this.layerEl) this.layerEl.classList.remove('emphasis');
   }
 
   /** Yeni oyun / devam / menüye dönüş. */
   reset() {
     this.active = false;
-    this._activeId = null;
+    this.poses = {};
     if (this.shakeTimer) { clearTimeout(this.shakeTimer); this.shakeTimer = null; }
     if (this.screenEl) this.screenEl.classList.remove('debate-mode');
-    this._clearSlots();
-    Object.keys(this.slots).forEach((id) => {
-      const slot = this.slots[id];
-      if (slot && slot.art) slot.art.style.backgroundImage = '';
-    });
+    this._clearStage();
   }
 }

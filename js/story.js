@@ -413,6 +413,7 @@ const STORY = {
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
     { type: 'say', speaker: '', text: "Tahtada bir başlık var: 'İnanç ve Teslimiyet'." },
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_calm.png' }, // derse sakin başlıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bugün bazı şeyleri hatırlatacağım. Bunlar tartışmaya açık meseleler değil.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'İnanç, önce sorgulanıp sonra kabul edilecek bir şey değildir. Zaten doğrudur; biz sadece onu anlamaya çalışırız.' },
     { type: 'say', speaker: '', text: '(İçinden) Yine mi bu cümle...' },
@@ -428,6 +429,7 @@ const STORY = {
 
   // Tur 1, aşama A: İnci'nin ilk sorgulaması + öğretmenin kesin cevabı.
   act2_debate_turn1: [
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // konumunu sabitliyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bize aktarılmış açık bilgiler var. Bunlar yüzyıllardır orada; üzerinde durulmuş, sağlamlığı belli gerçekler.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyleri sürekli sorgulamak zorunda değilsiniz.' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} parmak kaldırıyor.` },
@@ -450,6 +452,7 @@ const STORY = {
   act2_debate_turn1_direct: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yüzyıllardır böyle denmiş olması, doğru olduğu anlamına gelmiyor bence.' },
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // doğrudan itiraza parmak sallıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Doğruluğu zaten sabit, İnci. Bu konuda kafanı karıştırmana gerek yok.' },
     { type: 'jump', goto: 'act2_debate_turn1b' }
   ],
@@ -482,6 +485,7 @@ const STORY = {
   act2_debate_turn1b_direct: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Kafamı karıştırmıyorum hocam, sadece nedenini soruyorum.' },
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // uyarı tonu
     { type: 'say', speaker: TEACHER_NAME, text: 'Bazı sorular cevap aramaktan çok, itiraz etmek için sorulur. Seninkinin öyle olmadığını umuyorum.' },
     { type: 'say', speaker: GIRL_NAME, text: 'İtiraz etmiyorum, anlamaya çalışıyorum. İkisi aynı şey değil.' },
     { type: 'jump', goto: 'act2_debate_turn2' }
@@ -500,6 +504,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Belki de asıl sinir olduğum şey cevap değil.' },
     { type: 'say', speaker: '', text: '(İçinden) Soruyu sormama izin verilmemesi.' },
     { type: 'say', speaker: '', text: 'Öğretmen tahtaya iki kelime daha yazıyor: Bilim ve Sınırları.' },
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // sınıfa dönüp iddiayı vurguluyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bilim size nasıl sorusuna cevap verir. Ama bazı konularda cevap zaten dinen bellidir.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bilimin buna bir şey söylemesine gerek yoktur.' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' }, // beklemediği cevap
@@ -576,6 +581,7 @@ const STORY = {
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıftaki birkaç öğrenci başını çevirip bakıyor, sonra tekrar tahtaya dönüyor.' },
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_calm.png' }, // kapıya dönüyor, ton düşüyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bir şey mi vardı?' },
     { type: 'say', speaker: BOY_NAME, text: 'Dergi kulübünden gelmiştim. Yeni sayıyı tanıtıp dağıtacaktım.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Tabii, bir dakika bekleyebilirsin.' },
@@ -606,6 +612,7 @@ const STORY = {
   // ---- 6) Tartışma devam ediyor (Yahya sınıfta, sessiz) ----
   act2_debate_turn3: [
     { type: 'say', speaker: '', text: 'Öğretmen sıraların arasında yürümeye başlıyor.' },
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // tartışmaya geri dönüş
     { type: 'say', speaker: TEACHER_NAME, text: 'Ahlakın kaynağı konusunda kafanız karışmasın: iyi ve kötü, bize dinen bildirilmiştir.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bunun dışında bir zemin aramaya gerek yok.' },
     {
@@ -659,6 +666,7 @@ const STORY = {
   act2_debate_turn3b_direct: [
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bu biraz kestirmeden bir cevap gibi geldi bana.' },
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // sabrı azalıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Her sorunun uzun bir cevabı olması gerekmez. Bazı gerçekler basittir.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Basit olması, tartışmaya kapalı olduğu anlamına gelmiyor bence.' },
     { type: 'jump', goto: 'act2_debate_turn4' }
@@ -673,6 +681,7 @@ const STORY = {
 
   // Tur 4, aşama A — son tur.
   act2_debate_turn4: [
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // tartışmanın tepe noktası
     { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu söylemek istiyorum: bazı sorular, sormak için değil, kabul etmek için vardır.' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' }, // beklenmedik iddia
     {
@@ -704,6 +713,7 @@ const STORY = {
 
   // Tur 4, aşama B — tartışmanın son sözü, hemen ardından kapanış.
   act2_debate_turn4b: [
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // toparlanıyor
     { type: 'say', speaker: '', text: 'Ders bitmek üzere, ama öğretmen son sözü söylemek istiyor gibi duruyor.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // son ciddi karşı çıkış
     { type: 'say', speaker: '', text: '(İçinden) Tamam. Şimdi cevap verirsem bu tartışma bir saat daha sürer.' },
@@ -737,6 +747,7 @@ const STORY = {
   ],
 
   act2_debate_end: [
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_calm.png' }, // tartışma kapanıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Neyse, bu konuyu başka bir derste daha açarız.' },
     { type: 'say', speaker: 'Bir öğrenci', text: 'Hocam, bu da mı sınava girecek?' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Girmeyecek, ama unutma: sınavdan daha önemli meseleler var.' },
