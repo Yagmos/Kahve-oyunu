@@ -47,8 +47,12 @@ class DialogueManager {
    * @param {string} speaker
    * @param {string} text
    */
-  say(speaker, text) {
+  say(speaker, text, opts) {
     this._clearTimer();
+
+    // Final başlığı gibi satırlar kutuyu bırakıp ortada, büyük punto görünür.
+    const kutu = this.textEl.closest('.dialogue-box');
+    if (kutu) kutu.classList.toggle('title-card', !!(opts && opts.titleCard));
 
     this.nameEl.textContent = speaker || '';
     this.nameEl.style.visibility = speaker ? 'visible' : 'hidden';

@@ -352,6 +352,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Sorular İngilizce ama konular fen; geçen sene yarısı elektrikten gelmişti.' },
     { type: 'say', speaker: '', text: '(İçinden) Direnç, gerilim, akım... İngilizce karşılıkları hâlâ tuhaf oturuyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Ezberlemiyorum, sadece gözüm alışsın istiyorum.' },
+    { type: 'sfx', file: 'page.mp3' },
     { type: 'say', speaker: '', text: 'Bir sayfa çevirip defteri kapatıyor.' },
     { type: 'sfx', file: 'bell.mp3' },
     { type: 'say', speaker: '', text: 'Zil çalıyor.' },
@@ -940,7 +941,7 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Kızman gerekiyor muydu?' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' },
     { type: 'say', speaker: BOY_NAME, text: 'İşte tam da bu yüzden seviyorum.' },
-    { type: 'say', speaker: '', text: 'Kapıya birkaç adım kalıyor.' },
+    { type: 'say', speaker: '', text: 'Kapı yaklaşıyor ama ikisi de adımlarını hızlandırmıyor.' },
     { type: 'expr', id: 'boy', file: 'boy_neutral.svg' },
     { type: 'say', speaker: BOY_NAME, text: 'Yakında bir şeye başlayacağım bu arada. Mobil oyun.' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
@@ -986,7 +987,7 @@ const STORY = {
       options: [
         { text: 'Olur.', goto: 'act3_yes', set: { kahve: 'olur' } },
         { text: 'Belki... önce biraz tanışsak?', goto: 'act3_getknow', set: { kahve: 'belki' } },
-        { text: 'Teşekkür ederim ama istemiyorum.', goto: 'act3_no', set: { kahve: 'hayir' } }
+        { text: 'Teşekkür ederim ama kalsın.', goto: 'act3_no', set: { kahve: 'hayir' } }
       ]
     }
   ],
@@ -1018,7 +1019,7 @@ const STORY = {
   // Sahne 9, seçim 3 — HAYIR. Kötü son değil; karşılıklı saygı korunuyor.
   act3_no: [
     { type: 'bgm', file: 'decline.mp3' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Teşekkür ederim ama istemiyorum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Teşekkür ederim ama kalsın.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sorun değil.' },
     { type: 'say', speaker: BOY_NAME, text: 'Yine de konuşmak iyiydi, dergiyi de unutma.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
@@ -1061,15 +1062,6 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Dergiyi yine de bırakırım. Bu sayıda kısa hikayeler fena değil.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bakarım.' },
     { type: 'say', speaker: '', text: 'Kapıda ayrılıyorlar. İkisi de tuhaf hissetmiyor.' },
-
-    // Akşam: Yahya eve dönerken. Kendine acımıyor, sadece günü kapatıyor.
-    { type: 'hide', id: 'girl' },
-    { type: 'hide', id: 'boy' },
-    { type: 'bg', file: 'rain_night.jpg' },
-    { type: 'say', speaker: '', text: 'Akşam yağmur başlıyor. Yahya şemsiyesini açıp yürümeye devam ediyor.' },
-    { type: 'say', speaker: '', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },
-    { type: 'say', speaker: '', text: '(İçinden) Dergiyi masaya bırakırım, gerisi kendi bilir.' },
-    { type: 'bg', file: 'school_gate_evening.jpg' },
     { type: 'jump', goto: 'act3_ending' }
   ],
 
@@ -1080,11 +1072,22 @@ const STORY = {
     { type: 'camera', effect: 'zoom-out' },
     { type: 'say', speaker: '', text: 'Okulun bahçe kapısı. Gün, sabah düşündüğünden uzun sürdü.' },
     {
+      // Kahveye "hayır" denen dalda akşam yağmur başlıyor; sabahki şemsiye
+      // kararı ancak o zaman bir karşılık buluyor.
       type: 'say', speaker: '',
-      text: (game) => bayragaGore(game, 'semsiye', {
-        'true': 'Şemsiye bütün gün çantanın dibinde durdu; bir kez bile açılmadı.',
-        'false': 'Hava kapanmadı. Şemsiyeyi almamak bugünlük doğru karar çıktı.'
-      }, 'Hava akşama doğru serinlemiş.')
+      text: (game) => {
+        const bayrak = (game && game.flags) || {};
+        const yagmur = bayrak.kahve === 'hayir';
+        const semsiye = String(bayrak.semsiye) === 'true';
+        if (yagmur) {
+          return semsiye
+            ? 'Gökyüzü kapanıyor, ilk damlalar düşüyor. Şemsiye bugün ilk kez işe yarayacak.'
+            : 'Gökyüzü kapanıyor, ilk damlalar düşüyor. Şemsiyeyi almamak bugünlük yanlış karar çıktı.';
+        }
+        return semsiye
+          ? 'Şemsiye bütün gün çantanın dibinde durdu; bir kez bile açılmadı.'
+          : 'Hava kapanmadı. Şemsiyeyi almamak bugünlük doğru karar çıktı.';
+      }
     },
     {
       type: 'say', speaker: '',
@@ -1112,14 +1115,38 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Çantasını omzuna alıp kapıdan çıkıyor.' },
     {
       type: 'say', speaker: GIRL_NAME,
-      text: (game) => bayragaGore(game, 'sabah_kahve', {
-        'true': 'Eve giderken bir kahve daha alırım.',
-        'false': 'Eve giderken bir kahve alırım. Bugün hiç içmedim.'
-      }, 'Eve giderken bir kahve alırım.')
+      text: (game) => {
+        const bayrak = (game && game.flags) || {};
+        if (bayrak.kahve === 'hayir') {
+          return String(bayrak.semsiye) === 'true'
+            ? 'Şemsiye sonunda işe yaradı. Eve giderken bir kahve de alırım.'
+            : 'Islanacağım galiba. Yine de bir kahve alıp öyle yürürüm.';
+        }
+        return bayragaGore(game, 'sabah_kahve', {
+          'true': 'Eve giderken bir kahve daha alırım.',
+          'false': 'Eve giderken bir kahve alırım. Bugün hiç içmedim.'
+        }, 'Eve giderken bir kahve alırım.');
+      }
     },
+    // Kahveye "hayır" dendiyse son kare Yahya'nın akşamı olur.
+    { type: 'jump', goto: (game) => bayragaGore(game, 'kahve', { hayir: 'act3_coda_yagmur' }, 'act3_coda') }
+  ],
+
+  // Yalnız "hayır" dalı: akşam, yağmur, ısrar etmeyen bir kapanış.
+  act3_coda_yagmur: [
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'bg', file: 'rain_night.jpg' },
+    { type: 'say', speaker: '', text: 'Yağmur akşama doğru iyice artıyor. Yahya şemsiyesini açıp yürümeye devam ediyor.' },
+    { type: 'say', speaker: '', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },
+    { type: 'say', speaker: '', text: '(İçinden) Dergiyi masaya bırakırım, gerisi kendi bilir.' },
+    { type: 'jump', goto: 'act3_coda' }
+  ],
+
+  act3_coda: [
     { type: 'bg', file: null },
-    { type: 'say', speaker: '', text: 'Kahve Oyunu' },
-    { type: 'say', speaker: '', text: '— Son —' },
+    { type: 'say', speaker: '', text: 'Kahve Oyunu', titleCard: true },
+    { type: 'say', speaker: '', text: '— Son —', titleCard: true },
     { type: 'end' }
   ]
 };

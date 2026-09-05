@@ -237,7 +237,8 @@ class Game {
         break;
 
       case 'jump':
-        this.label = step.goto;
+        // goto bir fonksiyon olabilir: bayraklara göre farklı sahneye dallanır.
+        this.label = resolveDynamic(step.goto, this);
         this.index = 0;
         this._executeCurrent();
         break;
@@ -248,7 +249,7 @@ class Game {
           const rawText = resolveDynamic(step.text, this);
           // Portre ÖNCE çözülür: yazı sesi konuşanın kim olduğunu buradan okur.
           if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
-          this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText));
+          this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText), { titleCard: !!step.titleCard });
           if (this.debate) this.debate.update(step.speaker, this.label);
           if (step.emphasis && this.debate) this.debate.emphasize();
         }

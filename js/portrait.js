@@ -82,7 +82,9 @@ const LABEL_POV = {
   act3_yes: 'girl',
   act3_getknow: 'girl',
   act3_no: 'girl',
-  act3_end_hayir: 'boy'
+  act3_end_hayir: 'boy',
+  // Kapanış yağmuru Yahya'nın iç sesi.
+  act3_coda_yagmur: 'boy'
 };
 
 /**

@@ -369,6 +369,40 @@ button {
   align-items: stretch;
 }
 
+/* Final başlığı: kutu kaybolur, yazı ekranın ortasında durur. */
+.dialogue-box.title-card {
+  background: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  margin-top: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+.dialogue-box.title-card .portrait-col { display: none; }
+.dialogue-box.title-card .speaker-name { display: none; }
+.dialogue-box.title-card .dialogue-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Dokunma oku başlık kipinde sağ altta asılı kalmasın. */
+.dialogue-box.title-card .tap-indicator {
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  text-align: center;
+}
+.dialogue-box.title-card .dialogue-text {
+  text-align: center;
+  font-size: clamp(1.6rem, 8vw, 2.4rem);
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  color: var(--color-accent, #d9a441);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
 /* Metin sütunu: portre olsa da olmasa da taşmaz. */
 .dialogue-main {
   position: relative;
