@@ -23,6 +23,8 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `voice_boy.mp3`      | Yahya konuşurken yazı sesi (Sans)               |
 | `voice_teacher.mp3`  | Badem Öziş konuşurken yazı sesi (Generic 1)     |
 | `voice_other.mp3`    | Diğer karakterler (Cemal Hoca, öğrenciler; Flowey) |
+| `bell.mp3`           | Ders zili — oyuncunun okulunun gerçek zili      |
+| `door.mp3`           | Sınıf kapısının açılması                        |
 | `offer.mp3`          | ACT III — kahve teklifi anı                     |
 | `accept.mp3`         | ACT III — teklif kabul edilirse                 |
 | `maybe.mp3`          | ACT III — "önce biraz tanışsak" denirse         |
@@ -37,9 +39,7 @@ sürüme bu boyutlarla sığıyor.
 
 | Dosya                | Nerede çalar                          | Not                          |
 |----------------------|---------------------------------------|------------------------------|
-| `bell.mp3`           | Ders zili (ACT I sonu, ACT II sonu)   | 1–2 sn                       |
 | `page.mp3`           | Dergi sayfası çevirme                 | < 1 sn                       |
-| `door.mp3`           | Sınıf kapısının açılması              | < 1 sn                       |
 
 Sadece bazılarını koyabilirsin; koymadıklarında üretilmiş ses devreye girer.
 

@@ -123,14 +123,14 @@ const PHONE_APPS_DATA = {
             },
             {
               title: 'Dergi yazısı — taslak',
-              date: 'Geçen ay',
+              date: 'Geçen yıl',
               body: 'Jokeylik hakkında.\n\n' +
                     'Yazmak istediğim şey aslında yarış değil: binici ile atı arasında ' +
                     'kurulan bağ. Aynı hayvanla yıllarca çalışıyorlar; hangi tarafın ' +
                     'diğerini yönlendirdiği bir yerden sonra belirsizleşiyor.\n\n' +
                     'Bir jokey "atım ne isteyeceğimi benden önce anlıyor" demiş. ' +
                     'Yazının tamamı bu cümlenin etrafında döndü.\n\n' +
-                    'Giriş cümlesini sonuna kadar beğenmedim. Yine de gönderdim.'
+                    'Giriş cümlesini sonuna kadar beğenmedim. Yine de gönderdim, basıldı.'
             },
             {
               title: 'Albüm — şifre',
@@ -342,20 +342,21 @@ const STORY = {
     { type: 'bg', file: 'school_yard.jpg' },
     { type: 'say', speaker: '', text: 'Birkaç dakika sonra okulun bahçesinde. Zile daha var.' },
     { type: 'say', speaker: '', text: 'Bahçede birkaç kişi: kimi ödev yetiştiriyor, kimi sadece bekliyor.' },
-    { type: 'say', speaker: '', text: '(İçinden) On dakika. Ya kütüphanede yarışma için son bir tekrar yaparım, ya burada oturur beklerim.' },
+    { type: 'say', speaker: '', text: '(İçinden) Kütüphane bu saatte kapalı, boşuna yürümeyeyim.' },
+    { type: 'say', speaker: '', text: 'Kamelyanın altındaki sıraya oturuyor. Çantası dizinde.' },
+    { type: 'say', speaker: '', text: '(İçinden) On dakika. Ya defteri açarım ya da öylece otururum.' },
     {
       type: 'choice',
       prompt: 'On dakikayı nasıl geçirsin?',
       options: [
-        { text: 'Kütüphanede tekrar yap', goto: 'act1_library', set: { sabah_tekrar: 'kutuphane' } },
-        { text: 'Bahçede otur', goto: 'act1_yard', set: { sabah_tekrar: 'bahce' } }
+        { text: 'Defteri aç, tekrar yap', goto: 'act1_kamelya', set: { sabah_tekrar: 'calisti' } },
+        { text: 'Sadece otur', goto: 'act1_yard', set: { sabah_tekrar: 'oturdu' } }
       ]
     }
   ],
 
-  act1_library: [
-    { type: 'say', speaker: '', text: 'Kütüphane sabahları neredeyse boş; ışıkların yarısı bile yanmıyor.' },
-    { type: 'say', speaker: '', text: `${GIRL_NAME} defterini açıp geçen seneki yarışma sorularına bakıyor.` },
+  act1_kamelya: [
+    { type: 'say', speaker: '', text: 'Defterini açıp geçen seneki yarışma sorularına bakıyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Sorular İngilizce ama konular fen; geçen sene yarısı elektrikten gelmişti.' },
     { type: 'say', speaker: '', text: '(İçinden) Direnç, gerilim, akım... İngilizce karşılıkları hâlâ tuhaf oturuyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Ezberlemiyorum, sadece gözüm alışsın istiyorum.' },
@@ -366,9 +367,9 @@ const STORY = {
   ],
 
   act1_yard: [
-    { type: 'say', speaker: '', text: 'Duvarın dibindeki banka oturuyor.' },
+    { type: 'say', speaker: '', text: 'Defteri çantada kalıyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Yarışma aklımda ama şimdi tekrar yapsam daha çok karışır.' },
-    { type: 'say', speaker: '', text: 'Bahçenin uğultusunu dinliyor: bir gülüşme, uzaktan bir top sesi.' },
+    { type: 'say', speaker: '', text: 'Kamelyadan bahçenin uğultusunu dinliyor: bir gülüşme, uzaktan bir top sesi.' },
     { type: 'say', speaker: '', text: '(İçinden) Bazen sadece oturmak da bir şey yapmak sayılır.' },
     { type: 'sfx', file: 'bell.mp3' },
     { type: 'say', speaker: '', text: 'Zil çalıyor.' },
@@ -834,8 +835,8 @@ const STORY = {
     {
       type: 'say', speaker: '',
       text: (game) => bayragaGore(game, 'sabah_tekrar', {
-        kutuphane: '(İçinden) Sabah baktığım direnç sorularından ikisi çıktı. İyi ki bakmışım.',
-        bahce: '(İçinden) Sabah tekrar etseydim o iki soruyu da bilirdim herhalde.'
+        calisti: '(İçinden) Sabah baktığım direnç sorularından ikisi çıktı. İyi ki bakmışım.',
+        oturdu: '(İçinden) Sabah tekrar etseydim o iki soruyu da bilirdim herhalde.'
       }, '(İçinden) Fena gitmedi sayılır.')
     },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
@@ -902,13 +903,14 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Yani severek yapıyorsun ama itiraf etmiyorsun.' },
     { type: 'say', speaker: BOY_NAME, text: 'Belki.' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // yazıyı gerçekten okumuş
-    { type: 'say', speaker: BOY_NAME, text: 'Bu arada, bu seneki sayıdaki jokeylik yazısı senindi değil mi?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu arada, geçen seneki sayıdaki atlarla ilgili yazı senindi değil mi?' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'say', speaker: '', text: '(İçinden) Okumuş demek.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Benimdi. Kimsenin okuduğunu sanmıyordum.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Ben okudum. Atla binicisi arasındaki bağı anlattığın kısmı üç kere okudum.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bir jokeyin sözünü aktarmıştın; atının ne isteyeceğini kendisinden önce anladığını söylüyordu.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'O kısmı ben de üç kere yazdım zaten.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bir yıl olmuş. Onu hatırlaman tuhaf.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Aklımda kaldı işte.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'jump', goto: 'act3_talk_personal' }
   ],

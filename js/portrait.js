@@ -46,7 +46,7 @@ const LABEL_POV = {
   act1_coffee_yes: 'girl',
   act1_coffee_no: 'girl',
   act1_schoolyard: 'girl',
-  act1_library: 'girl',
+  act1_kamelya: 'girl',
   act1_yard: 'girl',
 
   // ---- ACT II: Yahya POV (kulüp + koridor + sınıfa giriş) ----
