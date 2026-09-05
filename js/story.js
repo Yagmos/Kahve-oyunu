@@ -61,6 +61,96 @@ function bayragaGore(game, key, secenekler, varsayilan) {
   return varsayilan;
 }
 
+/**
+ * İnci'nin telefonundaki uygulamalar. İki 'phone' adımı da aynı içeriği
+ * gösterir; kilitli albümün açılıp açılmadığı tarayıcı kaydında tutulur.
+ */
+const PHONE_APPS_DATA = {
+        instagram: {
+          user: 'inci',
+          // Akış: üstte takip ettiği bir sayfanın videosu, altında kendi gönderileri.
+          posts: [
+            {
+              user: 'bunu.da.bana.sorun',
+              video: 'reel.mp4',
+              poster: 'reel_poster.jpg',
+              caption: 'bir kızla nasıl tanışılır sorusuna gelen en dürüst cevap'
+            },
+            {
+              image: 'yard.jpg',
+              caption: 'sabahın sekizinde burada olmak isteyen tek kişi ben değilim herhalde'
+            },
+            {
+              image: 'street.jpg',
+              caption: 'yağmurdan sonra bu sokak daha iyi kokuyor, kimse ikna edemez beni'
+            }
+          ]
+        },
+        gallery: {
+          note: 'Bu ay çekilenler',
+          items: [
+            { file: 'yard.jpg', caption: 'Okulun bahçesi. Zilden on dakika önce burası bomboş oluyor, en sevdiğim on dakika.' },
+            { file: 'street.jpg', caption: 'Eve giderken. Kaldırımdaki çukur hâlâ orada, iki yıldır orada.' },
+            { file: 'hall.jpg', caption: 'Koridor. Ders arasında burada durup insanları izlemek garip bir şekilde dinlendirici.' },
+            { file: 'class.jpg', caption: 'Boş sınıf. Herkes çıktıktan sonra çektim, sebebini ben de bilmiyorum.' }
+          ],
+          // Kilitli albüm: doğru kod girilene kadar hücreler "?" görünür.
+          // İpucu Notlar uygulamasında; iki saat de bu telefonda yazıyor.
+          locked: {
+            title: 'Kilitli albüm · 3 fotoğraf',
+            code: '526',
+            hint: 'Bu albüm kilitli. Şifreyi her gün gördüğüm bir yere yazmıştım.',
+            wrongText: 'Olmadı. Bir daha düşün.',
+            openNote: 'Kilit açıldı.',
+            items: [
+              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Yazımı masaya bırakıp çıktım, kimseye söylemedim.' },
+              { file: 'room.jpg', caption: 'Kendi odam. Rafın en üstündeki kupa bana ait değil, ablamın. Yine de duruyor.' },
+              { file: 'gate.jpg', caption: 'Okul çıkışı, geçen hafta. O gün kimseyle konuşmadım ve bu fotoğrafı çektim.' }
+            ]
+          }
+        },
+        notes: {
+          items: [
+            {
+              title: 'Yarışma — son tekrar',
+              date: 'Dün 23:14',
+              body: 'Elektrik:\n' +
+                    '- Akım, yükün birim zamanda geçen miktarı. Birimi amper.\n' +
+                    '- Gerilim itici güç, akım ise akan şey. Karıştırma.\n' +
+                    '- Direnç uzunlukla artar, kesitle azalır.\n' +
+                    '- Seri bağlamada akım aynı, paralel bağlamada gerilim aynı.\n\n' +
+                    'Geçen sene soruların yarısı buradan gelmişti. Bu sene de gelir.'
+            },
+            {
+              title: 'Dergi yazısı — taslak',
+              date: 'Geçen ay',
+              body: 'Jokeylik hakkında.\n\n' +
+                    'Herkes atı konuşuyor ama yarışı asıl belirleyen üstteki insan. ' +
+                    'Kırk kilo kalmak için ne yaptıklarını kimse yazmıyor. ' +
+                    'Bir sporcunun kendi bedenini bu kadar küçültmek zorunda olması ' +
+                    'nasıl bir şey, onu sormak istiyorum.\n\n' +
+                    'Giriş cümlesini sonuna kadar beğenmedim. Yine de gönderdim.'
+            },
+            {
+              title: 'Albüm — şifre',
+              date: 'Geçen ay',
+              body: 'Yine unutacağım diye buraya yazıyorum ama düz yazmayacağım.\n\n' +
+                    'Şifreyi her gün baktığım bir yere yazdım. Kimse silmedi, ' +
+                    'kimse ne olduğunu sormadı; herkes tahtadaki yazıya bakıp geçiyor.\n\n' +
+                    'Sildikleri gün yandım.'
+            },
+            {
+              title: 'Kendime not',
+              date: 'Geçen hafta',
+              body: '"Bu tartışmaya açık bir konu değil" cümlesini duyunca sinirlenmek yerine ' +
+                    'neden öyle dediğini sormayı dene.\n\n' +
+                    'Denedim. Olmadı.\n\n' +
+                    'Yine de bir daha deneyeceğim.'
+            }
+          ]
+        }
+      };
+
 const STORY = {
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
   act1_start: [
@@ -163,91 +253,7 @@ const STORY = {
         { time: '13:00', subject: 'Beden Eğitimi' }
       ],
       // Uygulamalar isteğe bağlı: veri verilmeyen uygulama telefonda görünmez.
-      apps: {
-        instagram: {
-          user: 'inci',
-          // Akış: üstte takip ettiği bir sayfanın videosu, altında kendi gönderileri.
-          posts: [
-            {
-              user: 'bunu.da.bana.sorun',
-              video: 'reel.mp4',
-              poster: 'reel_poster.jpg',
-              caption: 'bir kızla nasıl tanışılır sorusuna gelen en dürüst cevap'
-            },
-            {
-              image: 'yard.jpg',
-              caption: 'sabahın sekizinde burada olmak isteyen tek kişi ben değilim herhalde'
-            },
-            {
-              image: 'street.jpg',
-              caption: 'yağmurdan sonra bu sokak daha iyi kokuyor, kimse ikna edemez beni'
-            }
-          ]
-        },
-        gallery: {
-          note: 'Bu ay çekilenler',
-          items: [
-            { file: 'yard.jpg', caption: 'Okulun bahçesi. Zilden on dakika önce burası bomboş oluyor, en sevdiğim on dakika.' },
-            { file: 'street.jpg', caption: 'Eve giderken. Kaldırımdaki çukur hâlâ orada, iki yıldır orada.' },
-            { file: 'hall.jpg', caption: 'Koridor. Ders arasında burada durup insanları izlemek garip bir şekilde dinlendirici.' },
-            { file: 'class.jpg', caption: 'Boş sınıf. Herkes çıktıktan sonra çektim, sebebini ben de bilmiyorum.' }
-          ],
-          // Kilitli albüm: doğru kod girilene kadar hücreler "?" görünür.
-          // İpucu Notlar uygulamasında; iki saat de bu telefonda yazıyor.
-          locked: {
-            title: 'Kilitli albüm · 3 fotoğraf',
-            code: '1115',
-            hint: 'Bu albüm kilitli. Şifreyi bir yere not etmiştim.',
-            wrongText: 'Olmadı. Bir daha düşün.',
-            openNote: 'Kilit açıldı.',
-            items: [
-              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Yazımı masaya bırakıp çıktım, kimseye söylemedim.' },
-              { file: 'room.jpg', caption: 'Kendi odam. Rafın en üstündeki kupa bana ait değil, ablamın. Yine de duruyor.' },
-              { file: 'gate.jpg', caption: 'Okul çıkışı, geçen hafta. O gün kimseyle konuşmadım ve bu fotoğrafı çektim.' }
-            ]
-          }
-        },
-        notes: {
-          items: [
-            {
-              title: 'Yarışma — son tekrar',
-              date: 'Dün 23:14',
-              body: 'Elektrik:\n' +
-                    '- Akım, yükün birim zamanda geçen miktarı. Birimi amper.\n' +
-                    '- Gerilim itici güç, akım ise akan şey. Karıştırma.\n' +
-                    '- Direnç uzunlukla artar, kesitle azalır.\n' +
-                    '- Seri bağlamada akım aynı, paralel bağlamada gerilim aynı.\n\n' +
-                    'Geçen sene soruların yarısı buradan gelmişti. Bu sene de gelir.'
-            },
-            {
-              title: 'Dergi yazısı — taslak',
-              date: 'Geçen ay',
-              body: 'Jokeylik hakkında.\n\n' +
-                    'Herkes atı konuşuyor ama yarışı asıl belirleyen üstteki insan. ' +
-                    'Kırk kilo kalmak için ne yaptıklarını kimse yazmıyor. ' +
-                    'Bir sporcunun kendi bedenini bu kadar küçültmek zorunda olması ' +
-                    'nasıl bir şey, onu sormak istiyorum.\n\n' +
-                    'Giriş cümlesini sonuna kadar beğenmedim. Yine de gönderdim.'
-            },
-            {
-              title: 'Albüm — şifre',
-              date: 'Geçen ay',
-              body: 'Yine unutacağım diye buraya yazıyorum ama düz yazmayacağım.\n\n' +
-                    'Bugün beni geren iki saat var: önce o ders, sonra yarışma.\n' +
-                    'İkisinin saatini yan yana yaz. Dört rakam.\n\n' +
-                    'Kendimden şifre saklamak ne kadar saçma.'
-            },
-            {
-              title: 'Kendime not',
-              date: 'Geçen hafta',
-              body: '"Bu tartışmaya açık bir konu değil" cümlesini duyunca sinirlenmek yerine ' +
-                    'neden öyle dediğini sormayı dene.\n\n' +
-                    'Denedim. Olmadı.\n\n' +
-                    'Yine de bir daha deneyeceğim.'
-            }
-          ]
-        }
-      }
+      apps: PHONE_APPS_DATA
     },
     { type: 'say', speaker: '', text: '(İçinden) Yarışma bugünmüş. Hatırlatıcıyı kendim kurmuşum, demek ki gerçekten gideceğim.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
@@ -771,6 +777,24 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Yeni çocuk muydu?' },
     { type: 'say', speaker: '', text: '(İçinden) Tartışmanın ortasına düştü ama hiç sıkılmış görünmedi.' },
     { type: 'say', speaker: '', text: '(İçinden) Üçte yarışma var. Şu son tur sorularına bir daha bakayım.' },
+    {
+      // İkinci telefon anı: oyuncu tahtadaki yazıyı gördükten sonra kilitli
+      // albümü açabilsin diye. Aynı uygulamalar, günün ilerlemiş hâli.
+      type: 'phone',
+      time: '11:52',
+      date: 'Salı',
+      notifications: [
+        { app: 'Hatırlatıcı', text: 'İngilizce bilgi yarışması 15.00 — çok kaldı sanma.' },
+        { app: 'Mesajlar', from: 'Annem', text: 'Nasıl geçiyor gün?' }
+      ],
+      schedule: [
+        { time: '11:00', subject: 'Din Kültürü' },
+        { time: '13:00', subject: 'Beden Eğitimi' },
+        { time: '15:00', subject: 'İngilizce bilgi yarışması', highlight: true }
+      ],
+      apps: PHONE_APPS_DATA
+    },
+    { type: 'say', speaker: '', text: '(İçinden) Tamam. Elektrik soruları hâlâ aklımda.' },
     { type: 'hide', id: 'girl' },
     { type: 'jump', goto: 'act2_end' }
   ],
