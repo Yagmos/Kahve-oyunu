@@ -210,7 +210,7 @@ const STORY = {
   // 11: Kısa yürüyüş / geçiş sahnesi, sonra okula varış.
   act1_walk: [
     { type: 'bg', file: 'street_morning.jpg' },
-    { type: 'bgm', file: 'morning_theme.mp3' },   // sokak: üretilmiş sabah teması
+    { type: 'bgm', file: 'morning_theme.mp3', fadeIn: 3.0, fadeOut: 1.4 },   // okula yürüyüş
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sokaklar hâlâ yeni uyanıyor; birkaç kişi telaşla yürüyor, bir kedi kaldırımda geriniyor.' },
     { type: 'say', speaker: '', text: `${GIRL_NAME} kulaklığını takıyor, adımlarını hızlandırıyor.` },
@@ -712,7 +712,7 @@ const STORY = {
   act3_start: [
     { type: 'bg', file: 'school_gate_evening.jpg' },
     { type: 'fx', effect: 'clear' },          // perde geçişindeki karartmayı kaldırır
-    { type: 'bgm', file: 'evening_walk.mp3' },
+    { type: 'bgm', file: 'evening_walk.mp3', fadeIn: 3.0, fadeOut: 1.4 },   // bahçe, teklif öncesi
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'camera', effect: 'slide-left' },
     { type: 'say', speaker: '', text: 'Ders bitmiş, koridorlar yavaş yavaş boşalıyor.' },

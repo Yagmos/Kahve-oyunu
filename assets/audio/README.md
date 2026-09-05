@@ -14,6 +14,8 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `bedroom_theme.mp3`  | ACT I — ilk dokunuştan sonra, İnci'nin odası     |
 | `club_room.mp3`      | ACT II — dergi kulübü odası                     |
 | `debate.mp3`         | ACT II — İnci ile Badem Öziş'in tartışması      |
+| `morning_theme.mp3`  | ACT I — okula yürüyüş                           |
+| `evening_walk.mp3`   | ACT III — bahçe, kahve teklifinden önce         |
 | `objection.mp3`      | ACT II — iddialı replikte kısa itiraz efekti    |
 | `offer.mp3`          | ACT III — kahve teklifi anı                     |
 | `accept.mp3`         | ACT III — teklif kabul edilirse                 |
@@ -29,9 +31,7 @@ sürüme bu boyutlarla sığıyor.
 
 | Dosya                | Nerede çalar                          | Not                          |
 |----------------------|---------------------------------------|------------------------------|
-| `morning_theme.mp3`  | ACT I — sokak, okul bahçesi           | döngüye girer                |
 | `school_day.mp3`     | ACT II — okul (kulüp, koridor, sınıf) | döngüye girer                |
-| `evening_walk.mp3`   | ACT III — okul çıkışı (teklif öncesi) | döngüye girer                |
 | `bell.mp3`           | Ders zili (ACT I sonu, ACT II sonu)   | 1–2 sn                       |
 | `page.mp3`           | Dergi sayfası çevirme                 | < 1 sn                       |
 | `door.mp3`           | Sınıf kapısının açılması              | < 1 sn                       |
