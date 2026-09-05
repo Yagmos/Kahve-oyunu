@@ -68,7 +68,7 @@ const STORY = {
     // kadar hiçbir yazı görünmez.
     { type: 'fx', effect: 'blackout' },
     { type: 'bgm', file: 'alarm_loop.mp3', fadeIn: 0.2 },
-    { type: 'bg', file: 'bedroom_morning.svg' },
+    { type: 'bg', file: 'bedroom_morning.jpg' },
     { type: 'show', id: 'girl', file: 'girl_sleepy.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: '' },      // dokunuşu bekler (ekran siyah)
     // Dokunuşta: gözler yavaşça açılır, alarm susar, oda müziği girer, yazı başlar.
@@ -209,7 +209,7 @@ const STORY = {
 
   // 11: Kısa yürüyüş / geçiş sahnesi, sonra okula varış.
   act1_walk: [
-    { type: 'bg', file: 'street_morning.svg' },
+    { type: 'bg', file: 'street_morning.jpg' },
     { type: 'bgm', file: 'morning_theme.mp3' },   // sokak: üretilmiş sabah teması
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sokaklar hâlâ yeni uyanıyor; birkaç kişi telaşla yürüyor, bir kedi kaldırımda geriniyor.' },
@@ -310,7 +310,7 @@ const STORY = {
 
   // ---- 1) KEREM POV: DERGİ KULÜBÜ ----
   act2_start: [
-    { type: 'bg', file: 'club_room.svg' },
+    { type: 'bg', file: 'club_room.jpg' },
     { type: 'bgm', file: 'club_room.mp3' },       // kulüp odası: piyano
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
@@ -349,7 +349,7 @@ const STORY = {
 
 
   act2_club_leave: [
-    { type: 'bg', file: 'hallway.svg' },
+    { type: 'bg', file: 'hallway.jpg' },
     { type: 'bgm', file: 'school_day.mp3' },      // koridor/okul
     { type: 'say', speaker: '', text: 'Dergi yığınını koluna alıp kapıya yöneliyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sınıflara dağıtmaya başlıyorum.' },
@@ -403,7 +403,7 @@ const STORY = {
 
   // ---- 3) İNCİ + ÖĞRETMEN TARTIŞMASI (Yahya henüz yok) ----
   act2_debate_start: [
-    { type: 'bg', file: 'classroom.svg' },
+    { type: 'bg', file: 'classroom.jpg' },
     { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
@@ -709,7 +709,7 @@ const STORY = {
 
   // Sahne 1 (İnci POV) — ACT II'nin bittiği yerden devam. Önce kendi gününe dair düşünceler.
   act3_start: [
-    { type: 'bg', file: 'school_gate_evening.svg' },
+    { type: 'bg', file: 'school_gate_evening.jpg' },
     { type: 'bgm', file: 'evening_walk.mp3' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'camera', effect: 'slide-left' },
@@ -927,7 +927,7 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Akşam yağmur başlıyor. Yahya şemsiyesini açıp yürümeye devam ediyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },
     { type: 'say', speaker: '', text: '(İçinden) Dergiyi masaya bırakırım, gerisi kendi bilir.' },
-    { type: 'bg', file: 'school_gate_evening.svg' },
+    { type: 'bg', file: 'school_gate_evening.jpg' },
     { type: 'jump', goto: 'act3_ending' }
   ],
 

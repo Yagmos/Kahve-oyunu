@@ -87,7 +87,7 @@ button {
   background:
     linear-gradient(180deg, rgba(26, 15, 9, 0.35) 0%, rgba(22, 13, 8, 0.62) 45%, rgba(18, 11, 6, 0.93) 78%, var(--color-bg) 100%),
     radial-gradient(circle at 50% 22%, rgba(217, 164, 65, 0.16), transparent 62%),
-    url('../assets/backgrounds/street_morning.svg') center 26% / cover no-repeat,
+    url('../assets/backgrounds/street_morning.jpg') center 34% / cover no-repeat,
     var(--color-bg);
   text-align: center;
 }
@@ -712,9 +712,13 @@ button {
   pointer-events: none;
   visibility: hidden;
   transition: opacity 320ms ease;
+  /* Zemin: loş, sıcak bir duvar fotoğrafı. Üstündeki degradeler karakteri
+     öne çıkarır ve alt kenarı diyalog kutusuna doğru karartır. */
   background:
-    radial-gradient(120% 70% at 50% 18%, rgba(217, 164, 65, 0.16), transparent 62%),
-    linear-gradient(180deg, #241611 0%, #150d09 100%);
+    radial-gradient(120% 70% at 50% 18%, rgba(217, 164, 65, 0.14), transparent 62%),
+    linear-gradient(180deg, rgba(36, 22, 17, 0.30) 0%, rgba(21, 13, 9, 0.72) 78%, rgba(15, 9, 6, 0.9) 100%),
+    url('../assets/backgrounds/debate_bg.jpg') center center / cover no-repeat,
+    #150d09;
 }
 
 #screen-game.debate-mode .debate-layer {
