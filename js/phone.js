@@ -79,6 +79,8 @@ class PhoneManager {
 
     this.appTitleEl.textContent = def.label;
     this.appBodyEl.innerHTML = '';
+    this._seçiliFoto = null;
+    this._açıkNot = null;
     if (id === 'instagram') this._renderInstagram(data);
     else if (id === 'gallery') this._renderGallery(data);
     else if (id === 'notes') this._renderNotes(data);
@@ -184,6 +186,9 @@ class PhoneManager {
   // ---- Galeri ----
 
   _renderGallery(data) {
+    // Seçilen fotoğraf ızgaranın üstünde büyür; liste ekranda kalır, böylece
+    // diğer fotoğraflara bakmak için geri gitmek gerekmez.
+    if (this._seçiliFoto) this.appBodyEl.appendChild(this._büyükFoto(data));
     this._grid(data.items || [], data, data.note);
 
     // Kilitli albüm: doğru kod girilene kadar hücreler "?" olarak durur.
@@ -222,7 +227,13 @@ class PhoneManager {
       hücre.className = 'gal-cell';
       if (öğe.file) hücre.style.backgroundImage = `url("${assetPath('phone', öğe.file)}")`;
       hücre.setAttribute('aria-label', öğe.caption || `Fotoğraf ${i + 1}`);
-      hücre.addEventListener('click', () => this._openPhoto(öğe, data));
+      if (this._seçiliFoto === öğe) hücre.classList.add('gal-cell-active');
+      hücre.addEventListener('click', () => {
+        this._seçiliFoto = (this._seçiliFoto === öğe) ? null : öğe;
+        this.appBodyEl.innerHTML = '';
+        this._renderGallery(data);
+        this.appBodyEl.scrollTop = 0;
+      });
       ızgara.appendChild(hücre);
     });
     this.appBodyEl.appendChild(ızgara);
@@ -295,8 +306,9 @@ class PhoneManager {
     return sarmal;
   }
 
-  _openPhoto(öğe, data) {
-    this.appBodyEl.innerHTML = '';
+  /** Seçili fotoğrafın büyük hâli + açıklaması (ızgaranın üstünde durur). */
+  _büyükFoto(data) {
+    const öğe = this._seçiliFoto;
     const sarmal = document.createElement('div');
     sarmal.className = 'gal-open';
 
@@ -306,32 +318,35 @@ class PhoneManager {
       img.alt = öğe.caption || '';
       sarmal.appendChild(img);
     }
+    if (öğe.caption) {
+      const alt = document.createElement('div');
+      alt.className = 'gal-caption';
+      alt.textContent = öğe.caption;
+      sarmal.appendChild(alt);
+    }
 
-    const alt = document.createElement('div');
-    alt.className = 'gal-caption';
-    alt.textContent = öğe.caption || '';
-    sarmal.appendChild(alt);
-
-    const geri = document.createElement('button');
-    geri.type = 'button';
-    geri.className = 'note-row';
-    geri.textContent = '‹ Galeriye dön';
-    geri.addEventListener('click', () => {
+    const kapat = document.createElement('button');
+    kapat.type = 'button';
+    kapat.className = 'gal-close';
+    kapat.textContent = 'Kapat';
+    kapat.addEventListener('click', () => {
+      this._seçiliFoto = null;
       this.appBodyEl.innerHTML = '';
       this._renderGallery(data);
     });
-
-    this.appBodyEl.appendChild(sarmal);
-    this.appBodyEl.appendChild(geri);
+    sarmal.appendChild(kapat);
+    return sarmal;
   }
 
   // ---- Notlar ----
 
   _renderNotes(data) {
-    (data.items || []).forEach((not) => {
+    (data.items || []).forEach((not, i) => {
+      const açık = this._açıkNot === i;
+
       const satır = document.createElement('button');
       satır.type = 'button';
-      satır.className = 'note-row';
+      satır.className = 'note-row' + (açık ? ' note-row-open' : '');
 
       const başlık = document.createElement('div');
       başlık.className = 'note-row-title';
@@ -343,39 +358,21 @@ class PhoneManager {
 
       satır.appendChild(başlık);
       satır.appendChild(tarih);
-      satır.addEventListener('click', () => this._openNote(not, data));
+      // Akordiyon: açılan not listeyi silmez, sadece altında açılır.
+      satır.addEventListener('click', () => {
+        this._açıkNot = açık ? null : i;
+        this.appBodyEl.innerHTML = '';
+        this._renderNotes(data);
+      });
       this.appBodyEl.appendChild(satır);
+
+      if (açık) {
+        const gövde = document.createElement('div');
+        gövde.className = 'note-body';
+        gövde.textContent = not.body || '';
+        this.appBodyEl.appendChild(gövde);
+      }
     });
-  }
-
-  _openNote(not, data) {
-    this.appBodyEl.innerHTML = '';
-
-    const başlık = document.createElement('div');
-    başlık.className = 'note-row-title';
-    başlık.textContent = not.title || 'Not';
-
-    const tarih = document.createElement('div');
-    tarih.className = 'note-row-date';
-    tarih.textContent = not.date || '';
-
-    const gövde = document.createElement('div');
-    gövde.className = 'note-body';
-    gövde.textContent = not.body || '';
-
-    const geri = document.createElement('button');
-    geri.type = 'button';
-    geri.className = 'note-row';
-    geri.textContent = '‹ Notlara dön';
-    geri.addEventListener('click', () => {
-      this.appBodyEl.innerHTML = '';
-      this._renderNotes(data);
-    });
-
-    this.appBodyEl.appendChild(başlık);
-    this.appBodyEl.appendChild(tarih);
-    this.appBodyEl.appendChild(gövde);
-    this.appBodyEl.appendChild(geri);
   }
 
   // ---- Ana ekran listeleri ----
