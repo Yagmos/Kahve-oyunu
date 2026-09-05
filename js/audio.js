@@ -39,6 +39,10 @@ class AudioManager {
     /** dosya adı -> {els, i}: kısa efektler için yeniden kullanılan Audio havuzu. */
     this._sfxPool = new Map();
 
+    // Sahne sesleri (zil, kapı, sayfa...) sahne değişince susturulabilsin diye
+    // ayrıca takip edilir. Yazı sesleri buraya girmez; onlar zaten çok kısa.
+    this._sahneSesleri = [];
+
     this.bgmEls.forEach((el) => {
       el.addEventListener('error', () => {
         if (this.currentBgmFile && el.src && el.src.indexOf(this.currentBgmFile) !== -1) {
@@ -215,6 +219,7 @@ class AudioManager {
 
     const el = havuz.els[havuz.i];
     havuz.i = (havuz.i + 1) % havuz.els.length;
+    if (opts && opts.track) this._trackSahneSesi(el);
     el.volume = this.sfxVolume * gain;
     try { el.currentTime = 0; } catch (e) { /* henüz yüklenmediyse yoksay */ }
     const playPromise = el.play();
@@ -254,6 +259,30 @@ class AudioManager {
     const el = this.bgmEls[this.active];
     if (el && !el.paused) this._fade(this.active, v * this.trackGain, 0.25);
     if (this.synth) this.synth.setMusicVolume(v * this.trackGain);
+  }
+
+  /** Sahne sesini listeye alır; kendiliğinden bitince listeden düşer. */
+  _trackSahneSesi(el) {
+    if (this._sahneSesleri.indexOf(el) === -1) {
+      this._sahneSesleri.push(el);
+      el.addEventListener('ended', () => {
+        const i = this._sahneSesleri.indexOf(el);
+        if (i !== -1) this._sahneSesleri.splice(i, 1);
+      });
+    }
+  }
+
+  /**
+   * Çalmakta olan sahne seslerini keser. Zil gibi uzun sesler bir sonraki
+   * sahneye taşmasın diye arka plan değiştiğinde çağrılır.
+   */
+  stopSfx() {
+    const liste = this._sahneSesleri.slice();
+    this._sahneSesleri.length = 0;
+    liste.forEach((el) => {
+      try { el.pause(); el.currentTime = 0; } catch (e) { /* yoksay */ }
+    });
+    if (this.synth && typeof this.synth.stopSfx === 'function') this.synth.stopSfx();
   }
 
   setSfxVolume(v) {

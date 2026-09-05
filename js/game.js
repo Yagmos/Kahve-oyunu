@@ -186,6 +186,8 @@ class Game {
 
     switch (step.type) {
       case 'bg':
+        // Sahne değişiyor: önceki sahnenin zili/kapısı yeni sahneye taşmasın.
+        this.audio.stopSfx();
         this.currentBg = step.file || null;
         this.scene.setBackground(step.file);
         this._advanceAuto();
@@ -199,7 +201,7 @@ class Game {
         break;
 
       case 'sfx':
-        this.audio.playSfx(step.file);
+        this.audio.playSfx(step.file, { track: true });
         this._advanceAuto();
         break;
 

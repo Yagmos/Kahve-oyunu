@@ -74,7 +74,10 @@ const PHONE_APPS_DATA = {
               user: 'bunu.da.bana.sorun',
               video: 'reel.mp4',
               poster: 'reel_poster.jpg',
-              caption: 'bir kızla nasıl tanışılır sorusuna gelen en dürüst cevap'
+              caption: 'bir kızla nasıl tanışılır sorusuna gelen en dürüst cevap',
+              comments: [
+                { user: 'Yahya Kocabey', text: 'not aldım hayati abi' }
+              ]
             },
             {
               image: 'yard.jpg',
@@ -120,17 +123,6 @@ const PHONE_APPS_DATA = {
                     '- Direnç uzunlukla artar, kesitle azalır.\n' +
                     '- Seri bağlamada akım aynı, paralel bağlamada gerilim aynı.\n\n' +
                     'Geçen sene soruların yarısı buradan gelmişti. Bu sene de gelir.'
-            },
-            {
-              title: 'Dergi yazısı — taslak',
-              date: 'Geçen yıl',
-              body: 'Jokeylik hakkında.\n\n' +
-                    'Yazmak istediğim şey aslında yarış değil: binici ile atı arasında ' +
-                    'kurulan bağ. Aynı hayvanla yıllarca çalışıyorlar; hangi tarafın ' +
-                    'diğerini yönlendirdiği bir yerden sonra belirsizleşiyor.\n\n' +
-                    'Bir jokey "atım ne isteyeceğimi benden önce anlıyor" demiş. ' +
-                    'Yazının tamamı bu cümlenin etrafında döndü.\n\n' +
-                    'Giriş cümlesini sonuna kadar beğenmedim. Yine de gönderdim, basıldı.'
             },
             {
               title: 'Albüm — şifre',
@@ -897,19 +889,19 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Acele etme, dergi kaçmıyor bir yere.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Sen hep dağıtıma gönüllü mü oluyorsun, yoksa illa sana mı kalıyor?' },
-    { type: 'say', speaker: BOY_NAME, text: 'Aslında sırada ben değildim, ama kimse gitmek istemeyince ben çıkıyorum.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Sırada bendim aslında. Ama sıra bir şekilde hep bana geliyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Sınıfları gezmek hoşuma gidiyor, o kadar.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Yani severek yapıyorsun ama itiraf etmiyorsun.' },
     { type: 'say', speaker: BOY_NAME, text: 'Belki.' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // yazıyı gerçekten okumuş
-    { type: 'say', speaker: BOY_NAME, text: 'Bu arada, geçen seneki sayıdaki atlarla ilgili yazı senindi değil mi?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Geçen seneki sayıdaki atlarla ilgili yazı senindi, değil mi?' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'say', speaker: '', text: '(İçinden) Okumuş demek.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Benimdi. Kimsenin okuduğunu sanmıyordum.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Bir jokeyin sözünü aktarmıştın; atının ne isteyeceğini kendisinden önce anladığını söylüyordu.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Beğenmiştim. Yarıştan çok, atla binicisi arasındaki şeyi anlatıyordun.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Bir yıl olmuş. Onu hatırlaman tuhaf.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bir yıl olmuş. Hatırlaman tuhaf.' },
     { type: 'say', speaker: BOY_NAME, text: 'Aklımda kaldı işte.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'jump', goto: 'act3_talk_personal' }
@@ -925,7 +917,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Beklediğimden daha kolay konuşuluyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Dergi kulübüne katılmayı hiç düşündün mü?' },
     { type: 'say', speaker: GIRL_NAME, text: 'Pek sayılmaz, ama yazı kısmına bakmayı seviyorum.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Sen hep böyle mi soru sormayı seversin?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Hep böyle soru sorar mısın?' },
     { type: 'say', speaker: GIRL_NAME, text: 'Galiba hep. Cevap verilmeyen bir soru beni rahatsız ediyor.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'jump', goto: 'act3_talk_books' }
@@ -950,7 +942,7 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'İşte tam da bu yüzden seviyorum.' },
     { type: 'say', speaker: '', text: 'Kapıya birkaç adım kalıyor.' },
     { type: 'expr', id: 'boy', file: 'boy_neutral.svg' },
-    { type: 'say', speaker: BOY_NAME, text: 'Bu arada yakında bir şeye başlayacağım. Mobil oyun.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Yakında bir şeye başlayacağım bu arada. Mobil oyun.' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Ne oyunu?' },
     { type: 'say', speaker: BOY_NAME, text: 'Adını söyleyebilirim ama ne için olduğunu söyleyemem.' },
@@ -1057,7 +1049,7 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Dergiyi kulüp masasında bırakırım, teneffüste uğrarsın.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Uğrarım.' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' },
-    { type: 'say', speaker: BOY_NAME, text: 'Bir de şu jokeylik yazısının devamı gelecek mi?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bir de şu atlarla ilgili yazının devamı gelecek mi?' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Gelirse haber veririm.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },

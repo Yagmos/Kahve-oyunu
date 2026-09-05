@@ -87,6 +87,9 @@ class PhoneManager {
 
     this.homeEl.classList.add('hidden');
     this.appEl.classList.remove('hidden');
+    // Kaydırılan asıl kutu görünümün kendisi; başlık da onun içinde.
+    // Sadece gövdeyi sıfırlamak yetmiyordu, uygulama yarı kaydırılmış açılıyordu.
+    this.appEl.scrollTop = 0;
     this.appBodyEl.scrollTop = 0;
   }
 
@@ -179,6 +182,22 @@ class PhoneManager {
         kart.appendChild(alt);
       }
 
+      // Yorumlar: gönderinin altında, gerçek uygulamadaki gibi kısa liste.
+      if (post.comments && post.comments.length) {
+        const yorumlar = document.createElement('div');
+        yorumlar.className = 'ig-comments';
+        post.comments.forEach((yorum) => {
+          const satır = document.createElement('div');
+          satır.className = 'ig-comment';
+          const ad = document.createElement('b');
+          ad.textContent = (yorum.user || '') + ' ';
+          satır.appendChild(ad);
+          satır.appendChild(document.createTextNode(yorum.text || ''));
+          yorumlar.appendChild(satır);
+        });
+        kart.appendChild(yorumlar);
+      }
+
       this.appBodyEl.appendChild(kart);
     });
   }
@@ -232,6 +251,7 @@ class PhoneManager {
         this._seçiliFoto = (this._seçiliFoto === öğe) ? null : öğe;
         this.appBodyEl.innerHTML = '';
         this._renderGallery(data);
+        this.appEl.scrollTop = 0;
         this.appBodyEl.scrollTop = 0;
       });
       ızgara.appendChild(hücre);

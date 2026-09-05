@@ -625,6 +625,7 @@ button {
   flex-direction: column;
   gap: 12px;
   padding-right: 4px;
+  padding-bottom: 8px;   /* son satır KAPAT düğmesine yapışmasın */
 }
 
 .phone-statusbar {
@@ -838,6 +839,22 @@ button {
   color: var(--color-text-dim);
 }
 .ig-caption b { color: var(--color-text); }
+
+.ig-comments {
+  padding: 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 8px;
+  margin-top: 2px;
+}
+.ig-comment {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-text-dim);
+}
+.ig-comment b { color: var(--color-text); font-weight: 700; }
 
 /* Galeri */
 .gal-grid {
