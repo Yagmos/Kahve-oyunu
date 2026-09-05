@@ -55,6 +55,9 @@ const DEBATE_ART = {
  */
 const DEBATE_EMPHASIS_POSE = { girl: 'girl_debate_point.png' };
 
+/** Vurgu anında çalan kısa efekt (iki taraf için de). */
+const EMPHASIS_SFX = 'objection.mp3';
+
 /** Poz/ifade çözülemezse kullanılacak duruş. */
 const DEBATE_DEFAULT_POSE = { teacher: 'stern', girl: 'neutral' };
 
@@ -68,6 +71,7 @@ class DebateManager {
     this.screenEl = refs.screenEl;
     this.portrait = refs.portraitManager;
     this.scene = refs.sceneManager;
+    this.audio = refs.audioManager || null;
 
     this.active = false;
     this.poses = {};
@@ -177,6 +181,8 @@ class DebateManager {
    */
   emphasize() {
     if (!this.layerEl) return;
+    // Argümanı sunan taraf: kısa "İtiraz ederim!" efekti.
+    if (this.audio) this.audio.playSfx(EMPHASIS_SFX);
     const pose = DEBATE_EMPHASIS_POSE[this.currentId];
     if (pose && this.artEl && pose !== this.currentFile) {
       // Doğrudan yazıyoruz; currentFile'ı da güncellediğimiz için bir sonraki

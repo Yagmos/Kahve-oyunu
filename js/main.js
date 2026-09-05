@@ -54,14 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     sceneManager
   });
 
+  const audioManager = new AudioManager();
+
   const debateManager = new DebateManager({
     layerEl: document.getElementById('debate-layer'),
     screenEl: gameScreenEl,
     portraitManager,
-    sceneManager
+    sceneManager,
+    audioManager
   });
-
-  const audioManager = new AudioManager();
 
   const phoneManager = new PhoneManager({
     panelEl: document.getElementById('phone-panel'),

@@ -136,6 +136,19 @@ class AudioManager {
     this._fade(i, 0, seconds, () => { el.pause(); });
   }
 
+  /**
+   * Müziği yumuşakça susturur ama hangi parçanın çaldığını unutur; böylece
+   * aynı dosya sonradan tekrar `playBgm` ile baştan başlatılabilir.
+   * Hikâyede bilerek sessizlik istenen anlar için (bkz. story.js 'bgm' + stop).
+   * @param {number} [seconds]
+   */
+  fadeOutBgm(seconds) {
+    const sec = typeof seconds === 'number' ? seconds : 0.8;
+    this._fadeOutCurrent(sec);
+    if (this.synth) this.synth.stopBgm();
+    this.currentBgmFile = null;
+  }
+
   stopBgm() {
     this.bgmEls.forEach((el, i) => {
       if (this._fadeTimers[i]) { clearInterval(this._fadeTimers[i]); this._fadeTimers[i] = null; }

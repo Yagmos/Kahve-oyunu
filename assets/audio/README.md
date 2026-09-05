@@ -14,6 +14,7 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `bedroom_theme.mp3`  | ACT I — ilk dokunuştan sonra, İnci'nin odası     |
 | `club_room.mp3`      | ACT II — dergi kulübü odası                     |
 | `debate.mp3`         | ACT II — İnci ile Badem Öziş'in tartışması      |
+| `objection.mp3`      | ACT II — iddialı replikte kısa itiraz efekti    |
 | `offer.mp3`          | ACT III — kahve teklifi anı                     |
 | `accept.mp3`         | ACT III — teklif kabul edilirse                 |
 | `maybe.mp3`          | ACT III — "önce biraz tanışsak" denirse         |

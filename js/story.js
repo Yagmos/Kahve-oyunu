@@ -501,6 +501,8 @@ const STORY = {
 
   // ---- 4) KEREM'İN SINIFA GİRİŞİ — birbirlerini İLK KEZ görüyorlar ----
   act2_kerem_arrives: [
+    // Kapı açılıyor: tartışma müziği susuyor, sınıf bir anlığına sessizleşiyor.
+    { type: 'bgm', stop: true, fadeOut: 0.7 },
     { type: 'camera', effect: 'slide-left' },
     { type: 'sfx', file: 'door.mp3' },
     { type: 'say', speaker: '', text: 'Sınıfta birkaç öğrenci rahatsız kıpırdanıyor; öğretmen bunu fark ediyor ama devam ediyor.' },
@@ -533,6 +535,7 @@ const STORY = {
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' }, // dikkatini tartışmaya verir
     { type: 'say', speaker: '', text: '(İçinden) Neyse. Konuya dön.' },
     { type: 'camera', effect: 'zoom-out' },
+    { type: 'bgm', file: 'debate.mp3', fadeIn: 1.8 },   // tartışma kaldığı yerden
     { type: 'say', speaker: '', text: 'İnci tekrar öğretmene dönüyor.' },
     { type: 'jump', goto: 'act2_debate_turn3' }
   ],
