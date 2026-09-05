@@ -18,12 +18,16 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `morning_theme.mp3`  | ACT I — okula yürüyüş                           |
 | `evening_walk.mp3`   | ACT III — bahçe, kahve teklifinden önce         |
 | `objection.mp3`      | ACT II — iddialı replikte kısa itiraz efekti    |
+| `voice_girl.mp3`     | İnci konuşurken yazı sesi                       |
+| `voice_boy.mp3`      | Yahya konuşurken yazı sesi                      |
+| `voice_teacher.mp3`  | Badem Öziş konuşurken yazı sesi                 |
+| `voice_other.mp3`    | Diğer karakterler (Cemal Hoca, öğrenciler)      |
 | `offer.mp3`          | ACT III — kahve teklifi anı                     |
 | `accept.mp3`         | ACT III — teklif kabul edilirse                 |
 | `maybe.mp3`          | ACT III — "önce biraz tanışsak" denirse         |
 | `decline.mp3`        | ACT III — teklif reddedilirse                   |
 
-Hepsi mono / 32 kHz / 64 kbps'e çevrildi, 80 saniyeye kırpıldı ve
+Hepsi mono / 32 kHz / 64 kbps'e çevrildi, 64 saniyeye kırpıldı ve
 loudnorm ile -16 LUFS'a eşitlendi; başta 1.5 sn açılma, sonda 2.5 sn kapanma
 var (döngüye girdiğinde sert kesmesin diye). Tek dosyalık paylaşılabilir
 sürüme bu boyutlarla sığıyor.
@@ -32,7 +36,6 @@ sürüme bu boyutlarla sığıyor.
 
 | Dosya                | Nerede çalar                          | Not                          |
 |----------------------|---------------------------------------|------------------------------|
-| `school_day.mp3`     | ACT II — okul (kulüp, koridor, sınıf) | döngüye girer                |
 | `bell.mp3`           | Ders zili (ACT I sonu, ACT II sonu)   | 1–2 sn                       |
 | `page.mp3`           | Dergi sayfası çevirme                 | < 1 sn                       |
 | `door.mp3`           | Sınıf kapısının açılması              | < 1 sn                       |
@@ -57,3 +60,10 @@ kısılıyor. Varsayılan süreler 2.2 sn açılma / 1.2 sn kapanma; hikâyede b
   yüksek masterlanmış parçalarda oyun içi ses ayarını kısman gerekebilir.
 - **Telif:** Oyunu birine göndereceksen kullanım hakkı sende olan ya da
   telifsiz parçalar seç.
+
+## Yazı sesi
+
+Metin yazılırken her 3 karakterde bir, konuşan karakterin `voice_*.mp3`
+dosyası efekt seviyesinin %30'unda çalar. Boşluk ve noktalama sessizdir.
+Kimin konuştuğunu PortraitManager çözer, bu yüzden iç monologlarda da doğru
+karakterin sesi gelir. Ayarlardaki "Ses Efektleri" kapatılınca susar.

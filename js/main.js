@@ -64,6 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
     audioManager
   });
 
+  // Yazı sesi: DialogueManager bu ikisinden önce kurulduğu için sonradan bağlanıyor.
+  dialogueManager.audio = audioManager;
+  dialogueManager.voiceIdProvider = () => portraitManager.currentId;
+
   const phoneManager = new PhoneManager({
     panelEl: document.getElementById('phone-panel'),
     timeEl: document.getElementById('phone-time'),

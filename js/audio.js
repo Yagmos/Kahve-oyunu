@@ -36,6 +36,8 @@ class AudioManager {
 
     // Daha önce yüklenemediği görülen dosyalar tekrar denenmez.
     this._unavailable = new Set();
+    /** dosya adı -> {els, i}: kısa efektler için yeniden kullanılan Audio havuzu. */
+    this._sfxPool = new Map();
 
     this.bgmEls.forEach((el) => {
       el.addEventListener('error', () => {
@@ -180,25 +182,47 @@ class AudioManager {
     this.currentBgmFile = null;
   }
 
-  playSfx(filename) {
+  /**
+   * @param {string} filename
+   * @param {{volume?:number}} [opts] volume: sfx seviyesinin çarpanı (0-1).
+   *   Yazı sesi gibi saniyede birkaç kez çalan efektler için kısılır.
+   */
+  playSfx(filename, opts) {
     if (!this.sfxOn || !filename) return;
+    const gain = (opts && typeof opts.volume === 'number') ? Math.max(0, Math.min(1, opts.volume)) : 1;
 
     if (!this.useFiles || this._unavailable.has(filename)) {
       if (this.synth) this.synth.playSfx(filename);
       return;
     }
 
-    const el = new Audio(assetPath('audio', filename));
-    el.volume = this.sfxVolume;
-    const fallback = () => {
-      this._markUnavailable(filename);
-      if (this.synth) this.synth.playSfx(filename);
-    };
-    el.addEventListener('error', fallback);
+    // Yazı sesi her birkaç karakterde bir çalıyor; her seferinde yeni bir
+    // Audio yaratmamak için dosya başına küçük bir havuz tutuluyor.
+    let havuz = this._sfxPool.get(filename);
+    if (!havuz) {
+      havuz = { els: [], i: 0 };
+      for (let k = 0; k < 4; k++) {
+        const a = new Audio(assetPath('audio', filename));
+        a.preload = 'auto';
+        a.addEventListener('error', () => {
+          this._markUnavailable(filename);
+          if (this.synth) this.synth.playSfx(filename);
+        });
+        havuz.els.push(a);
+      }
+      this._sfxPool.set(filename, havuz);
+    }
 
+    const el = havuz.els[havuz.i];
+    havuz.i = (havuz.i + 1) % havuz.els.length;
+    el.volume = this.sfxVolume * gain;
+    try { el.currentTime = 0; } catch (e) { /* henüz yüklenmediyse yoksay */ }
     const playPromise = el.play();
     if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(fallback);
+      playPromise.catch(() => {
+        this._markUnavailable(filename);
+        if (this.synth) this.synth.playSfx(filename);
+      });
     }
   }
 

@@ -10,6 +10,9 @@
  * veri verilmeyen uygulama ana ekranda hiç görünmez.
  */
 
+/** Kilitli albümün açık kalması için kayıt anahtarı. */
+const GALLERY_UNLOCK_KEY = 'kahveOyunu.galeri.v1';
+
 /** Uygulama tanımları: sıra, ad ve simge burada. */
 const PHONE_APPS = [
   { id: 'instagram', label: 'Instagram', icon: '◎', cls: 'ig' },
@@ -181,29 +184,115 @@ class PhoneManager {
   // ---- Galeri ----
 
   _renderGallery(data) {
-    const öğeler = data.items || [];
+    this._grid(data.items || [], data, data.note);
+
+    // Kilitli albüm: doğru kod girilene kadar hücreler "?" olarak durur.
+    const kilitli = data.locked;
+    if (!kilitli || !(kilitli.items || []).length) return;
+
+    const başlık = document.createElement('div');
+    başlık.className = 'gal-caption';
+    başlık.style.marginTop = '6px';
+    başlık.textContent = kilitli.title || 'Kilitli albüm';
+    this.appBodyEl.appendChild(başlık);
+
+    if (this._isUnlocked(kilitli)) {
+      this._grid(kilitli.items, data, kilitli.openNote || '');
+      return;
+    }
+
     const ızgara = document.createElement('div');
     ızgara.className = 'gal-grid';
+    kilitli.items.forEach(() => {
+      const hücre = document.createElement('div');
+      hücre.className = 'gal-cell gal-locked';
+      ızgara.appendChild(hücre);
+    });
+    this.appBodyEl.appendChild(ızgara);
+    this.appBodyEl.appendChild(this._codeForm(kilitli, data));
+  }
 
+  /** Fotoğraf ızgarası (hem açık hem çözülmüş albüm için). */
+  _grid(öğeler, data, not) {
+    const ızgara = document.createElement('div');
+    ızgara.className = 'gal-grid';
     öğeler.forEach((öğe, i) => {
       const hücre = document.createElement('button');
       hücre.type = 'button';
-      hücre.className = 'gal-cell' + (öğe.locked ? ' gal-locked' : '');
-      if (öğe.file && !öğe.locked) {
-        hücre.style.backgroundImage = `url("${assetPath('phone', öğe.file)}")`;
-      }
+      hücre.className = 'gal-cell';
+      if (öğe.file) hücre.style.backgroundImage = `url("${assetPath('phone', öğe.file)}")`;
       hücre.setAttribute('aria-label', öğe.caption || `Fotoğraf ${i + 1}`);
       hücre.addEventListener('click', () => this._openPhoto(öğe, data));
       ızgara.appendChild(hücre);
     });
-
     this.appBodyEl.appendChild(ızgara);
-    if (data.note) {
-      const not = document.createElement('div');
-      not.className = 'gal-caption';
-      not.textContent = data.note;
-      this.appBodyEl.appendChild(not);
+    if (not) {
+      const n = document.createElement('div');
+      n.className = 'gal-caption';
+      n.textContent = not;
+      this.appBodyEl.appendChild(n);
     }
+  }
+
+  _isUnlocked(kilitli) {
+    if (this._unlocked) return true;
+    try {
+      return localStorage.getItem(GALLERY_UNLOCK_KEY) === String(kilitli.code);
+    } catch (e) {
+      return false;   // gizli sekmede kayıt yoksa kilitli kalır
+    }
+  }
+
+  _codeForm(kilitli, data) {
+    const sarmal = document.createElement('div');
+    sarmal.className = 'gal-code';
+
+    const ipucu = document.createElement('div');
+    ipucu.className = 'gal-caption';
+    ipucu.textContent = kilitli.hint || 'Bu albüm kilitli.';
+    sarmal.appendChild(ipucu);
+
+    const satır = document.createElement('div');
+    satır.className = 'gal-code-row';
+
+    const giriş = document.createElement('input');
+    giriş.type = 'text';
+    giriş.inputMode = 'numeric';
+    giriş.autocomplete = 'off';
+    giriş.maxLength = String(kilitli.code).length;
+    giriş.placeholder = '••••'.slice(0, String(kilitli.code).length);
+    giriş.className = 'gal-code-input';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'gal-code-btn';
+    btn.textContent = 'AÇ';
+
+    const uyarı = document.createElement('div');
+    uyarı.className = 'gal-caption';
+
+    const dene = () => {
+      if (giriş.value.trim() === String(kilitli.code)) {
+        this._unlocked = true;
+        try { localStorage.setItem(GALLERY_UNLOCK_KEY, String(kilitli.code)); } catch (e) { /* yoksay */ }
+        this.appBodyEl.innerHTML = '';
+        this._renderGallery(data);
+      } else {
+        uyarı.textContent = kilitli.wrongText || 'Kod yanlış.';
+        giriş.value = '';
+        sarmal.classList.remove('shake');
+        void sarmal.offsetWidth;
+        sarmal.classList.add('shake');
+      }
+    };
+    btn.addEventListener('click', dene);
+    giriş.addEventListener('keydown', (e) => { if (e.key === 'Enter') dene(); });
+
+    satır.appendChild(giriş);
+    satır.appendChild(btn);
+    sarmal.appendChild(satır);
+    sarmal.appendChild(uyarı);
+    return sarmal;
   }
 
   _openPhoto(öğe, data) {
@@ -211,7 +300,7 @@ class PhoneManager {
     const sarmal = document.createElement('div');
     sarmal.className = 'gal-open';
 
-    if (öğe.file && !öğe.locked) {
+    if (öğe.file) {
       const img = document.createElement('img');
       img.src = assetPath('phone', öğe.file);
       img.alt = öğe.caption || '';
@@ -220,9 +309,7 @@ class PhoneManager {
 
     const alt = document.createElement('div');
     alt.className = 'gal-caption';
-    alt.textContent = öğe.locked
-      ? (öğe.lockedText || 'Bu fotoğraf açılmıyor.')
-      : (öğe.caption || '');
+    alt.textContent = öğe.caption || '';
     sarmal.appendChild(alt);
 
     const geri = document.createElement('button');

@@ -166,7 +166,14 @@ const STORY = {
       apps: {
         instagram: {
           user: 'inci',
+          // Akış: üstte takip ettiği bir sayfanın videosu, altında kendi gönderileri.
           posts: [
+            {
+              user: 'bunu.da.bana.sorun',
+              video: 'reel.mp4',
+              poster: 'reel_poster.jpg',
+              caption: 'bir kızla nasıl tanışılır sorusuna gelen en dürüst cevap'
+            },
             {
               image: 'yard.jpg',
               caption: 'sabahın sekizinde burada olmak isteyen tek kişi ben değilim herhalde'
@@ -184,7 +191,21 @@ const STORY = {
             { file: 'street.jpg', caption: 'Eve giderken. Kaldırımdaki çukur hâlâ orada, iki yıldır orada.' },
             { file: 'hall.jpg', caption: 'Koridor. Ders arasında burada durup insanları izlemek garip bir şekilde dinlendirici.' },
             { file: 'class.jpg', caption: 'Boş sınıf. Herkes çıktıktan sonra çektim, sebebini ben de bilmiyorum.' }
-          ]
+          ],
+          // Kilitli albüm: doğru kod girilene kadar hücreler "?" görünür.
+          // İpucu Notlar uygulamasında; iki saat de bu telefonda yazıyor.
+          locked: {
+            title: 'Kilitli albüm · 3 fotoğraf',
+            code: '1115',
+            hint: 'Bu albüm kilitli. Şifreyi bir yere not etmiştim.',
+            wrongText: 'Olmadı. Bir daha düşün.',
+            openNote: 'Kilit açıldı.',
+            items: [
+              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Bir kere girdim, kimseye söylemedim; yazı göndermeyi hâlâ düşünüyorum.' },
+              { file: 'room.jpg', caption: 'Kendi odam. Rafın en üstündeki kupa bana ait değil, ablamın. Yine de duruyor.' },
+              { file: 'gate.jpg', caption: 'Okul çıkışı, geçen hafta. O gün kimseyle konuşmadım ve bu fotoğrafı çektim.' }
+            ]
+          }
         },
         notes: {
           items: [
@@ -207,6 +228,14 @@ const STORY = {
                     'Bir sporcunun kendi bedenini bu kadar küçültmek zorunda olması ' +
                     'nasıl bir şey, onu sormak istiyorum.\n\n' +
                     'Giriş cümlesi hâlâ kötü. Sonra bakarım.'
+            },
+            {
+              title: 'Albüm — şifre',
+              date: 'Geçen ay',
+              body: 'Yine unutacağım diye buraya yazıyorum ama düz yazmayacağım.\n\n' +
+                    'Bugün beni geren iki saat var: önce o ders, sonra yarışma.\n' +
+                    'İkisinin saatini yan yana yaz. Dört rakam.\n\n' +
+                    'Kendimden şifre saklamak ne kadar saçma.'
             },
             {
               title: 'Kendime not',

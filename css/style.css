@@ -872,6 +872,41 @@ button {
 
 .gal-open img { width: 100%; border-radius: 10px; display: block; }
 
+/* Kilitli albüm: kod girişi */
+.gal-code { display: flex; flex-direction: column; gap: 8px; }
+
+.gal-code-row { display: flex; gap: 8px; }
+
+.gal-code-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(217, 164, 65, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1.1rem;
+  letter-spacing: 0.28em;
+  text-align: center;
+}
+
+.gal-code-input:focus { outline: 2px solid rgba(217, 164, 65, 0.55); outline-offset: 1px; }
+
+.gal-code-btn {
+  flex: 0 0 auto;
+  min-width: 64px;
+  min-height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--coffee), var(--coffee-dark));
+  color: var(--color-text);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.gal-code.shake { animation: debateShake 380ms ease; }
+
 .gal-caption {
   margin-top: 8px;
   font-size: 0.85rem;

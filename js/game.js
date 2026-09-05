@@ -244,8 +244,9 @@ class Game {
         this.dialogue.hideChoices();
         {
           const rawText = resolveDynamic(step.text, this);
-          this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText));
+          // Portre ÖNCE çözülür: yazı sesi konuşanın kim olduğunu buradan okur.
           if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
+          this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText));
           if (this.debate) this.debate.update(step.speaker, this.label);
           if (step.emphasis && this.debate) this.debate.emphasize();
         }

@@ -1,7 +1,24 @@
 /**
  * DialogueManager: konuşmacı adı, yazı efektiyle diyalog metni,
  * geçmiş kaydı ve seçim (choice) arayüzünü yönetir.
+ *
+ * Yazı sesi: metin yazılırken karaktere özel kısa bir "bip" çalar. Hangi
+ * karakterin konuştuğunu PortraitManager çözdüğü için (iç monologlarda bile)
+ * ses de doğru karakterden gelir.
  */
+
+/** Karakter -> yazı sesi dosyası. Listede olmayan herkes VOICE_DEFAULT kullanır. */
+const VOICE_FILES = {
+  girl: 'voice_girl.mp3',
+  boy: 'voice_boy.mp3',
+  teacher: 'voice_teacher.mp3'
+};
+const VOICE_DEFAULT = 'voice_other.mp3';
+
+/** Kaç karakterde bir bip çalsın (her harfte çalarsa gürültü oluyor). */
+const VOICE_EVERY = 3;
+/** Yazı sesi efekt seviyesinin çarpanı: arka planda kalmalı. */
+const VOICE_GAIN = 0.30;
 class DialogueManager {
   constructor(refs) {
     this.nameEl = refs.nameEl;
@@ -9,6 +26,10 @@ class DialogueManager {
     this.tapIndicatorEl = refs.tapIndicatorEl;
     this.choiceLayerEl = refs.choiceLayerEl;
     this.historyListEl = refs.historyListEl;
+
+    this.audio = refs.audioManager || null;
+    /** () => karakter kimliği ('girl' | 'boy' | 'teacher' | null) */
+    this.voiceIdProvider = refs.voiceIdProvider || null;
 
     this.charDelay = CONFIG.typingSpeed.normal;
     this.typing = false;
@@ -43,14 +64,34 @@ class DialogueManager {
       return;
     }
 
+    const sesDosyası = this._voiceFile(this.currentSpeaker);
     let i = 0;
+    let sonBip = -VOICE_EVERY;
     this.timer = setInterval(() => {
       i++;
+      const harf = this.fullText.charAt(i - 1);
       this.textEl.textContent = this.fullText.slice(0, i);
+      // Boşluk ve noktalama sessiz kalsın; konuşma daha doğal duyuluyor.
+      if (this.audio && sesDosyası && /[^\s.,!?;:…"'()\-]/.test(harf) && i - sonBip >= VOICE_EVERY) {
+        sonBip = i;
+        this.audio.playSfx(sesDosyası, { volume: VOICE_GAIN });
+      }
       if (i >= this.fullText.length) {
         this._finishTyping();
       }
     }, this.charDelay);
+  }
+
+  /**
+   * O anki satır kimin? Portre yöneticisi iç monologları da çözüyor.
+   * Adı olan ama portresi olmayan yan karakterler (kulüp arkadaşı, öğrenciler,
+   * Cemal Hoca) ortak sesi kullanır; anlatım satırları sessizdir.
+   */
+  _voiceFile(speaker) {
+    const id = this.voiceIdProvider ? this.voiceIdProvider() : null;
+    if (id && VOICE_FILES[id]) return VOICE_FILES[id];
+    if (speaker) return VOICE_DEFAULT;
+    return id ? VOICE_DEFAULT : null;
   }
 
   _finishTyping() {
