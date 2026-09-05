@@ -201,7 +201,7 @@ const STORY = {
             wrongText: 'Olmadı. Bir daha düşün.',
             openNote: 'Kilit açıldı.',
             items: [
-              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Bir kere girdim, kimseye söylemedim; yazı göndermeyi hâlâ düşünüyorum.' },
+              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Yazımı masaya bırakıp çıktım, kimseye söylemedim.' },
               { file: 'room.jpg', caption: 'Kendi odam. Rafın en üstündeki kupa bana ait değil, ablamın. Yine de duruyor.' },
               { file: 'gate.jpg', caption: 'Okul çıkışı, geçen hafta. O gün kimseyle konuşmadım ve bu fotoğrafı çektim.' }
             ]
@@ -221,13 +221,13 @@ const STORY = {
             },
             {
               title: 'Dergi yazısı — taslak',
-              date: 'Pazar 19:40',
+              date: 'Geçen ay',
               body: 'Jokeylik hakkında.\n\n' +
                     'Herkes atı konuşuyor ama yarışı asıl belirleyen üstteki insan. ' +
                     'Kırk kilo kalmak için ne yaptıklarını kimse yazmıyor. ' +
                     'Bir sporcunun kendi bedenini bu kadar küçültmek zorunda olması ' +
                     'nasıl bir şey, onu sormak istiyorum.\n\n' +
-                    'Giriş cümlesi hâlâ kötü. Sonra bakarım.'
+                    'Giriş cümlesini sonuna kadar beğenmedim. Yine de gönderdim.'
             },
             {
               title: 'Albüm — şifre',
@@ -402,7 +402,7 @@ const STORY = {
     { type: 'bgm', file: 'club_room.mp3', fadeIn: 2.2 },   // kulüp odası
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Dergi kulübü odası, öğle arasının hemen öncesi.' },
-    { type: 'say', speaker: '', text: 'Masanın üstünde yeni sayının son baskıları duruyor.' },
+    { type: 'say', speaker: '', text: 'Masanın üstünde bu yılın sayısının son baskıları duruyor.' },
     { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Bu sefer erken bitirdik, değil mi?' },
     { type: 'say', speaker: BOY_NAME, text: 'Erken bitirdik ama hâlâ dağıtım var. Asıl iş şimdi başlıyor.' },
     { type: 'say', speaker: 'Kulüp arkadaşı', text: 'Yine gönüllü mü oldun dağıtıma?' },
@@ -423,11 +423,11 @@ const STORY = {
     }
   ],
   act2_club_cover_colors: [
-    { type: 'say', speaker: BOY_NAME, text: 'Renkler bu sefer iyi çıkmış. Geçen sayı biraz fazla cıvık kaçmıştı.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Renkler bu sefer iyi çıkmış. Geçen yılki sayı biraz fazla cıvık kaçmıştı.' },
     { type: 'jump', goto: 'act2_club_leave' }
   ],
   act2_club_cover_font: [
-    { type: 'say', speaker: BOY_NAME, text: 'Font da okunaklı olmuş. Geçen sayıda üçüncü sayfadan sonra göz kanatıyordu.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Font da okunaklı olmuş. Geçen yılki sayıda üçüncü sayfadan sonra göz kanatıyordu.' },
     { type: 'say', speaker: '', text: '(İçinden) Bu sefer baştan dikkat ettik, iyi ki de etmişiz.' },
     { type: 'jump', goto: 'act2_club_leave' }
   ],
@@ -723,10 +723,10 @@ const STORY = {
     { type: 'expr', id: 'boy', file: 'boy_neutral.svg' }, // sıra ona geldi, işine döner
     { type: 'sfx', file: 'page.mp3' },
     { type: 'say', speaker: '', text: 'Yahya öne çıkıp dergiyi gösteriyor.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Bu ayki sayı çıktı. İçinde öğrenci yazıları, birkaç çizim, okul etkinliklerinden haberler ve kısa hikayeler var.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu yılki sayı çıktı. İçinde öğrenci yazıları, birkaç çizim, okul etkinliklerinden haberler ve kısa hikayeler var.' },
     { type: 'say', speaker: BOY_NAME, text: 'İsteyen teneffüste kulüp masasından alabilir.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Kapak kimin işi?' },
-    { type: 'say', speaker: BOY_NAME, text: "Onu 10-D'den biri yaptı. Bu sayı gerçekten iyi çıktı bence." },
+    { type: 'say', speaker: BOY_NAME, text: 'Benim. Üç kere baştan çizdim, sonuncusuna razı oldum.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Fena görünmüyor.' },
     {
       type: 'choice',
@@ -877,7 +877,7 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Yani severek yapıyorsun ama itiraf etmiyorsun.' },
     { type: 'say', speaker: BOY_NAME, text: 'Belki.' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // yazıyı gerçekten okumuş
-    { type: 'say', speaker: BOY_NAME, text: 'Bu arada, geçen sayıdaki jokeylik yazısı senindi değil mi?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu arada, bu seneki sayıdaki jokeylik yazısı senindi değil mi?' },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'say', speaker: '', text: '(İçinden) Okumuş demek.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Benimdi. Kimsenin okuduğunu sanmıyordum.' },
