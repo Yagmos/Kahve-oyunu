@@ -45,6 +45,11 @@ const DEBATE_ART = {
     annoyed: 'girl_debate_annoyed.png',
     surprised: 'girl_debate_surprised.png',
     point: 'girl_debate_point.png'
+  },
+  // Yahya'nın tek tartışma çizimi var; iki ifade de aynı dosyayı gösteriyor.
+  boy: {
+    neutral: 'boy_debate_neutral.png',
+    skeptic: 'boy_debate_neutral.png'
   }
 };
 
@@ -59,7 +64,7 @@ const DEBATE_EMPHASIS_POSE = { girl: 'girl_debate_point.png' };
 const EMPHASIS_SFX = 'objection.mp3';
 
 /** Poz/ifade çözülemezse kullanılacak duruş. */
-const DEBATE_DEFAULT_POSE = { teacher: 'stern', girl: 'neutral' };
+const DEBATE_DEFAULT_POSE = { teacher: 'stern', girl: 'neutral', boy: 'neutral' };
 
 class DebateManager {
   /**
@@ -149,13 +154,14 @@ class DebateManager {
   _artFor(id) {
     const poses = DEBATE_ART[id];
     if (!poses) {
-      // Yahya'nın tartışma görseli yok; portre çizimine düşülür.
+      // Tanımlı sprite'ı olmayan karakterler portre çizimine düşer.
       return this.portrait ? this.portrait.resolveFileFor(id) : null;
     }
     let pose = this.poses[id];
-    // İnci'nin pozu sahnedeki ifadesinden gelir (girl_annoyed.svg -> annoyed).
-    if (id === 'girl' && this.portrait) {
-      const file = this.portrait.resolveFileFor('girl');
+    // İnci ve Yahya'nın pozu sahnedeki ifadesinden gelir
+    // (girl_annoyed.svg -> annoyed, boy_skeptic.svg -> skeptic).
+    if ((id === 'girl' || id === 'boy') && this.portrait) {
+      const file = this.portrait.resolveFileFor(id);
       const expr = file ? String(file).replace(/\.[^.]+$/, '').split('_').slice(1).join('_') : '';
       if (poses[expr]) pose = expr;
     }

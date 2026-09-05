@@ -1050,13 +1050,8 @@ button {
   background-position: center bottom;
 }
 
-/* Yahya'nın tartışmaya özel sprite'ı henüz yok; diyalog portresindeki kare
-   çizimi kullanılıyor. Onu yükseklikten doldurursak yüzü ekranı taşırıyor,
-   bu yüzden genişliğe göre sığdırılıp sahnenin altına oturtuluyor. */
-.debate-stage[data-char="boy"] .debate-char-art {
-  background-size: contain;
-  background-position: center bottom;
-}
+/* Üç karakterin de tartışma sprite'ı aynı kadrajda üretildi; ayrı bir ölçü
+   kuralına gerek yok, yukarıdaki varsayılan hepsi için geçerli. */
 
 /* ---- Vurgu: seçilen karşı çıkış repliğinde kısa sarsıntı + flash ---- */
 

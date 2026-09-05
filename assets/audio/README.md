@@ -13,6 +13,7 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `alarm.mp3`          | Erteleyince kısa bir kez daha çalar              |
 | `bedroom_theme.mp3`  | ACT I — ilk dokunuştan sonra, İnci'nin odası     |
 | `club_room.mp3`      | ACT II — dergi kulübü odası                     |
+| `school_day.mp3`     | ACT II — koridor ve tartışma sonrası            |
 | `classroom.mp3`      | ACT II — ders; tartışma başlayana kadar         |
 | `debate.mp3`         | ACT II — İnci ile Badem Öziş'in tartışması      |
 | `morning_theme.mp3`  | ACT I — okula yürüyüş                           |

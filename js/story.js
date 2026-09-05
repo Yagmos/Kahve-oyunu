@@ -437,7 +437,7 @@ const STORY = {
 
   act2_club_leave: [
     { type: 'bg', file: 'hallway.jpg' },
-    { type: 'bgm', file: 'school_day.mp3', fadeIn: 2.2 },   // koridor: piyano
+    { type: 'bgm', file: 'school_day.mp3', fadeIn: 2.2 },   // koridor
     { type: 'say', speaker: '', text: 'Dergi yığınını koluna alıp kapıya yöneliyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sınıflara dağıtmaya başlıyorum.' },
     { type: 'say', speaker: ADVISOR_NAME, text: 'Dikkat et, geçen sefer merdivenlerden koşarak inmiştin.' },
