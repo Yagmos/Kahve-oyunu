@@ -37,14 +37,23 @@ const DEBATE_ART = {
   teacher: {
     calm: 'teacher_debate_calm.png',
     stern: 'teacher_debate_stern.png',
-    point: 'teacher_debate_point.png'
+    point: 'teacher_debate_point.png',
+    smug: 'teacher_debate_smug.png'
   },
   girl: {
     neutral: 'girl_debate_neutral.png',
     annoyed: 'girl_debate_annoyed.png',
-    surprised: 'girl_debate_surprised.png'
+    surprised: 'girl_debate_surprised.png',
+    point: 'girl_debate_point.png'
   }
 };
+
+/**
+ * Vurgu anında (sarsıntı + flash) karakterin geçici duruşu. İnci karşı çıkışını
+ * söylerken parmağını uzatır; replik bitip sıradaki söz gelince normal ifadesine
+ * döner. Öğretmenin vurgusu kendi 'expr' pozuyla geldiği için burada yer almaz.
+ */
+const DEBATE_EMPHASIS_POSE = { girl: 'girl_debate_point.png' };
 
 /** Poz/ifade çözülemezse kullanılacak duruş. */
 const DEBATE_DEFAULT_POSE = { teacher: 'stern', girl: 'neutral' };
@@ -65,6 +74,7 @@ class DebateManager {
     this.currentId = null;
     this.currentFile = null;
     this.shakeTimer = null;
+    this._emphasizedLabel = null;
 
     this.stageEl = this.layerEl ? this.layerEl.querySelector('[data-slot="stage"]') : null;
     this.artEl = this.layerEl ? this.layerEl.querySelector('.debate-char-art') : null;
@@ -91,9 +101,9 @@ class DebateManager {
    * Anlatım/iç monolog satırlarında görsel değişmez (son konuşan kalır).
    * @param {string} speaker Konuşmacı adı ('' ise anlatım/iç monolog).
    * @param {string} label O anki etiket.
-   * @param {number} index Etiket içindeki adım sırası (vurgu için).
+   * @param {{silent?:boolean}} [opts] silent: kayıttan geri yüklerken vurgu çalmasın.
    */
-  update(speaker, label, index) {
+  update(speaker, label, opts) {
     if (!this.active) return;
 
     const speakingId = speaker && this.portrait ? this.portrait.idForSpeaker(speaker) : null;
@@ -102,9 +112,13 @@ class DebateManager {
     if (!this.currentId) this.currentId = 'girl';
     this._render();
 
-    // Vurgu: İnci'nin seçilen karşı çıkış repliği (branch etiketinin ilk sözü).
-    if (index === 0 && REBUTTAL_LABEL_RE.test(label || '') && speakingId === 'girl') {
-      this.emphasize();
+    // Vurgu: İnci'nin seçilen karşı çıkışı, yani branch etiketindeki ilk sözü.
+    // Adım sırasına bakmıyoruz: bazı branch'ler bir 'expr' adımıyla başlıyor,
+    // o yüzden etiket başına bir kez tetiklemek daha güvenilir.
+    if (speakingId === 'girl' && this._emphasizedLabel !== label &&
+        REBUTTAL_LABEL_RE.test(label || '')) {
+      this._emphasizedLabel = label;
+      if (!(opts && opts.silent)) this.emphasize();
     }
   }
 
@@ -163,6 +177,13 @@ class DebateManager {
    */
   emphasize() {
     if (!this.layerEl) return;
+    const pose = DEBATE_EMPHASIS_POSE[this.currentId];
+    if (pose && this.artEl && pose !== this.currentFile) {
+      // Doğrudan yazıyoruz; currentFile'ı da güncellediğimiz için bir sonraki
+      // _render() ifadeden gelen normal görsele kendiliğinden geri döner.
+      this.artEl.style.backgroundImage = `url("${assetPath('characters', pose)}")`;
+      this.currentFile = pose;
+    }
     this.layerEl.classList.remove('emphasis');
     void this.layerEl.offsetWidth; // reflow: animasyon tekrar başlasın
     this.layerEl.classList.add('emphasis');
@@ -177,6 +198,7 @@ class DebateManager {
     if (this.stageEl) this.stageEl.classList.remove('present');
     this.currentId = null;
     this.currentFile = null;
+    this._emphasizedLabel = null;
     if (this.artEl) this.artEl.style.backgroundImage = '';
     if (this.layerEl) this.layerEl.classList.remove('emphasis');
   }
@@ -185,6 +207,7 @@ class DebateManager {
   reset() {
     this.active = false;
     this.poses = {};
+    this._emphasizedLabel = null;
     if (this.shakeTimer) { clearTimeout(this.shakeTimer); this.shakeTimer = null; }
     if (this.screenEl) this.screenEl.classList.remove('debate-mode');
     this._clearStage();

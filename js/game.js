@@ -105,7 +105,6 @@ class Game {
     // Kayıt bir 'choice'/'phone' adımındaysa öncesindeki 'say' tekrar
     // oynatılmaz; portrenin boş kalmaması için son konuşmacıyı hatırlıyoruz.
     let lastSay = null;
-    let lastSayIndex = 0;
     // Debate sahnesi tek görsel gösterdiği için son ADI OLAN konuşmacı ayrıca tutulur;
     // kayıt bir anlatım satırındaysa sahne boş kalmaz.
     let lastNamedSpeaker = '';
@@ -116,7 +115,6 @@ class Game {
           // Metin/daktilo tekrar çalıştırılmaz, sadece portre için gereken
           // konuşmacı ve metin not edilir.
           lastSay = { speaker: step.speaker || '', text: resolveDynamic(step.text, this) };
-          lastSayIndex = i;
           if (step.speaker) lastNamedSpeaker = step.speaker;
           break;
         case 'bg':
@@ -151,7 +149,7 @@ class Game {
     // Kayıt bir choice/phone adımındaysa tartışma sahnesi de boş kalmasın.
     if (this.debate) {
       this.debate.syncMode(label);
-      if (lastSay) this.debate.update(lastNamedSpeaker || lastSay.speaker, label, lastSayIndex);
+      if (lastSay) this.debate.update(lastNamedSpeaker || lastSay.speaker, label, { silent: true });
     }
   }
 
@@ -245,7 +243,7 @@ class Game {
           const rawText = resolveDynamic(step.text, this);
           this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText));
           if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
-          if (this.debate) this.debate.update(step.speaker, this.label, this.index);
+          if (this.debate) this.debate.update(step.speaker, this.label);
           if (step.emphasis && this.debate) this.debate.emphasize();
         }
         this._saveProgress();

@@ -20,6 +20,8 @@ class SceneManager {
   }
 
   reset() {
+    const screen = document.getElementById('screen-game');
+    if (screen) screen.classList.remove('blacked', 'waking');
     this.bgLayers.forEach((el) => {
       el.style.backgroundImage = '';
       el.classList.remove('visible');
@@ -104,10 +106,19 @@ class SceneManager {
    * Ekran efekti: şimdilik yalnızca 'wake' (gözlerin yavaşça açılması).
    * Animasyon bitince sınıf temizlenir; hikaye akışını bekletmez.
    */
+  /** 'blackout' = ekranı karart ve bekle, 'wake' = gözler yavaşça açılır. */
   playEffect(name) {
     const screen = document.getElementById('screen-game');
-    if (!screen || name !== 'wake') return;
-    screen.classList.remove('waking');
+    if (!screen) return;
+
+    if (name === 'blackout') {                 // ekran tamamen siyah, arayüz gizli
+      screen.classList.remove('waking');
+      screen.classList.add('blacked');
+      return;
+    }
+    if (name !== 'wake') return;
+
+    screen.classList.remove('blacked', 'waking');
     void screen.offsetWidth;                 // reflow: animasyon yeniden başlasın
     screen.classList.add('waking');
     if (this._fxTimer) clearTimeout(this._fxTimer);

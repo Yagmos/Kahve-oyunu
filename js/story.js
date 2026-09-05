@@ -64,14 +64,17 @@ function bayragaGore(game, key, secenekler, varsayilan) {
 const STORY = {
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
   act1_start: [
-    { type: 'bg', file: 'bedroom_morning.svg' },
-    // Alarm oyuncu ekrana dokunana kadar çalmaya devam eder.
+    // Oyun kapkaranlık başlar: sadece alarm duyulur, oyuncu ekrana dokunana
+    // kadar hiçbir yazı görünmez.
+    { type: 'fx', effect: 'blackout' },
     { type: 'bgm', file: 'alarm_loop.mp3', fadeIn: 0.2 },
-    { type: 'fx', effect: 'wake' },              // gözler yavaşça açılır
+    { type: 'bg', file: 'bedroom_morning.svg' },
     { type: 'show', id: 'girl', file: 'girl_sleepy.svg', position: 'center', transition: 'fade' },
-    { type: 'say', speaker: '', text: '*Trrrn! Trrrn! Trrrn!*' },
-    // İlk dokunuşta alarm susar, oda müziği yumuşakça girer.
+    { type: 'say', speaker: '', text: '' },      // dokunuşu bekler (ekran siyah)
+    // Dokunuşta: gözler yavaşça açılır, alarm susar, oda müziği girer, yazı başlar.
+    { type: 'fx', effect: 'wake' },
     { type: 'bgm', file: 'bedroom_theme.mp3', fadeOut: 0.35, fadeIn: 3.5 },
+    { type: 'say', speaker: '', text: '*Trrrn! Trrrn! Trrrn!*' },
     { type: 'camera', effect: 'zoom-in' },
     { type: 'say', speaker: '', text: `(${GIRL_NAME}'nin içinden) Bir dakika daha. Sadece bir dakika.` },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
@@ -419,6 +422,7 @@ const STORY = {
 
   // Tur 1, aşama A: İnci'nin ilk sorgulaması + öğretmenin kesin cevabı.
   act2_debate_turn1: [
+    { type: 'bgm', file: 'debate.mp3', fadeIn: 1.0, fadeOut: 0.8 },   // tartışma başlıyor
     { type: 'expr', id: 'teacher', file: 'teacher_debate_stern.png' }, // konumunu sabitliyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Bize aktarılmış açık bilgiler var. Bunlar yüzyıllardır orada; üzerinde durulmuş, sağlamlığı belli gerçekler.' },
     { type: 'say', speaker: TEACHER_NAME, text: 'Bazı şeyleri sürekli sorgulamak zorunda değilsiniz.', emphasis: true },
@@ -571,7 +575,7 @@ const STORY = {
   act2_debate_turn4: [
     { type: 'say', speaker: '', text: 'Öğretmen kollarını kavuşturuyor, sesi biraz daha sertleşiyor.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' }, // öğretmen sertleşiyor
-    { type: 'expr', id: 'teacher', file: 'teacher_debate_point.png' }, // tartışmanın tepe noktası
+    { type: 'expr', id: 'teacher', file: 'teacher_debate_smug.png' }, // kollar kavuşuk, tartışmanın tepe noktası
     { type: 'say', speaker: TEACHER_NAME, text: 'Son olarak şunu söylemek istiyorum: bazı sorular, sormak için değil, kabul etmek için vardır.', emphasis: true },
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' }, // beklenmedik iddia
     {
@@ -621,6 +625,7 @@ const STORY = {
 
   // ---- 7) DERGİ TANITIMI — ilk doğal (romantik olmayan) diyalog ----
   act2_magazine_intro: [
+    { type: 'bgm', file: 'school_day.mp3', fadeIn: 2.5, fadeOut: 1.5 },  // tartışma bitti
     { type: 'say', speaker: TEACHER_NAME, text: 'Evet, sanırım sıra dergi kulübünde.' },
     { type: 'say', speaker: BOY_NAME, text: 'Teşekkürler hocam.' },
     { type: 'expr', id: 'boy', file: 'boy_neutral.svg' }, // sıra ona geldi, işine döner
