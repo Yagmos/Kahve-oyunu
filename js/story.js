@@ -282,12 +282,13 @@ const STORY = {
     { type: 'jump', goto: 'act1_end' }
   ],
 
-  // 12: Perde sonu kartı. ACT II hazır olduğu için doğrudan ona bağlanıyor.
+  // 12: Perde geçişi. Yazılı kart yok: ekran kararır, oyuncu bir kez dokunur,
+  // ACT II açılır. Sahne değişimi metinle değil sessizlikle anlatılıyor.
   act1_end: [
     { type: 'hide', id: 'girl' },
     { type: 'bg', file: null },
-    { type: 'say', speaker: '', text: 'Perde I — Sabah' },
-    { type: 'say', speaker: '', text: 'Perde II — Okul' },
+    { type: 'fx', effect: 'blackout' },
+    { type: 'say', speaker: '', text: '' },
     { type: 'end', next: 'act2_start' }
   ],
 
@@ -311,8 +312,8 @@ const STORY = {
   // ---- 1) KEREM POV: DERGİ KULÜBÜ ----
   act2_start: [
     { type: 'bg', file: 'club_room.jpg' },
+    { type: 'fx', effect: 'clear' },          // perde geçişindeki karartmayı kaldırır
     { type: 'bgm', file: 'club_room.mp3' },       // kulüp odası: piyano
-    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Dergi kulübü odası, öğle arasının hemen öncesi.' },
     { type: 'say', speaker: '', text: 'Masanın üstünde yeni sayının son baskıları duruyor.' },
@@ -404,7 +405,6 @@ const STORY = {
   // ---- 3) İNCİ + ÖĞRETMEN TARTIŞMASI (Yahya henüz yok) ----
   act2_debate_start: [
     { type: 'bg', file: 'classroom.jpg' },
-    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
     { type: 'say', speaker: '', text: "Tahtada bir başlık var: 'İnanç ve Teslimiyet'." },
@@ -670,7 +670,6 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Ders bitiyor, herkes toplanmaya başlıyor.' },
     { type: 'hide', id: 'girl' },
     { type: 'hide', id: 'boy' },
-    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Yahya koridorda, elinde kalan birkaç dergiyle.' },
     { type: 'say', speaker: '', text: '(İçinden) İçeri girdiğimde böyle bir tartışmanın ortasına düşeceğimi düşünmemiştim.' },
@@ -678,7 +677,6 @@ const STORY = {
     { type: 'say', speaker: '', text: '(İçinden) Ama iyi ki çıkmamışım, ilginç bir dersmiş.' },
     { type: 'say', speaker: BOY_NAME, text: 'Neyse, kalan sınıflara da yetişeyim.' },
     { type: 'hide', id: 'boy' },
-    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'girl', file: 'girl_happy.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'İnci çantasını topluyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Yeni çocuk muydu?' },
@@ -688,10 +686,13 @@ const STORY = {
     { type: 'jump', goto: 'act2_end' }
   ],
 
-  // ---- 9) Perde sonu kartı. ACT III hazır olduğu için doğrudan ona bağlanıyor. ----
+  // ---- 9) Perde geçişi: yine sessiz karartma, yazılı kart yok. ----
   act2_end: [
-    { type: 'say', speaker: '', text: 'Perde II — Okul' },
-    { type: 'say', speaker: '', text: 'Perde III — Konuşma' },
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'bg', file: null },
+    { type: 'fx', effect: 'blackout' },
+    { type: 'say', speaker: '', text: '' },
     { type: 'end', next: 'act3_start' }
   ],
 
@@ -710,6 +711,7 @@ const STORY = {
   // Sahne 1 (İnci POV) — ACT II'nin bittiği yerden devam. Önce kendi gününe dair düşünceler.
   act3_start: [
     { type: 'bg', file: 'school_gate_evening.jpg' },
+    { type: 'fx', effect: 'clear' },          // perde geçişindeki karartmayı kaldırır
     { type: 'bgm', file: 'evening_walk.mp3' },
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'camera', effect: 'slide-left' },
@@ -745,7 +747,6 @@ const STORY = {
   act3_boy_pov: [
     { type: 'camera', effect: 'zoom-out' },
     { type: 'hide', id: 'girl' },
-    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: '(İçinden) Az önce sınıfta konuşmuştuk zaten, bahaneye gerek yok.' },
     { type: 'expr', id: 'boy', file: 'boy_serious.svg' }, // kendini toparlıyor
@@ -922,7 +923,6 @@ const STORY = {
     // Akşam: Yahya eve dönerken. Kendine acımıyor, sadece günü kapatıyor.
     { type: 'hide', id: 'girl' },
     { type: 'hide', id: 'boy' },
-    { type: 'say', speaker: '', text: '— Bakış açısı değişiyor —' },
     { type: 'bg', file: 'rain_night.jpg' },
     { type: 'say', speaker: '', text: 'Akşam yağmur başlıyor. Yahya şemsiyesini açıp yürümeye devam ediyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },

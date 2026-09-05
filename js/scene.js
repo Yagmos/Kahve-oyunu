@@ -116,6 +116,12 @@ class SceneManager {
       screen.classList.add('blacked');
       return;
     }
+    // 'clear': karartmayı animasyonsuz kaldırır (perde geçişlerinin çıkışı).
+    if (name === 'clear') {
+      if (this._fxTimer) { clearTimeout(this._fxTimer); this._fxTimer = null; }
+      screen.classList.remove('blacked', 'waking');
+      return;
+    }
     if (name !== 'wake') return;
 
     screen.classList.remove('blacked', 'waking');
