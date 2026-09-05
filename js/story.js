@@ -313,7 +313,7 @@ const STORY = {
   act2_start: [
     { type: 'bg', file: 'club_room.jpg' },
     { type: 'fx', effect: 'clear' },          // perde geçişindeki karartmayı kaldırır
-    { type: 'bgm', file: 'club_room.mp3' },       // kulüp odası: piyano
+    { type: 'bgm', file: 'club_room.mp3', fadeIn: 2.2 },   // kulüp odası
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Dergi kulübü odası, öğle arasının hemen öncesi.' },
     { type: 'say', speaker: '', text: 'Masanın üstünde yeni sayının son baskıları duruyor.' },
@@ -405,6 +405,7 @@ const STORY = {
   // ---- 3) İNCİ + ÖĞRETMEN TARTIŞMASI (Yahya henüz yok) ----
   act2_debate_start: [
     { type: 'bg', file: 'classroom.jpg' },
+    { type: 'bgm', file: 'classroom.mp3', fadeIn: 2.5, fadeOut: 1.4 },   // ders; tartışma başlayınca değişecek
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
     { type: 'say', speaker: '', text: "Tahtada bir başlık var: 'İnanç ve Teslimiyet'." },

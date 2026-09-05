@@ -13,6 +13,7 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `alarm.mp3`          | Erteleyince kısa bir kez daha çalar              |
 | `bedroom_theme.mp3`  | ACT I — ilk dokunuştan sonra, İnci'nin odası     |
 | `club_room.mp3`      | ACT II — dergi kulübü odası                     |
+| `classroom.mp3`      | ACT II — ders; tartışma başlayana kadar         |
 | `debate.mp3`         | ACT II — İnci ile Badem Öziş'in tartışması      |
 | `morning_theme.mp3`  | ACT I — okula yürüyüş                           |
 | `evening_walk.mp3`   | ACT III — bahçe, kahve teklifinden önce         |
@@ -22,7 +23,7 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `maybe.mp3`          | ACT III — "önce biraz tanışsak" denirse         |
 | `decline.mp3`        | ACT III — teklif reddedilirse                   |
 
-Hepsi mono / 32 kHz / 64 kbps'e çevrildi, 100-130 saniyeye kırpıldı ve
+Hepsi mono / 32 kHz / 64 kbps'e çevrildi, 80 saniyeye kırpıldı ve
 loudnorm ile -16 LUFS'a eşitlendi; başta 1.5 sn açılma, sonda 2.5 sn kapanma
 var (döngüye girdiğinde sert kesmesin diye). Tek dosyalık paylaşılabilir
 sürüme bu boyutlarla sığıyor.
