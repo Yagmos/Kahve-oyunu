@@ -161,7 +161,64 @@ const STORY = {
         { time: '10:00', subject: 'Türkçe Edebiyatı' },
         { time: '11:00', subject: 'Din Kültürü', highlight: true },
         { time: '13:00', subject: 'Beden Eğitimi' }
-      ]
+      ],
+      // Uygulamalar isteğe bağlı: veri verilmeyen uygulama telefonda görünmez.
+      apps: {
+        instagram: {
+          user: 'inci',
+          posts: [
+            {
+              image: 'yard.jpg',
+              caption: 'sabahın sekizinde burada olmak isteyen tek kişi ben değilim herhalde'
+            },
+            {
+              image: 'street.jpg',
+              caption: 'yağmurdan sonra bu sokak daha iyi kokuyor, kimse ikna edemez beni'
+            }
+          ]
+        },
+        gallery: {
+          note: 'Bu ay çekilenler',
+          items: [
+            { file: 'yard.jpg', caption: 'Okulun bahçesi. Zilden on dakika önce burası bomboş oluyor, en sevdiğim on dakika.' },
+            { file: 'street.jpg', caption: 'Eve giderken. Kaldırımdaki çukur hâlâ orada, iki yıldır orada.' },
+            { file: 'hall.jpg', caption: 'Koridor. Ders arasında burada durup insanları izlemek garip bir şekilde dinlendirici.' },
+            { file: 'class.jpg', caption: 'Boş sınıf. Herkes çıktıktan sonra çektim, sebebini ben de bilmiyorum.' }
+          ]
+        },
+        notes: {
+          items: [
+            {
+              title: 'Yarışma — son tekrar',
+              date: 'Dün 23:14',
+              body: 'Elektrik:\n' +
+                    '- Akım, yükün birim zamanda geçen miktarı. Birimi amper.\n' +
+                    '- Gerilim itici güç, akım ise akan şey. Karıştırma.\n' +
+                    '- Direnç uzunlukla artar, kesitle azalır.\n' +
+                    '- Seri bağlamada akım aynı, paralel bağlamada gerilim aynı.\n\n' +
+                    'Geçen sene soruların yarısı buradan gelmişti. Bu sene de gelir.'
+            },
+            {
+              title: 'Dergi yazısı — taslak',
+              date: 'Pazar 19:40',
+              body: 'Jokeylik hakkında.\n\n' +
+                    'Herkes atı konuşuyor ama yarışı asıl belirleyen üstteki insan. ' +
+                    'Kırk kilo kalmak için ne yaptıklarını kimse yazmıyor. ' +
+                    'Bir sporcunun kendi bedenini bu kadar küçültmek zorunda olması ' +
+                    'nasıl bir şey, onu sormak istiyorum.\n\n' +
+                    'Giriş cümlesi hâlâ kötü. Sonra bakarım.'
+            },
+            {
+              title: 'Kendime not',
+              date: 'Geçen hafta',
+              body: '"Bu tartışmaya açık bir konu değil" cümlesini duyunca sinirlenmek yerine ' +
+                    'neden öyle dediğini sormayı dene.\n\n' +
+                    'Denedim. Olmadı.\n\n' +
+                    'Yine de bir daha deneyeceğim.'
+            }
+          ]
+        }
+      }
     },
     { type: 'say', speaker: '', text: '(İçinden) Yarışma bugünmüş. Hatırlatıcıyı kendim kurmuşum, demek ki gerçekten gideceğim.' },
     { type: 'expr', id: 'girl', file: 'girl_annoyed.svg' },
@@ -351,7 +408,7 @@ const STORY = {
 
   act2_club_leave: [
     { type: 'bg', file: 'hallway.jpg' },
-    { type: 'bgm', file: 'school_day.mp3' },      // koridor/okul
+    { type: 'bgm', file: 'school_day.mp3', fadeIn: 2.2 },   // koridor: piyano
     { type: 'say', speaker: '', text: 'Dergi yığınını koluna alıp kapıya yöneliyor.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sınıflara dağıtmaya başlıyorum.' },
     { type: 'say', speaker: ADVISOR_NAME, text: 'Dikkat et, geçen sefer merdivenlerden koşarak inmiştin.' },
@@ -394,6 +451,8 @@ const STORY = {
   act2_hallway4: [
     { type: 'say', speaker: '', text: 'Birkaç kapı ileride durduğu yer, listedeki sınıflardan biri: hedef burası.' },
     { type: 'camera', effect: 'zoom-in' },
+    // Kapının ardından sızan ders müziği: çok kısık, uzun bir açılmayla.
+    { type: 'bgm', file: 'classroom.mp3', fadeIn: 5.0, fadeOut: 2.0, volume: 0.16 },
     { type: 'say', speaker: '', text: 'Kapıya yaklaşırken içeriden sesler geliyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Bir şey mi oluyor?' },
     { type: 'say', speaker: '', text: 'İçeride hararetli bir tartışma sürüyor gibi. Sesler kızgın değil, ama yoğun.' },
@@ -405,7 +464,7 @@ const STORY = {
   // ---- 3) İNCİ + ÖĞRETMEN TARTIŞMASI (Yahya henüz yok) ----
   act2_debate_start: [
     { type: 'bg', file: 'classroom.jpg' },
-    { type: 'bgm', file: 'classroom.mp3', fadeIn: 2.5, fadeOut: 1.4 },   // ders; tartışma başlayınca değişecek
+    { type: 'bgm', file: 'classroom.mp3', fadeIn: 3.5, fadeOut: 1.4, volume: 1 },   // içerideyiz: tam ses
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'center', transition: 'fade' },
     { type: 'say', speaker: '', text: 'Sınıf, Din Kültürü ve Ahlak Bilgisi dersi.' },
     { type: 'say', speaker: '', text: "Tahtada bir başlık var: 'İnanç ve Teslimiyet'." },

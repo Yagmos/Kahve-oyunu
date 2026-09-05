@@ -9,7 +9,9 @@ const CONFIG = {
     characters: 'assets/characters/',
     cg: 'assets/cg/',
     audio: 'assets/audio/',
-    ui: 'assets/ui/'
+    ui: 'assets/ui/',
+    phone: 'assets/phone/',
+    video: 'assets/video/'
   },
 
   // Karakter başına harf yazma hızı (ms). Küçük değer = hızlı yazı.

@@ -23,6 +23,9 @@ class AudioManager {
     this.bgmEls.forEach((el) => { el.loop = true; el.volume = 0; el.preload = 'auto'; });
     this.active = 0;
     this.currentBgmFile = null;
+    // Parçaya özel seviye çarpanı: aynı müzik bir sahnede fısıltı gibi, bir
+    // sonrakinde tam sesle çalabilsin diye (bkz. story.js 'bgm' + volume).
+    this.trackGain = 1;
     this._fadeTimers = [null, null];
 
     this.musicOn = CONFIG.defaultSettings.musicOn;
@@ -94,16 +97,33 @@ class AudioManager {
    */
   playBgm(filename, opts) {
     if (!filename) return;
-    if (this.currentBgmFile === filename && this.musicOn) return;
     const fadeIn = (opts && typeof opts.fadeIn === 'number') ? opts.fadeIn : 2.2;
     const fadeOut = (opts && typeof opts.fadeOut === 'number') ? opts.fadeOut : 1.2;
+    const gain = (opts && typeof opts.volume === 'number') ? Math.max(0, Math.min(1, opts.volume)) : 1;
+
+    // Zaten çalan parça: yeniden başlatmak yerine yalnızca seviyeyi taşı.
+    if (this.currentBgmFile === filename && this.musicOn) {
+      if (gain !== this.trackGain) {
+        this.trackGain = gain;
+        if (this.synth && (!this.useFiles || this._unavailable.has(filename))) {
+          this.synth.setMusicVolume(this.musicVolume * gain);
+        } else {
+          this._fade(this.active, this.musicVolume * gain, fadeIn);
+        }
+      }
+      return;
+    }
+    this.trackGain = gain;
     const prev = this.currentBgmFile;
     this.currentBgmFile = filename;
 
     // Dosya yoksa sentez (onun kendi yumuşak girişi var)
     if (!this.useFiles || this._unavailable.has(filename)) {
       this._fadeOutCurrent(fadeOut);
-      if (this.synth) { if (this.musicOn) this.synth.playBgm(filename); else this.synth.stopBgm(); }
+      if (this.synth) {
+        if (this.musicOn) { this.synth.playBgm(filename); this.synth.setMusicVolume(this.musicVolume * gain); }
+        else this.synth.stopBgm();
+      }
       return;
     }
     if (this.synth && prev) this.synth.stopBgm();
@@ -119,7 +139,7 @@ class AudioManager {
     const start = () => {
       this._fadeOutCurrent(fadeOut);
       this.active = next;
-      this._fade(next, this.musicVolume, fadeIn);
+      this._fade(next, this.musicVolume * this.trackGain, fadeIn);
     };
     if (playPromise && typeof playPromise.catch === 'function') {
       playPromise.then(start).catch(() => this._fallbackBgm(filename));
@@ -147,9 +167,11 @@ class AudioManager {
     this._fadeOutCurrent(sec);
     if (this.synth) this.synth.stopBgm();
     this.currentBgmFile = null;
+    this.trackGain = 1;
   }
 
   stopBgm() {
+    this.trackGain = 1;
     this.bgmEls.forEach((el, i) => {
       if (this._fadeTimers[i]) { clearInterval(this._fadeTimers[i]); this._fadeTimers[i] = null; }
       el.pause(); el.currentTime = 0; el.volume = 0;
@@ -194,7 +216,7 @@ class AudioManager {
     }
     const el = this.bgmEls[this.active];
     const p = el.play();
-    const up = () => this._fade(this.active, this.musicVolume, 1.2);
+    const up = () => this._fade(this.active, this.musicVolume * this.trackGain, 1.2);
     if (p && typeof p.catch === 'function') p.then(up).catch(() => this._fallbackBgm(this.currentBgmFile));
     else up();
   }
@@ -206,8 +228,8 @@ class AudioManager {
   setMusicVolume(v) {
     this.musicVolume = v;
     const el = this.bgmEls[this.active];
-    if (el && !el.paused) this._fade(this.active, v, 0.25);
-    if (this.synth) this.synth.setMusicVolume(v);
+    if (el && !el.paused) this._fade(this.active, v * this.trackGain, 0.25);
+    if (this.synth) this.synth.setMusicVolume(v * this.trackGain);
   }
 
   setSfxVolume(v) {

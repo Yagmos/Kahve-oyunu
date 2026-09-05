@@ -94,14 +94,31 @@
           <span id="phone-time">--:--</span>
           <span id="phone-date"></span>
         </div>
-        <div class="phone-section">
-          <h3>Bildirimler</h3>
-          <div id="phone-notifications" class="phone-list"></div>
+        <!-- Ana ekran: bildirimler, uygulamalar, ders programı -->
+        <div id="phone-home" class="phone-view">
+          <div class="phone-section">
+            <h3>Bildirimler</h3>
+            <div id="phone-notifications" class="phone-list"></div>
+          </div>
+          <div class="phone-section">
+            <h3>Uygulamalar</h3>
+            <div id="phone-apps" class="phone-apps"></div>
+          </div>
+          <div class="phone-section">
+            <h3>Bugünkü Ders Programı</h3>
+            <div id="phone-schedule" class="phone-list"></div>
+          </div>
         </div>
-        <div class="phone-section">
-          <h3>Bugünkü Ders Programı</h3>
-          <div id="phone-schedule" class="phone-list"></div>
+
+        <!-- Açılan uygulama -->
+        <div id="phone-app" class="phone-view hidden">
+          <div class="phone-app-bar">
+            <button id="btn-phone-back" class="phone-back" type="button" aria-label="Geri">‹</button>
+            <span id="phone-app-title" class="phone-app-title"></span>
+          </div>
+          <div id="phone-app-body" class="phone-app-body"></div>
         </div>
+
         <button id="btn-close-phone" class="menu-btn" type="button">KAPAT</button>
       </div>
     </div>

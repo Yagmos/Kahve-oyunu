@@ -605,11 +605,26 @@ button {
 
 /* ---- Telefon ekranı ---- */
 
+/* Telefon: üstte saat, ortada kayan içerik, altta her zaman görünen KAPAT.
+   Uygulamalar eklendikten sonra liste uzadığı için kutunun kendisi kaymaz. */
 .phone-box {
   max-height: 85%;
-  overflow-y: auto;
+  overflow: hidden;
   background: #12100e;
   border: 1px solid rgba(217, 164, 65, 0.3);
+}
+
+.phone-box .phone-statusbar,
+.phone-box > .menu-btn { flex: 0 0 auto; }
+
+.phone-view {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 4px;
 }
 
 .phone-statusbar {
@@ -689,6 +704,199 @@ button {
 .phone-schedule-row.highlight .phone-schedule-subject {
   color: var(--color-accent);
   font-weight: 700;
+}
+
+/* ---- Telefon uygulamaları ---- */
+
+.phone-view.hidden { display: none; }
+
+.phone-apps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.phone-app-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 6px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.phone-app-btn:active { transform: scale(0.96); }
+
+.phone-app-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.phone-app-icon.ig   { background: linear-gradient(135deg, #f9a03f 0%, #d63c7a 55%, #6d3ac7 100%); }
+.phone-app-icon.gal  { background: linear-gradient(135deg, #7fc4e8, #3f7fb0); }
+.phone-app-icon.note { background: linear-gradient(135deg, #f4d06f, #c99a2e); }
+
+.phone-app-badge {
+  min-width: 18px;
+  height: 18px;
+  margin-top: -52px;
+  margin-left: 34px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.phone-app-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.phone-back {
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-text);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.phone-app-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.phone-app-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Instagram akışı */
+.ig-post {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ig-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ig-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f9a03f, #d63c7a);
+  flex: 0 0 auto;
+}
+
+.ig-media { width: 100%; display: block; background: #000; }
+.ig-media video, .ig-media img { width: 100%; display: block; }
+
+.ig-empty {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ig-caption {
+  padding: 8px 10px 10px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-text-dim);
+}
+.ig-caption b { color: var(--color-text); }
+
+/* Galeri */
+.gal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.gal-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05) center / cover no-repeat;
+}
+
+.gal-cell:active { opacity: 0.8; }
+
+.gal-locked::after {
+  content: '?';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 8, 5, 0.82);
+  color: var(--color-accent);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.gal-open img { width: 100%; border-radius: 10px; display: block; }
+
+.gal-caption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--color-text-dim);
+}
+
+/* Notlar */
+.note-row {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text);
+}
+
+.note-row-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+.note-row-date { font-size: 0.75rem; color: var(--color-text-dim); }
+
+.note-body {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  white-space: pre-wrap;
 }
 
 /* ---- Yardımcılar ---- */

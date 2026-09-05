@@ -136,7 +136,7 @@ class Game {
           break;
         case 'bgm':
           if (step.stop) this.audio.fadeOutBgm(0.1);
-          else this.audio.playBgm(step.file);
+          else this.audio.playBgm(step.file, { volume: step.volume });
           break;
         default:
           break; // sfx / camera / choice / phone / jump / end tekrar oynatılmaz
@@ -194,7 +194,7 @@ class Game {
       case 'bgm':
         // stop: bilerek sessizlik (aynı parça sonradan baştan başlayabilir).
         if (step.stop) this.audio.fadeOutBgm(step.fadeOut);
-        else this.audio.playBgm(step.file, { fadeIn: step.fadeIn, fadeOut: step.fadeOut });
+        else this.audio.playBgm(step.file, { fadeIn: step.fadeIn, fadeOut: step.fadeOut, volume: step.volume });
         this._advanceAuto();
         break;
 

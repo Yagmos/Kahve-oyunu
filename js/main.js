@@ -69,7 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
     timeEl: document.getElementById('phone-time'),
     dateEl: document.getElementById('phone-date'),
     notificationsEl: document.getElementById('phone-notifications'),
-    scheduleEl: document.getElementById('phone-schedule')
+    scheduleEl: document.getElementById('phone-schedule'),
+    appsEl: document.getElementById('phone-apps'),
+    homeEl: document.getElementById('phone-home'),
+    appEl: document.getElementById('phone-app'),
+    appTitleEl: document.getElementById('phone-app-title'),
+    appBodyEl: document.getElementById('phone-app-body'),
+    backBtn: document.getElementById('btn-phone-back')
   });
 
   const game = new Game({
