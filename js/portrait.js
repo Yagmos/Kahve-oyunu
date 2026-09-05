@@ -76,6 +76,7 @@ const LABEL_POV = {
   act3_greeting: 'girl',
   act3_talk_magazine: 'girl',
   act3_talk_personal: 'girl',
+  act3_talk_books: 'girl',
   act3_pause: 'girl',
   act3_coffee_offer: 'girl',
   act3_yes: 'girl',

@@ -125,10 +125,11 @@ const PHONE_APPS_DATA = {
               title: 'Dergi yazısı — taslak',
               date: 'Geçen ay',
               body: 'Jokeylik hakkında.\n\n' +
-                    'Herkes atı konuşuyor ama yarışı asıl belirleyen üstteki insan. ' +
-                    'Kırk kilo kalmak için ne yaptıklarını kimse yazmıyor. ' +
-                    'Bir sporcunun kendi bedenini bu kadar küçültmek zorunda olması ' +
-                    'nasıl bir şey, onu sormak istiyorum.\n\n' +
+                    'Yazmak istediğim şey aslında yarış değil: binici ile atı arasında ' +
+                    'kurulan bağ. Aynı hayvanla yıllarca çalışıyorlar; hangi tarafın ' +
+                    'diğerini yönlendirdiği bir yerden sonra belirsizleşiyor.\n\n' +
+                    'Bir jokey "atım ne isteyeceğimi benden önce anlıyor" demiş. ' +
+                    'Yazının tamamı bu cümlenin etrafında döndü.\n\n' +
                     'Giriş cümlesini sonuna kadar beğenmedim. Yine de gönderdim.'
             },
             {
@@ -905,7 +906,7 @@ const STORY = {
     { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
     { type: 'say', speaker: '', text: '(İçinden) Okumuş demek.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Benimdi. Kimsenin okuduğunu sanmıyordum.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Ben okudum. Jokeylerin kilo tutma kısmını üç kere okudum, hâlâ inanamıyorum.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Ben okudum. Atla binicisi arasındaki bağı anlattığın kısmı üç kere okudum.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'O kısmı ben de üç kere yazdım zaten.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
@@ -924,6 +925,40 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Pek sayılmaz, ama yazı kısmına bakmayı seviyorum.' },
     { type: 'say', speaker: BOY_NAME, text: 'Sen hep böyle mi soru sormayı seversin?' },
     { type: 'say', speaker: GIRL_NAME, text: 'Galiba hep. Cevap verilmeyen bir soru beni rahatsız ediyor.' },
+    { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
+    { type: 'jump', goto: 'act3_talk_books' }
+  ],
+
+  // Sahne 6b — okuldan ayrılmadan önce: kitaplar ve Yahya'nın projesi.
+  // Konuşan taraf Yahya; İnci yalnızca soruyor. Kendi okuma alışkanlığı ya da
+  // kitaplar hakkındaki fikri üzerine tek kelime etmiyor (bilerek).
+  act3_talk_books: [
+    { type: 'say', speaker: '', text: 'Kapıya doğru birkaç adım atıyorlar, acele eden yok.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Dergiyi okurken sıkılmadıysan kitap da okuyorsundur diye düşündüm.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Neden öyle düşündün?' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bilmiyorum. Ben seviyorum, herkese yakıştırıyorum galiba.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ne okuyorsun peki?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Şu an elimde bir şey yok. Ama en sevdiğim roman belli: Karamazov Kardeşler.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Neden o?' },
+    { type: 'expr', id: 'boy', file: 'boy_serious.svg' },
+    { type: 'say', speaker: BOY_NAME, text: 'Dört kardeş var ve dördü de kendince haklı. Kitabı bitirdiğimde kime kızacağımı hâlâ bilmiyordum.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kızman gerekiyor muydu?' },
+    { type: 'expr', id: 'boy', file: 'boy_happy.svg' },
+    { type: 'say', speaker: BOY_NAME, text: 'İşte tam da bu yüzden seviyorum.' },
+    { type: 'say', speaker: '', text: 'Kapıya birkaç adım kalıyor.' },
+    { type: 'expr', id: 'boy', file: 'boy_neutral.svg' },
+    { type: 'say', speaker: BOY_NAME, text: 'Bu arada yakında bir şeye başlayacağım. Mobil oyun.' },
+    { type: 'expr', id: 'girl', file: 'girl_surprised.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ne oyunu?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Adını söyleyebilirim ama ne için olduğunu söyleyemem.' },
+    { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Bu şekilde söylersen daha çok merak edilir, haberin olsun.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Adı Kahve Oyunu.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Kahve Oyunu.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Aynen.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Ne için olduğunu gerçekten söylemeyecek misin?' },
+    { type: 'say', speaker: BOY_NAME, text: 'Şimdilik.' },
     { type: 'expr', id: 'girl', file: 'girl_neutral.svg' },
     { type: 'jump', goto: 'act3_pause' }
   ],

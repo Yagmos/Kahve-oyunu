@@ -19,10 +19,10 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `morning_theme.mp3`  | ACT I — okula yürüyüş                           |
 | `evening_walk.mp3`   | ACT III — bahçe, kahve teklifinden önce         |
 | `objection.mp3`      | ACT II — iddialı replikte kısa itiraz efekti    |
-| `voice_girl.mp3`     | İnci konuşurken yazı sesi                       |
-| `voice_boy.mp3`      | Yahya konuşurken yazı sesi                      |
-| `voice_teacher.mp3`  | Badem Öziş konuşurken yazı sesi                 |
-| `voice_other.mp3`    | Diğer karakterler (Cemal Hoca, öğrenciler)      |
+| `voice_girl.mp3`     | İnci konuşurken yazı sesi (Generic 2)           |
+| `voice_boy.mp3`      | Yahya konuşurken yazı sesi (Sans)               |
+| `voice_teacher.mp3`  | Badem Öziş konuşurken yazı sesi (Generic 1)     |
+| `voice_other.mp3`    | Diğer karakterler (Cemal Hoca, öğrenciler; Flowey) |
 | `offer.mp3`          | ACT III — kahve teklifi anı                     |
 | `accept.mp3`         | ACT III — teklif kabul edilirse                 |
 | `maybe.mp3`          | ACT III — "önce biraz tanışsak" denirse         |
