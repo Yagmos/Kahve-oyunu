@@ -1197,6 +1197,7 @@ const STORY = {
 
     // Aynı yağmur, karşı taraftan: Yahya da eve dönüyor. 'pov' alanı sayesinde
     // bu iki satır etiketin POV'una takılmadan onun sesiyle geçiyor.
+    { type: 'bg', file: 'boy_rain_umbrella.jpg' },     // Yahya'nın kendi yağmur çizimi
     { type: 'say', speaker: '', pov: 'boy', text: 'Aynı yağmur, birkaç sokak ötede.' },
     { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },
     { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Dergiyi masaya bırakırım, gerisi kendi bilir.' },
@@ -1204,7 +1205,6 @@ const STORY = {
     // Perde kapanıyor: Yahya'nın kendi çizimi ve İnci'ye sözü.
     { type: 'hide', id: 'girl' },
     { type: 'hide', id: 'boy' },
-    { type: 'bg', file: 'boy_sunset_neutral.jpg' },
     { type: 'say', speaker: '', note: true, text: 'Olsun. Umarım oyunu beğenmişsindir ve bu deneyimi hayatının sonuna kadar unutmazsın.' },
     { type: 'jump', goto: 'act3_coda' }
   ],
