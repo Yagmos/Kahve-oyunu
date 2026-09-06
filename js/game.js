@@ -251,7 +251,7 @@ class Game {
         {
           const rawText = resolveDynamic(step.text, this);
           // Portre ÖNCE çözülür: yazı sesi konuşanın kim olduğunu buradan okur.
-          if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
+          if (this.portrait) this.portrait.update(step.speaker, rawText, this.label, step.pov);
           this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText), { titleCard: !!step.titleCard, note: !!step.note });
           if (this.debate) this.debate.update(step.speaker, this.label);
           if (step.emphasis && this.debate) this.debate.emphasize();

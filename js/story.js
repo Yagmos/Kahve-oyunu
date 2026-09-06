@@ -1112,6 +1112,8 @@ const STORY = {
         'false': 'Perşembe. Eve giderken bir kahve alırım, bugün hiç içmedim.'
       }, 'Perşembe. Eve giderken bir kahve alırım.')
     },
+    // Aynı akşam, karşı taraftan.
+    { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Perşembe dedim ve kabul etti. Bugünlük bu kadarı fazlasıyla yeter.' },
     { type: 'jump', goto: 'act3_coda' }
   ],
 
@@ -1139,6 +1141,8 @@ const STORY = {
       }, '(İçinden) Dergiyi çantadan çıkarmayı unutmasam.')
     },
     { type: 'say', speaker: GIRL_NAME, text: 'Acelesi yok. Zaten olacaksa acelesi olmaz.' },
+    // Aynı akşam, karşı taraftan.
+    { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Hayır demedi. Dergiyi masaya bırakırım, gerisi kendi bilir.' },
     { type: 'jump', goto: 'act3_coda' }
   ],
 
@@ -1165,6 +1169,12 @@ const STORY = {
         ? 'Şemsiye sonunda işe yaradı. Eve giderken bir kahve de alırım.'
         : 'Islanacağım galiba. Yine de bir kahve alıp öyle yürürüm.'
     },
+
+    // Aynı yağmur, karşı taraftan: Yahya da eve dönüyor. 'pov' alanı sayesinde
+    // bu iki satır etiketin POV'una takılmadan onun sesiyle geçiyor.
+    { type: 'say', speaker: '', pov: 'boy', text: 'Aynı yağmur, birkaç sokak ötede.' },
+    { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },
+    { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Dergiyi masaya bırakırım, gerisi kendi bilir.' },
     { type: 'jump', goto: 'act3_coda' }
   ],
 

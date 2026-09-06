@@ -180,7 +180,7 @@ class PortraitManager {
    * @param {string} text Replik metni (iç monolog tespiti için).
    * @param {string} label O anki hikaye etiketi (POV çözümlemesi için).
    */
-  update(speaker, text, label) {
+  update(speaker, text, label, pov) {
     // İç ses, metnin kendi stiliyle (soluk + italik) belli edilir; bu yüzden
     // portre çözülemese bile kutuya inner-thought sınıfı uygulanır.
     const isInner = !speaker && typeof text === 'string' && INNER_THOUGHT_RE.test(text);
@@ -196,7 +196,9 @@ class PortraitManager {
 
     // 2) Adı yok ama iç monologsa, POV sahibinin portresi ve adı gösterilir.
     if (isInner) {
-      const povId = LABEL_POV[label] || this.lastShownId;
+      // Adımın kendi 'pov' alanı varsa etiketin POV'unu ezer: aynı sahnede
+      // iki karakterin iç sesi geçebilsin diye.
+      const povId = pov || LABEL_POV[label] || this.lastShownId;
       if (povId && PORTRAIT_ASSETS[povId]) {
         this.currentId = povId;
         this._apply(this.resolveFileFor(povId), true, this.idToName[povId] || '');
