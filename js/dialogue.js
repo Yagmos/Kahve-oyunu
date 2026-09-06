@@ -10,7 +10,7 @@
 /** Karakter -> yazı sesi dosyası. Listede olmayan herkes VOICE_DEFAULT kullanır. */
 const VOICE_FILES = {
   girl: 'voice_girl.mp3',
-  boy: 'voice_boy.wav',   // Sans karakterinde alçak bip
+  boy: 'voice_boy.mp3',
   teacher: 'voice_teacher.mp3'
 };
 const VOICE_DEFAULT = 'voice_other.mp3';

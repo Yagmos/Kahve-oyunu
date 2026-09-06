@@ -20,7 +20,7 @@ yani eksik dosya sessizlik bırakmaz. Davranışı `js/config.js` içindeki
 | `evening_walk.mp3`   | ACT III — bahçe, kahve teklifinden önce         |
 | `objection.mp3`      | ACT II — iddialı replikte kısa itiraz efekti    |
 | `voice_girl.mp3`     | İnci konuşurken yazı sesi (Generic 2)           |
-| `voice_boy.wav`      | Yahya konuşurken yazı sesi (Sans karakterinde, üretilmiş alçak bip) |
+| `voice_boy.mp3`      | Yahya konuşurken yazı sesi (Sans)               |
 | `voice_teacher.mp3`  | Badem Öziş konuşurken yazı sesi (Generic 1)     |
 | `voice_other.mp3`    | Diğer karakterler (Cemal Hoca, öğrenciler; Flowey) |
 | `bell.mp3`           | Ders zili — oyuncunun okulunun gerçek zili      |
