@@ -50,6 +50,14 @@ function assetPath(kind, filename) {
 }
 
 /**
+ * Sahnede duran BÜYÜK karakter figürü. Kapalıyken karakterler yalnızca
+ * diyalog kutusundaki portrede ve tartışma sahnesinde görünür; hikaye
+ * verisine dokunulmaz, 'show'/'expr' adımları kaydı tutmaya devam eder
+ * (portre bu kayıttan besleniyor). Tek satırla geri açılabilir.
+ */
+const SHOW_STANDING_CHARACTERS = false;
+
+/**
  * Yeni çizimler eski dosya adlarının üstüne biner: hikayedeki yüzlerce
  * 'show'/'expr' adımına dokunmadan sahnedeki figür ve portre değişir.
  *

@@ -1238,3 +1238,7 @@ button {
   text-align: left;
   letter-spacing: 0.01em;
 }
+
+/* Büyük karakter figürü kapalı: karakterler portrede ve tartışma
+   sahnesinde görünüyor. (js/config.js -> SHOW_STANDING_CHARACTERS) */
+.character-slot { display: none; }

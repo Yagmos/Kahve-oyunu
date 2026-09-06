@@ -101,6 +101,13 @@ class SceneManager {
     const oncekiSlot = this.occupied[id] && this.occupied[id].position;
     if (oncekiSlot && oncekiSlot !== position) this._clearSlot(oncekiSlot);
 
+    // Büyük figür kapalıysa yalnızca kayıt tutulur: portre ve tartışma
+    // sahnesi bu kayıttan beslendiği için ikisi de çalışmaya devam eder.
+    if (!SHOW_STANDING_CHARACTERS) {
+      this.occupied[id] = { position, file };
+      return;
+    }
+
     slotEl.style.backgroundImage = `url("${assetPath('characters', sceneArt(file, this.flags))}")`;
     // Karakter başına kadraj farkı CSS'ten ayarlanabilsin (portre çizim vs tam boy).
     slotEl.dataset.char = id;
@@ -122,6 +129,11 @@ class SceneManager {
     if (!info) return;
     const slotEl = this.slots[info.position];
     if (!slotEl || !file) return;
+
+    if (!SHOW_STANDING_CHARACTERS) {
+      info.file = file;
+      return;
+    }
 
     slotEl.classList.remove('visible');
     this._pendingFrames[info.position] = requestAnimationFrame(() => {
