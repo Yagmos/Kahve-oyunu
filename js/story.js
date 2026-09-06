@@ -179,15 +179,15 @@ const STORY = {
       type: 'say', speaker: '', note: true,
       text: 'Umarım senin için de unutulmaz bir deneyim olur. Hadi bakalım, iyi eğlenceler.'
     },
-    { type: 'jump', goto: 'credits' }
+    { type: 'jump', goto: 'act1_start' }
   ],
 
   // ---- Yapımcılar ----
   credits: [
     { type: 'say', speaker: '', credits: true, text: 'SELAM BEN YAHYA\n\n\nTasarım · Senaryo · Kurgu\nYahya Kocabey\n\nÇizim · Görsel Tasarım\nYahya Kocabey\n\nSes Tasarımı · Test\nYahya Kocabey' },
     { type: 'say', speaker: '', credits: true, text: 'YARDIM ALINANLAR\n\n\nMobil sürüme geçiş\nClaude AI\n\nBadem Hoca tartışma sahnesi\nGemini' },
-    { type: 'say', speaker: '', credits: true, text: 'Bu oyun\nİnci Cihan\'a\nözel olarak hazırlanmıştır.' },
-    { type: 'jump', goto: 'act1_start' }
+    { type: 'say', speaker: '', credits: true, text: 'Umarım oyunu\nbeğenmişsindir.' },
+    { type: 'end' }
   ],
 
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
@@ -1223,7 +1223,7 @@ const STORY = {
         hayir: '— Son 3 —'
       }, '— Son —')
     },
-    { type: 'end' }
+    { type: 'jump', goto: 'credits' }
   ]
 };
 

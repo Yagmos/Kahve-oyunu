@@ -52,5 +52,3 @@ Adım tipleri dosyanın başındaki açıklamada listelidir.
   önden indirilir; oynanış sırasında ağdan dosya çekilmez.
 - İlerleme her replikte tarayıcıya kaydedilir, ana menüdeki *Devam Et*
   ile sürdürülür.
-
-Bu oyun İnci Cihan'a özel olarak hazırlanmıştır.
