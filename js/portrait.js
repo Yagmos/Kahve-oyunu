@@ -82,9 +82,10 @@ const LABEL_POV = {
   act3_yes: 'girl',
   act3_getknow: 'girl',
   act3_no: 'girl',
-  act3_end_hayir: 'boy',
-  // Kapanış yağmuru Yahya'nın iç sesi.
-  act3_coda_yagmur: 'boy'
+  // Üç son da İnci'nin gözünden kapanıyor; şemsiye kararı da onundu.
+  act3_end_olur: 'girl',
+  act3_end_belki: 'girl',
+  act3_end_hayir: 'girl'
 };
 
 /**
