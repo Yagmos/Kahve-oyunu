@@ -52,7 +52,11 @@ class DialogueManager {
 
     // Final başlığı gibi satırlar kutuyu bırakıp ortada, büyük punto görünür.
     const kutu = this.textEl.closest('.dialogue-box');
-    if (kutu) kutu.classList.toggle('title-card', !!(opts && opts.titleCard));
+    if (kutu) {
+      kutu.classList.toggle('title-card', !!(opts && opts.titleCard));
+      // 'note': uzun mektup metni — normal punto, sola dayalı, taşarsa kaydırılır.
+      kutu.classList.toggle('note-card', !!(opts && opts.note));
+    }
 
     this.nameEl.textContent = speaker || '';
     this.nameEl.style.visibility = speaker ? 'visible' : 'hidden';

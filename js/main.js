@@ -131,6 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- Oyun ekranı: dokunarak ilerleme ----
   const screenGameEl = screens.game;
   const historyPanel = document.getElementById('history-panel');
+  window.__game = game; // test/hata ayıklama kancası
+
   const gameMenuPanel = document.getElementById('game-menu-panel');
 
   screenGameEl.addEventListener('click', (e) => {

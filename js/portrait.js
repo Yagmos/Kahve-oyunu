@@ -14,7 +14,7 @@
 /** Bir karakter için gerçekten var olan ifade dosyaları (fallback bu listeye dayanır). */
 const PORTRAIT_ASSETS = {
   girl: ['neutral', 'happy', 'annoyed', 'surprised', 'sleepy'],
-  boy: ['neutral', 'happy', 'annoyed', 'serious', 'skeptic', 'happy_glasses', 'x'],
+  boy: ['neutral', 'happy', 'annoyed', 'serious', 'skeptic'],
   teacher: ['neutral', 'serious']
 };
 
@@ -219,7 +219,9 @@ class PortraitManager {
     const visible = !!file;
 
     if (file) {
-      const url = `url("${assetPath('characters', file)}")`;
+      const yeniSanat = portraitArt(file);
+      this.imageEl.dataset.art = (yeniSanat !== file) ? 'head' : '';
+      const url = `url("${assetPath('characters', yeniSanat)}")`;
       if (this.imageEl.style.backgroundImage !== url) {
         this.imageEl.style.backgroundImage = url;
       }

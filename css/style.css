@@ -1198,3 +1198,43 @@ button {
   #screen-game.waking .lid-top,
   #screen-game.waking .lid-bottom { animation-duration: 600ms; }
 }
+
+/* Arka plan videosu: sahnenin kendisi olarak oynar, diyalog üstünde kalır. */
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Yeni baş çizimleri portre çerçevesine SVG'lerden farklı oturur. */
+.portrait-image[data-art="head"] {
+  background-size: cover !important;
+  background-position: 50% 18% !important;
+}
+
+/* 'note' kipi: oyunun başındaki mektup. Başlık kartından farklı olarak
+   normal punto, sola dayalı ve gerekirse kendi içinde kaydırılır — uzun
+   metin artık kutunun dışında kalıp kesilmiyor. */
+.dialogue-box.note-card {
+  margin-top: auto;
+  min-height: 0;
+  max-height: min(62vh, 520px);
+  background: rgba(20, 12, 8, 0.92);
+}
+.dialogue-box.note-card .portrait-col { display: none; }
+.dialogue-box.note-card .speaker-name { display: none; }
+.dialogue-box.note-card .dialogue-main {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px 18px 34px;
+}
+.dialogue-box.note-card .dialogue-text {
+  font-size: clamp(0.98rem, 4.1vw, 1.12rem);
+  line-height: 1.72;
+  text-align: left;
+  letter-spacing: 0.01em;
+}

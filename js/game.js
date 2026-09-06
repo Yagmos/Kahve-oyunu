@@ -63,6 +63,7 @@ class Game {
     this.noteScore = 0;
     this.flags = {};
     this.currentBg = null;
+    this.scene.flags = this.flags;
     this.label = STORY_START_LABEL;
     this.index = 0;
     this._executeCurrent();
@@ -88,6 +89,7 @@ class Game {
     this.flags = (save.vars && save.vars.flags && typeof save.vars.flags === 'object')
       ? Object.assign({}, save.vars.flags) : {};
 
+    this.scene.flags = this.flags;
     this.currentBg = (save.vars && typeof save.vars.bg === 'string') ? save.vars.bg : null;
     if (this.currentBg) this.scene.setBackground(this.currentBg);
     this._replayInstantly(save.label, save.index);
@@ -188,6 +190,7 @@ class Game {
       case 'bg':
         // Sahne değişiyor: önceki sahnenin zili/kapısı yeni sahneye taşmasın.
         this.audio.stopSfx();
+        this.scene.clearBackgroundVideo();
         this.currentBg = step.file || null;
         this.scene.setBackground(step.file);
         this._advanceAuto();
@@ -249,7 +252,7 @@ class Game {
           const rawText = resolveDynamic(step.text, this);
           // Portre ÖNCE çözülür: yazı sesi konuşanın kim olduğunu buradan okur.
           if (this.portrait) this.portrait.update(step.speaker, rawText, this.label);
-          this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText), { titleCard: !!step.titleCard });
+          this.dialogue.say(step.speaker, stripInnerThoughtPrefix(rawText), { titleCard: !!step.titleCard, note: !!step.note });
           if (this.debate) this.debate.update(step.speaker, this.label);
           if (step.emphasis && this.debate) this.debate.emphasize();
         }
@@ -271,8 +274,10 @@ class Game {
         this._saveProgress();
         break;
 
-      case 'video':
-        this._showVideo(step.file);
+      case 'bgvideo':
+        // Sahne videosu arka planda döner; diyalog ve seçimler ÜSTÜNDE kalır.
+        this.currentBg = null;
+        this.scene.setBackgroundVideo(step.file);
         this._advanceAuto();
         break;
 
@@ -301,6 +306,7 @@ class Game {
     if (option.set) {
       Object.keys(option.set).forEach((key) => { this.flags[key] = option.set[key]; });
     }
+    this.scene.flags = this.flags;
     if (option.add) {
       Object.keys(option.add).forEach((key) => {
         this.flags[key] = (this.flags[key] || 0) + option.add[key];
@@ -316,32 +322,6 @@ class Game {
     this.waitingForPhone = false;
     this.phone.hide();
     this._advanceAuto();
-  }
-
-  _showVideo(filename) {
-    const overlay = document.createElement('div');
-    overlay.id = 'video-overlay';
-    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999';
-
-    const video = document.createElement('video');
-    video.src = `assets/video/${filename}`;
-    video.style.cssText = 'max-width:90%;max-height:90%;border-radius:8px';
-    video.controls = true;
-    video.autoplay = true;
-
-    overlay.appendChild(video);
-    document.body.appendChild(overlay);
-
-    const closeOverlay = () => {
-      overlay.remove();
-      this.advance();
-    };
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeOverlay();
-    });
-
-    video.addEventListener('ended', closeOverlay);
   }
 
   _saveProgress() {

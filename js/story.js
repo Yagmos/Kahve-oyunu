@@ -79,12 +79,12 @@ const PHONE_APPS_DATA = {
                 { user: 'Yahya Kocabey', text: 'not aldım hayati abi' }
               ]
             },
-            { image: 'insta_1.jpg', caption: 'bazen yapılacak birşey olmasa iyi olur' },
-            { image: 'insta_2.jpg', caption: 'rüya gibi yerler var dünyada' },
-            { image: 'insta_3.jpg', caption: 'plajdan birşeyler getirdim' },
-            { image: 'insta_4.jpg', caption: 'sanat insanı her zaman hayranlıkla karşılar' },
-            { image: 'insta_5.jpg', caption: 'sokaklar en iyi fotoğraf albümü' },
-            { image: 'insta_6.jpg', caption: 'bilim güzel şeydir' },
+            { user: 'somersivrioglu', image: 'insta_1.jpg', caption: 'bazen de eğlenceli 😜' },
+            { user: 'doga.kareleri', image: 'insta_2.jpg', caption: 'rüya gibi yerler var bu dünyada' },
+            { user: 'kiyidan.toplananlar', image: 'insta_3.jpg', caption: 'kumsalda bulduklarım' },
+            { user: 'gunun.tablosu', image: 'insta_4.jpg', caption: 'İnci Küpeli Kız — Vermeer, 1665' },
+            { user: 'cemalhoca', image: 'insta_5.jpg', caption: 'Selanik sokakları. Gezmeye devam.' },
+            { user: 'apotemi.yayinlari', image: 'insta_6.jpg', caption: 'Limit ve Süreklilik — yeni baskı çıktı' },
             {
               image: 'yard.jpg',
               caption: 'sabahın sekizinde burada olmak isteyen tek kişi ben değilim herhalde'
@@ -106,16 +106,15 @@ const PHONE_APPS_DATA = {
           // Kilitli albüm: doğru kod girilene kadar hücreler "?" görünür.
           // İpucu Notlar uygulamasında; iki saat de bu telefonda yazıyor.
           locked: {
-            title: 'Gizli albüm · 4 fotoğraf',
+            title: 'Kilitli albüm · 3 fotoğraf',
             code: '526',
             hint: 'Bu albüm kilitli. Şifreyi her gün gördüğüm bir yere yazmıştım.',
             wrongText: 'Olmadı. Bir daha düşün.',
             openNote: 'Kilit açıldı.',
             items: [
-              { file: 'secret_1.jpg', caption: 'hiç söylemediğim şeyler' },
-              { file: 'secret_2.jpg', caption: 'sadece bana ait anılar' },
-              { file: 'secret_3.jpg', caption: 'kimse görmemiş' },
-              { file: 'secret_4.jpg', caption: 'senden başkasına göstermem' }
+              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Yazımı masaya bırakıp çıktım, kimseye söylemedim.' },
+              { file: 'room.jpg', caption: 'Kendi odam. Rafın en üstündeki kupa bana ait değil, ablamın. Yine de duruyor.' },
+              { file: 'gate.jpg', caption: 'Okul çıkışı, geçen hafta. O gün kimseyle konuşmadım ve bu fotoğrafı çektim.' }
             ]
           }
         },
@@ -154,7 +153,27 @@ const PHONE_APPS_DATA = {
 const STORY = {
   // ---- Giriş: Oku geçme ----
   intro: [
-    { type: 'say', speaker: '', text: `Selamlar ${GIRL_NAME}, ben ${BOY_NAME}. Umarım sadece sana özel olarak tasarladığım bu oyunu beğenirsin. Oyun başlangıçta bilgisayar için hazırlandığından mobil versiyonuna geçerken birçok sorun çıktı. Ama elimden geldiğince orijinal versiyonunu aktarmaya çalıştım. Oyunu bitirdikten sonra ilk olarak hangi sonu elde edersen lütfen bunu yazmayı unutma. Son olarak oyun mobilde olduğu için biraz hantal yani sürekli telefon ekranına spamlayıp tüm diyologları geçmek yerine yavaş yavaş oynayıp tadınızı çıkarmanı istiyorum. Umarım senin için unutulmaz bir deneyim olur hadi bakalım iyi eğlenceler.`, titleCard: true },
+    { type: 'say', speaker: '', text: '⚠  OKUMADAN GEÇME', titleCard: true },
+    {
+      type: 'say', speaker: '', note: true,
+      text: `Selamlar ${GIRL_NAME}, ben ${BOY_NAME}. Umarım sadece sana özel olarak tasarladığım bu oyunu beğenirsin.`
+    },
+    {
+      type: 'say', speaker: '', note: true,
+      text: 'Oyun başlangıçta bilgisayar için hazırlandığından mobil versiyonuna geçerken birçok sorun çıktı. Ama elimden geldiğince orijinal versiyonunu aktarmaya çalıştım.'
+    },
+    {
+      type: 'say', speaker: '', note: true,
+      text: 'Oyunu bitirdikten sonra ilk olarak hangi sonu elde edersen lütfen bunu yazmayı unutma.'
+    },
+    {
+      type: 'say', speaker: '', note: true,
+      text: 'Son olarak oyun mobilde olduğu için biraz hantal; yani sürekli telefon ekranına spamlayıp tüm diyalogları geçmek yerine yavaş yavaş oynayıp tadını çıkarmanı istiyorum.'
+    },
+    {
+      type: 'say', speaker: '', note: true,
+      text: 'Umarım senin için de unutulmaz bir deneyim olur. Hadi bakalım, iyi eğlenceler.'
+    },
     { type: 'jump', goto: 'act1_start' }
   ],
 
@@ -209,8 +228,8 @@ const STORY = {
       type: 'choice',
       prompt: 'Ne giyse iyi olur?',
       options: [
-        { text: 'Favori tişörtü', goto: 'act1_outfit_fav', set: { kiyafet: 'favori' } },
-        { text: 'İlk eline geleni', goto: 'act1_outfit_casual', set: { kiyafet: 'rastgele' } }
+        { text: 'Favori tişörtü', goto: 'act1_outfit_fav', set: { kiyafet: 'favori', giyindi: true } },
+        { text: 'İlk eline geleni', goto: 'act1_outfit_casual', set: { kiyafet: 'rastgele', giyindi: true } }
       ]
     }
   ],
@@ -983,10 +1002,13 @@ const STORY = {
   // Sahne 8 — kahve teklifi, sohbetin doğal bir sonucu olarak (hazır bir bahane cümlesi değil).
   act3_coffee_offer: [
     { type: 'bgm', file: 'offer.mp3' },           // teklif anı
+    // Teklif anı: kafe animasyonu sahnenin kendisi olur, seçim onun üstünde yapılır.
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'bgvideo', file: 'kahve_offer.mp4' },
     { type: 'say', speaker: '', text: 'Yahya bir an duraksıyor, sanki söyleyip söylememek arasında kararsız.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bu arada... seninle konuşmak iyi geldi.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bir ara kahve içmek ister misin?' },
-    { type: 'video', file: 'kahve_offer.mp4' },
     { type: 'say', speaker: '', text: '(İçinden) Bunu bekliyor muydum, beklemiyor muydum, emin değilim.' },
     {
       type: 'say', speaker: '',
@@ -1009,6 +1031,8 @@ const STORY = {
   // Sahne 9, seçim 1 — EVET. Sakin, gündelik, aşk ilanı değil.
   act3_yes: [
     { type: 'bgm', file: 'accept.mp3' },
+    { type: 'bg', file: 'boy_day_happy.jpg' },    // teklif kabul edildi: mutlu hali
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'say', speaker: GIRL_NAME, text: 'Olur.' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // teklifi kabul edildi
     { type: 'say', speaker: BOY_NAME, text: 'Cidden mi? Güzel.' },
@@ -1021,6 +1045,8 @@ const STORY = {
   // Sahne 9, seçim 2 — ÖNCE TANIŞALIM. Sınır koyuyor ama kapıyı kapatmıyor; gizli bir "evet" değil.
   act3_getknow: [
     { type: 'bgm', file: 'maybe.mp3' },
+    { type: 'bg', file: 'boy_sunset_neutral.jpg' },  // "önce tanışalım": daha nötr hali
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'say', speaker: GIRL_NAME, text: 'Belki... önce biraz tanışsak?' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // acele ettirmiyor
     { type: 'say', speaker: BOY_NAME, text: 'Olur, sorun değil.' },
@@ -1033,6 +1059,9 @@ const STORY = {
   // Sahne 9, seçim 3 — HAYIR. Kötü son değil; karşılıklı saygı korunuyor.
   act3_no: [
     { type: 'bgm', file: 'decline.mp3' },
+    { type: 'bg', file: 'school_gate_evening.jpg' },   // olumsuz seçenekte görsel değişmez
+    { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
+    { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },
     { type: 'say', speaker: GIRL_NAME, text: 'Teşekkür ederim ama kalsın.' },
     { type: 'say', speaker: BOY_NAME, text: 'Tamam, sorun değil.' },
     { type: 'say', speaker: BOY_NAME, text: 'Yine de konuşmak iyiydi, dergiyi de unutma.' },

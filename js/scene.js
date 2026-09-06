@@ -16,6 +16,11 @@ class SceneManager {
     };
 
     // characterId -> { position, file }
+    this.videoEl = document.getElementById('bg-video');
+    // Slot başına bekleyen requestAnimationFrame kimliği: 'hide' bir gösterim
+    // animasyonundan önce çalışırsa kare geldiğinde karakter geri açılıyordu.
+    this._pendingFrames = {};
+    this.flags = {};   // İnci'nin kıyafeti gibi görsel etkili bayraklar
     this.occupied = {};
   }
 
@@ -27,13 +32,39 @@ class SceneManager {
       el.classList.remove('visible');
     });
     this.activeBgIndex = 0;
+    this.clearBackgroundVideo();
     Object.keys(this.slots).forEach((pos) => this._clearSlot(pos));
     this.occupied = {};
+  }
+
+  /**
+   * Arka planı sessiz, dönen bir videoya çevirir. Diyalog kutusu ve seçim
+   * katmanı bunun ÜSTÜNDE kalır; oyuncu sahneyi izlerken seçimini yapar.
+   */
+  setBackgroundVideo(filename) {
+    if (!this.videoEl || !filename) return;
+    this.videoEl.src = assetPath('video', filename);
+    this.videoEl.classList.remove('hidden');
+    // Video çözülemezse (eski tarayıcı) altındaki arka plan görünür kalsın.
+    this.videoEl.onerror = () => this.videoEl.classList.add('hidden');
+    const oynat = this.videoEl.play();
+    if (oynat && oynat.catch) oynat.catch(() => { /* otomatik oynatma engellenirse ilk kare durur */ });
+  }
+
+  clearBackgroundVideo() {
+    if (!this.videoEl) return;
+    try { this.videoEl.pause(); } catch (e) { /* yoksay */ }
+    this.videoEl.classList.add('hidden');
+    this.videoEl.removeAttribute('src');
   }
 
   _clearSlot(position) {
     const el = this.slots[position];
     if (!el) return;
+    if (this._pendingFrames[position]) {
+      cancelAnimationFrame(this._pendingFrames[position]);
+      this._pendingFrames[position] = null;
+    }
     el.style.backgroundImage = '';
     delete el.dataset.char;
     el.classList.remove('visible', 'slide-in-left', 'slide-in-right', 'slide-in-center');
@@ -65,12 +96,18 @@ class SceneManager {
     const slotEl = this.slots[position];
     if (!slotEl || !file) return;
 
-    slotEl.style.backgroundImage = `url("${assetPath('characters', file)}")`;
+    // Aynı karakter başka bir slotta duruyorsa önce orayı boşalt; yoksa eski
+    // görsel ekranda asılı kalıyor ve 'hide' yalnızca son slotu temizliyordu.
+    const oncekiSlot = this.occupied[id] && this.occupied[id].position;
+    if (oncekiSlot && oncekiSlot !== position) this._clearSlot(oncekiSlot);
+
+    slotEl.style.backgroundImage = `url("${assetPath('characters', sceneArt(file, this.flags))}")`;
     // Karakter başına kadraj farkı CSS'ten ayarlanabilsin (portre çizim vs tam boy).
     slotEl.dataset.char = id;
     slotEl.classList.remove('visible', 'slide-in-left', 'slide-in-right', 'slide-in-center');
 
-    requestAnimationFrame(() => {
+    this._pendingFrames[position] = requestAnimationFrame(() => {
+      this._pendingFrames[position] = null;
       if (transition === 'slide') {
         slotEl.classList.add(`slide-in-${position}`);
       }
@@ -87,8 +124,9 @@ class SceneManager {
     if (!slotEl || !file) return;
 
     slotEl.classList.remove('visible');
-    requestAnimationFrame(() => {
-      slotEl.style.backgroundImage = `url("${assetPath('characters', file)}")`;
+    this._pendingFrames[info.position] = requestAnimationFrame(() => {
+      this._pendingFrames[info.position] = null;
+      slotEl.style.backgroundImage = `url("${assetPath('characters', sceneArt(file, this.flags))}")`;
       slotEl.classList.add('visible');
     });
 
