@@ -161,7 +161,7 @@ const STORY = {
     { type: 'say', speaker: '', text: '⚠  OKUMADAN GEÇME', titleCard: true },
     {
       type: 'say', speaker: '', note: true,
-      text: `Selamlar ${GIRL_NAME}, ben ${BOY_NAME}. Umarım sadece sana özel olarak tasarladığım bu oyunu beğenirsin.`
+      text: `Selamlar ${GIRL_NAME}, ben ${BOY_NAME}. Umarım bu oyunu beğenirsin.`
     },
     {
       type: 'say', speaker: '', note: true,
