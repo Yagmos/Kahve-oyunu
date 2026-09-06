@@ -341,6 +341,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
 }
 
@@ -364,6 +365,7 @@ button {
   background: rgba(20, 12, 8, 0.82);
   border: 1px solid rgba(217, 164, 65, 0.25);
   border-radius: 16px;
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   display: flex;
   align-items: stretch;
@@ -373,6 +375,7 @@ button {
 .dialogue-box.title-card {
   background: transparent;
   border-color: transparent;
+  -webkit-backdrop-filter: none;
   backdrop-filter: none;
   margin-top: 0;
   align-items: center;
@@ -558,6 +561,7 @@ button {
   padding: 5px 14px;
   border-radius: 999px;
   background: rgba(20, 12, 8, 0.72);
+  -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
 }
@@ -1255,6 +1259,7 @@ button {
 .dialogue-box.credits-card {
   background: transparent;
   border-color: transparent;
+  -webkit-backdrop-filter: none;
   backdrop-filter: none;
   margin-top: 0;
   min-height: 0;

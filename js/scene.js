@@ -43,12 +43,23 @@ class SceneManager {
    */
   setBackgroundVideo(filename) {
     if (!this.videoEl || !filename) return;
+    // iOS Safari sessiz + satır içi olmayan videoyu kendiliğinden oynatmıyor;
+    // HTML'deki nitelikler her zaman yetmediği için özellikler de yazılıyor.
+    this.videoEl.muted = true;
+    this.videoEl.defaultMuted = true;
+    this.videoEl.playsInline = true;
+    this.videoEl.setAttribute('playsinline', '');
+    this.videoEl.setAttribute('webkit-playsinline', '');
+
     this.videoEl.src = assetPath('video', filename);
     this.videoEl.classList.remove('hidden');
-    // Video çözülemezse (eski tarayıcı) altındaki arka plan görünür kalsın.
-    this.videoEl.onerror = () => this.videoEl.classList.add('hidden');
+
+    // Video oynatılamazsa (çözülemedi ya da Düşük Güç Modu otomatik
+    // oynatmayı engelledi) katman gizlenir; altındaki sahne görünür kalır.
+    const gizle = () => this.videoEl.classList.add('hidden');
+    this.videoEl.onerror = gizle;
     const oynat = this.videoEl.play();
-    if (oynat && oynat.catch) oynat.catch(() => { /* otomatik oynatma engellenirse ilk kare durur */ });
+    if (oynat && oynat.catch) oynat.catch(gizle);
   }
 
   clearBackgroundVideo() {
