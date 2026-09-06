@@ -34,9 +34,13 @@ class PhoneManager {
     this.appTitleEl = refs.appTitleEl || null;
     this.appBodyEl = refs.appBodyEl || null;
     this.backBtn = refs.backBtn || null;
+    this.audio = refs.audioManager || null;
 
     this.apps = {};
-    if (this.backBtn) this.backBtn.addEventListener('click', () => this.openHome());
+    if (this.backBtn) this.backBtn.addEventListener('click', () => {
+      if (this.audio) this.audio.playSfx('click.mp3');
+      this.openHome();
+    });
   }
 
   /**
@@ -130,7 +134,10 @@ class PhoneManager {
       label.textContent = app.label;
       btn.appendChild(label);
 
-      btn.addEventListener('click', () => this.openApp(app.id));
+      btn.addEventListener('click', () => {
+        if (this.audio) this.audio.playSfx('click.mp3');
+        this.openApp(app.id);
+      });
       this.appsEl.appendChild(btn);
     });
   }

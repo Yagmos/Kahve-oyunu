@@ -79,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
     appEl: document.getElementById('phone-app'),
     appTitleEl: document.getElementById('phone-app-title'),
     appBodyEl: document.getElementById('phone-app-body'),
-    backBtn: document.getElementById('btn-phone-back')
+    backBtn: document.getElementById('btn-phone-back'),
+    audioManager: audioManager
   });
 
   const game = new Game({

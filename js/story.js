@@ -79,6 +79,12 @@ const PHONE_APPS_DATA = {
                 { user: 'Yahya Kocabey', text: 'not aldım hayati abi' }
               ]
             },
+            { image: 'insta_1.jpg', caption: 'bazen yapılacak birşey olmasa iyi olur' },
+            { image: 'insta_2.jpg', caption: 'rüya gibi yerler var dünyada' },
+            { image: 'insta_3.jpg', caption: 'plajdan birşeyler getirdim' },
+            { image: 'insta_4.jpg', caption: 'sanat insanı her zaman hayranlıkla karşılar' },
+            { image: 'insta_5.jpg', caption: 'sokaklar en iyi fotoğraf albümü' },
+            { image: 'insta_6.jpg', caption: 'bilim güzel şeydir' },
             {
               image: 'yard.jpg',
               caption: 'sabahın sekizinde burada olmak isteyen tek kişi ben değilim herhalde'
@@ -100,15 +106,16 @@ const PHONE_APPS_DATA = {
           // Kilitli albüm: doğru kod girilene kadar hücreler "?" görünür.
           // İpucu Notlar uygulamasında; iki saat de bu telefonda yazıyor.
           locked: {
-            title: 'Kilitli albüm · 3 fotoğraf',
+            title: 'Gizli albüm · 4 fotoğraf',
             code: '526',
             hint: 'Bu albüm kilitli. Şifreyi her gün gördüğüm bir yere yazmıştım.',
             wrongText: 'Olmadı. Bir daha düşün.',
             openNote: 'Kilit açıldı.',
             items: [
-              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Yazımı masaya bırakıp çıktım, kimseye söylemedim.' },
-              { file: 'room.jpg', caption: 'Kendi odam. Rafın en üstündeki kupa bana ait değil, ablamın. Yine de duruyor.' },
-              { file: 'gate.jpg', caption: 'Okul çıkışı, geçen hafta. O gün kimseyle konuşmadım ve bu fotoğrafı çektim.' }
+              { file: 'secret_1.jpg', caption: 'hiç söylemediğim şeyler' },
+              { file: 'secret_2.jpg', caption: 'sadece bana ait anılar' },
+              { file: 'secret_3.jpg', caption: 'kimse görmemiş' },
+              { file: 'secret_4.jpg', caption: 'senden başkasına göstermem' }
             ]
           }
         },
@@ -145,6 +152,12 @@ const PHONE_APPS_DATA = {
       };
 
 const STORY = {
+  // ---- Giriş: Oku geçme ----
+  intro: [
+    { type: 'say', speaker: '', text: `Selamlar ${GIRL_NAME}, ben ${BOY_NAME}. Umarım sadece sana özel olarak tasarladığım bu oyunu beğenirsin. Oyun başlangıçta bilgisayar için hazırlandığından mobil versiyonuna geçerken birçok sorun çıktı. Ama elimden geldiğince orijinal versiyonunu aktarmaya çalıştım. Oyunu bitirdikten sonra ilk olarak hangi sonu elde edersen lütfen bunu yazmayı unutma. Son olarak oyun mobilde olduğu için biraz hantal yani sürekli telefon ekranına spamlayıp tüm diyologları geçmek yerine yavaş yavaş oynayıp tadınızı çıkarmanı istiyorum. Umarım senin için unutulmaz bir deneyim olur hadi bakalım iyi eğlenceler.`, titleCard: true },
+    { type: 'jump', goto: 'act1_start' }
+  ],
+
   // ---- 1-2-3-4-5: Siyah ekran, alarm, odaya geçiş, uyanış, iç ses ----
   act1_start: [
     // Oyun kapkaranlık başlar: sadece alarm duyulur, oyuncu ekrana dokunana
@@ -973,6 +986,7 @@ const STORY = {
     { type: 'say', speaker: '', text: 'Yahya bir an duraksıyor, sanki söyleyip söylememek arasında kararsız.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bu arada... seninle konuşmak iyi geldi.' },
     { type: 'say', speaker: BOY_NAME, text: 'Bir ara kahve içmek ister misin?' },
+    { type: 'video', file: 'kahve_offer.mp4' },
     { type: 'say', speaker: '', text: '(İçinden) Bunu bekliyor muydum, beklemiyor muydum, emin değilim.' },
     {
       type: 'say', speaker: '',
@@ -1151,4 +1165,4 @@ const STORY = {
   ]
 };
 
-const STORY_START_LABEL = 'act1_start';
+const STORY_START_LABEL = 'intro';

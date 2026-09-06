@@ -14,7 +14,7 @@
 /** Bir karakter için gerçekten var olan ifade dosyaları (fallback bu listeye dayanır). */
 const PORTRAIT_ASSETS = {
   girl: ['neutral', 'happy', 'annoyed', 'surprised', 'sleepy'],
-  boy: ['neutral', 'happy', 'annoyed', 'serious', 'skeptic'],
+  boy: ['neutral', 'happy', 'annoyed', 'serious', 'skeptic', 'happy_glasses', 'x'],
   teacher: ['neutral', 'serious']
 };
 

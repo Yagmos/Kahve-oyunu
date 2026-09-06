@@ -271,6 +271,11 @@ class Game {
         this._saveProgress();
         break;
 
+      case 'video':
+        this._showVideo(step.file);
+        this._advanceAuto();
+        break;
+
       case 'end':
         this._finishStory(step.next);
         break;
@@ -311,6 +316,32 @@ class Game {
     this.waitingForPhone = false;
     this.phone.hide();
     this._advanceAuto();
+  }
+
+  _showVideo(filename) {
+    const overlay = document.createElement('div');
+    overlay.id = 'video-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999';
+
+    const video = document.createElement('video');
+    video.src = `assets/video/${filename}`;
+    video.style.cssText = 'max-width:90%;max-height:90%;border-radius:8px';
+    video.controls = true;
+    video.autoplay = true;
+
+    overlay.appendChild(video);
+    document.body.appendChild(overlay);
+
+    const closeOverlay = () => {
+      overlay.remove();
+      this.advance();
+    };
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeOverlay();
+    });
+
+    video.addEventListener('ended', closeOverlay);
   }
 
   _saveProgress() {

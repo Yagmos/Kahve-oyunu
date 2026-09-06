@@ -179,7 +179,10 @@ class DialogueManager {
       btn.className = 'choice-btn';
       btn.type = 'button';
       btn.textContent = option.text;
-      btn.addEventListener('click', () => onSelect(option));
+      btn.addEventListener('click', () => {
+        if (this.audio) this.audio.playSfx('click.mp3');
+        onSelect(option);
+      });
       this.choiceLayerEl.appendChild(btn);
     });
 
