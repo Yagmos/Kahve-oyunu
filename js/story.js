@@ -1044,7 +1044,7 @@ const STORY = {
   // Sahne 9, seçim 1 — EVET. Sakin, gündelik, aşk ilanı değil.
   act3_yes: [
     { type: 'bgm', file: 'accept.mp3' },
-    { type: 'bg', file: 'boy_day_happy.jpg' },    // teklif kabul edildi: mutlu hali
+    { type: 'bg', file: 'school_gate_evening.jpg' },   // videodan sahneye dön
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'say', speaker: GIRL_NAME, text: 'Olur.' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // teklifi kabul edildi
@@ -1058,7 +1058,7 @@ const STORY = {
   // Sahne 9, seçim 2 — ÖNCE TANIŞALIM. Sınır koyuyor ama kapıyı kapatmıyor; gizli bir "evet" değil.
   act3_getknow: [
     { type: 'bgm', file: 'maybe.mp3' },
-    { type: 'bg', file: 'boy_sunset_neutral.jpg' },  // "önce tanışalım": daha nötr hali
+    { type: 'bg', file: 'school_gate_evening.jpg' },   // videodan sahneye dön
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'say', speaker: GIRL_NAME, text: 'Belki... önce biraz tanışsak?' },
     { type: 'expr', id: 'boy', file: 'boy_happy.svg' }, // acele ettirmiyor
@@ -1127,6 +1127,12 @@ const STORY = {
     },
     // Aynı akşam, karşı taraftan.
     { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Perşembe dedim ve kabul etti. Bugünlük bu kadarı fazlasıyla yeter.' },
+
+    // Perde kapanıyor: Yahya'nın kendi çizimi ve İnci'ye sözü.
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'bg', file: 'boy_day_happy.jpg' },
+    { type: 'say', speaker: '', note: true, text: 'Artık tanışmış sayılırız. Müsait olduğun bir zamanda okulda ya da buradan sohbete devam edelim mi?' },
     { type: 'jump', goto: 'act3_coda' }
   ],
 
@@ -1156,6 +1162,12 @@ const STORY = {
     { type: 'say', speaker: GIRL_NAME, text: 'Acelesi yok. Zaten olacaksa acelesi olmaz.' },
     // Aynı akşam, karşı taraftan.
     { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Hayır demedi. Dergiyi masaya bırakırım, gerisi kendi bilir.' },
+
+    // Perde kapanıyor: Yahya'nın kendi çizimi ve İnci'ye sözü.
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'bg', file: 'boy_sunset_neutral.jpg' },
+    { type: 'say', speaker: '', note: true, text: 'Seninle hakkında sohbet etmek istediğim daha tonlarca şey var. Oyunu nasıl buldun mesela?' },
     { type: 'jump', goto: 'act3_coda' }
   ],
 
@@ -1188,6 +1200,12 @@ const STORY = {
     { type: 'say', speaker: '', pov: 'boy', text: 'Aynı yağmur, birkaç sokak ötede.' },
     { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Sorduğuma değdi. Sormasaydım bütün hafta merak edecektim.' },
     { type: 'say', speaker: '', pov: 'boy', text: '(İçinden) Dergiyi masaya bırakırım, gerisi kendi bilir.' },
+
+    // Perde kapanıyor: Yahya'nın kendi çizimi ve İnci'ye sözü.
+    { type: 'hide', id: 'girl' },
+    { type: 'hide', id: 'boy' },
+    { type: 'bg', file: 'boy_sunset_neutral.jpg' },
+    { type: 'say', speaker: '', note: true, text: 'Olsun. Umarım oyunu beğenmişsindir ve bu deneyimi hayatının sonuna kadar unutmazsın.' },
     { type: 'jump', goto: 'act3_coda' }
   ],
 
