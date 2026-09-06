@@ -168,6 +168,7 @@ class Game {
 
   newGame() {
     SaveManager.clearSave();
+    if (this.phone.resetUnlock) this.phone.resetUnlock();
     this.dialogue.clearHistory();
     this.dialogue.hideChoices();
     this.phone.hide();

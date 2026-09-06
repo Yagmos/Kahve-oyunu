@@ -68,6 +68,17 @@ class PhoneManager {
     this.panelEl.classList.add('hidden');
   }
 
+  /**
+   * Kilitli albümü yeniden kilitler. Açılış tarayıcı kaydında tutulduğu
+   * için bir kez çözüldüğünde sonraki oyunlarda da açık geliyordu;
+   * yeni oyunda bulmaca baştan başlasın diye sıfırlanıyor.
+   * ('Devam Et' bunu çağırmaz: süren oyunda albüm açık kalır.)
+   */
+  resetUnlock() {
+    this._unlocked = false;
+    try { localStorage.removeItem(GALLERY_UNLOCK_KEY); } catch (e) { /* yoksay */ }
+  }
+
   /** Ana ekrana dön (uygulamadaki video da durur). */
   openHome() {
     this._stopMedia();
