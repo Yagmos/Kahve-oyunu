@@ -131,6 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- Oyun ekranı: dokunarak ilerleme ----
   const screenGameEl = screens.game;
   const historyPanel = document.getElementById('history-panel');
+  // Yan çevrilmiş telefondaki hatırlatma: ısrar eden oyuncu kilitlenmesin.
+  const rotateHint = document.getElementById('rotate-hint');
+  const btnRotateDismiss = document.getElementById('btn-rotate-dismiss');
+  if (btnRotateDismiss && rotateHint) {
+    btnRotateDismiss.addEventListener('click', () => {
+      rotateHint.classList.add('dismissed');
+    });
+  }
+
   window.__game = game; // test/hata ayıklama kancası
 
   const gameMenuPanel = document.getElementById('game-menu-panel');

@@ -4,11 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#241512">
+<meta name="description" content="İnci Cihan'a özel hazırlanmış, üç perdelik bir görsel roman.">
 <title>Selam Ben Yahya</title>
+
+<!-- Telefonda ana ekrana eklendiğinde tam ekran, kendi simgesiyle açılsın. -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/ui/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/ui/icon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Selam Ben Yahya">
+<meta name="mobile-web-app-capable" content="yes">
+
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div id="app">
+
+  <!-- Yan çevrilen telefonda düzen sıkışıyor; nazik bir hatırlatma.
+       Tamamen CSS ile açılıp kapanır, oyunun akışına dokunmaz. -->
+  <div id="rotate-hint" aria-hidden="true">
+    <div class="rotate-box">
+      <span class="rotate-icon">⟳</span>
+      <p>Telefonu dik tutarsan oyun daha güzel görünüyor.</p>
+      <button id="btn-rotate-dismiss" class="rotate-dismiss" type="button">Böyle devam et</button>
+    </div>
+  </div>
 
   <!-- ANA MENÜ -->
   <section id="screen-main-menu" class="screen active">
