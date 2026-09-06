@@ -239,8 +239,14 @@ class Game {
           if (step.speaker) lastNamedSpeaker = step.speaker;
           break;
         case 'bg':
+          this.scene.clearBackgroundVideo();
           this.currentBg = step.file || null;
           this.scene.setBackground(step.file);
+          break;
+        case 'bgvideo':
+          // Kayıt kafe sahnesindeyken alınmışsa video da geri gelmeli;
+          // yoksa seçim ekranı bomboş bir arka planın üstünde açılıyordu.
+          this.scene.setBackgroundVideo(step.file);
           break;
         case 'show':
           this.scene.showCharacter(step.id, step);
@@ -395,7 +401,9 @@ class Game {
 
       case 'bgvideo':
         // Sahne videosu arka planda döner; diyalog ve seçimler ÜSTÜNDE kalır.
-        this.currentBg = null;
+        // currentBg BİLEREK sıfırlanmıyor: video altındaki sahne kayıtta
+        // korunsun ki yükleme sonrası (ya da video oynatılamazsa) ekran
+        // boş kalmasın, altta o sahne dursun.
         this.scene.setBackgroundVideo(step.file);
         this._advanceAuto();
         break;
