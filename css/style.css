@@ -1,0 +1,1373 @@
+/* ==========================================================================
+   Selam Ben Yahya — Mobil öncelikli Visual Novel arayüzü
+   ========================================================================== */
+
+:root {
+  --color-bg: #1b100c;
+  --color-surface: #2a1810;
+  --color-surface-2: #34201555;
+  --color-accent: #d9a441;
+  --color-text: #f5e9da;
+  --color-text-dim: #c9b8a8;
+  --coffee-dark: #3b2418;
+  --coffee: #6f4e37;
+  --coffee-light: #8a6a4d;
+  --danger: #b3543f;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Trebuchet MS', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 560px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--color-bg);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- Ekran geçişleri ---- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   Ana menü / Ayarlar ortak stiller
+   ========================================================================== */
+
+.menu-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: calc(var(--safe-top) + 24px) calc(var(--safe-right) + 24px) calc(var(--safe-bottom) + 24px) calc(var(--safe-left) + 24px);
+  /* Sabah sokağı, koyulaştırılmış: menü artık düz bir zemin değil. */
+  background:
+    linear-gradient(180deg, rgba(26, 15, 9, 0.35) 0%, rgba(22, 13, 8, 0.62) 45%, rgba(18, 11, 6, 0.93) 78%, var(--color-bg) 100%),
+    radial-gradient(circle at 50% 22%, rgba(217, 164, 65, 0.16), transparent 62%),
+    url('../assets/backgrounds/street_morning.jpg') center 34% / cover no-repeat,
+    var(--color-bg);
+  text-align: center;
+}
+
+.game-title {
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  text-shadow: 0 2px 12px rgba(217, 164, 65, 0.35);
+}
+
+.game-subtitle {
+  margin: -18px 0 0;
+  color: var(--color-text-dim);
+  font-size: 0.95rem;
+}
+
+.screen-title {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.menu-btn {
+  min-height: 56px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--coffee), var(--coffee-dark));
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  transition: transform 0.08s ease, opacity 0.2s ease;
+}
+
+.menu-btn:active {
+  transform: scale(0.97) translateY(1px);
+}
+
+.menu-btn:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.back-btn {
+  margin-top: 10px;
+}
+
+/* ---- Ayarlar ---- */
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 340px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border-radius: 12px;
+}
+
+.settings-row-column {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.settings-label {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.toggle-btn {
+  min-width: 96px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 22px;
+  background: var(--coffee-dark);
+  color: var(--color-text-dim);
+  font-weight: 600;
+}
+
+.toggle-btn[data-on="true"] {
+  background: var(--color-accent);
+  color: #241305;
+}
+
+.speed-options {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.speed-btn {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 10px;
+  background: var(--coffee-dark);
+  color: var(--color-text-dim);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.speed-btn.active {
+  background: var(--color-accent);
+  color: #241305;
+}
+
+/* ==========================================================================
+   Oyun ekranı
+   ========================================================================== */
+
+#screen-game {
+  background: #000;
+}
+
+#scene-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-color: #000;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.bg-layer.visible {
+  opacity: 1;
+}
+
+.character-slot {
+  position: absolute;
+  bottom: 0;
+  width: 58%;
+  height: 78%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+  opacity: 0;
+  --tx: -50%;
+  transform: translate(var(--tx), 24px);
+  transition: opacity 400ms ease, transform 450ms ease;
+  pointer-events: none;
+}
+
+/* İnci ve Yahya'nın çizimleri büst kadrajlı; kendi ölçüleri var. */
+.character-slot[data-char="girl"],
+.character-slot[data-char="boy"] {
+  width: 62%;
+  height: 54%;
+  /* Büst kadrajı olduğu için tabana yaslanmaz; yüzü diyalog kutusunun
+     üstünde kalsın diye biraz yukarıdan başlar. */
+  bottom: 16%;
+}
+
+/* İkisi aynı anda sahnedeyken yüzleri üst üste gelmesin diye kenarlara taşar. */
+.character-slot[data-char="girl"].slot-left,
+.character-slot[data-char="boy"].slot-left { left: -4%; }
+
+.character-slot[data-char="girl"].slot-right,
+.character-slot[data-char="boy"].slot-right { right: -4%; }
+
+.character-slot.visible {
+  opacity: 1;
+  transform: translate(var(--tx), 0);
+}
+
+.slot-left {
+  left: 4%;
+  --tx: 0%;
+}
+
+.slot-center {
+  left: 50%;
+  --tx: -50%;
+}
+
+.slot-right {
+  right: 4%;
+  left: auto;
+  --tx: 0%;
+}
+
+/* ---- Kamera efektleri ---- */
+
+@keyframes camZoomIn {
+  from { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  to { transform: scale(1); }
+}
+@keyframes camZoomOut {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+@keyframes camSlideLeft {
+  from { transform: translateX(2.5%); }
+  to { transform: translateX(0); }
+}
+@keyframes camSlideRight {
+  from { transform: translateX(-2.5%); }
+  to { transform: translateX(0); }
+}
+
+.cam-zoom-in { animation: camZoomIn 600ms ease; }
+.cam-zoom-out { animation: camZoomOut 600ms ease; }
+.cam-slide-left { animation: camSlideLeft 500ms ease; }
+.cam-slide-right { animation: camSlideRight 500ms ease; }
+
+/* ---- Üst bar (geçmiş / duraklat) ---- */
+
+.top-bar {
+  position: absolute;
+  top: calc(var(--safe-top) + 10px);
+  right: calc(var(--safe-right) + 10px);
+  display: flex;
+  gap: 10px;
+  z-index: 30;
+}
+
+.icon-btn {
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  background: rgba(20, 12, 8, 0.65);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+/* ---- Diyalog kutusu ---- */
+
+.dialogue-box {
+  position: relative;
+  z-index: 20;
+  margin: 0 calc(var(--safe-right) + 12px) calc(var(--safe-bottom) + 14px) calc(var(--safe-left) + 12px);
+  margin-top: auto;
+  /* İç boşluk metin sütununda; portre sütunu kutunun kenarlarına dayanır. */
+  padding: 0;
+  overflow: hidden;
+  /* Portre kutunun İÇİNDE durduğu için yükseklik ona göre sabitlenir;
+     portre olmayan satırlarda da kutu aynı boyda kalır, layout zıplamaz. */
+  min-height: calc(var(--portrait-size) + 62px);
+  background: rgba(20, 12, 8, 0.82);
+  border: 1px solid rgba(217, 164, 65, 0.25);
+  border-radius: 16px;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: stretch;
+}
+
+/* Final başlığı: kutu kaybolur, yazı ekranın ortasında durur. */
+.dialogue-box.title-card {
+  background: transparent;
+  border-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  margin-top: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+.dialogue-box.title-card .portrait-col { display: none; }
+.dialogue-box.title-card .speaker-name { display: none; }
+.dialogue-box.title-card .dialogue-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Dokunma oku başlık kipinde sağ altta asılı kalmasın. */
+.dialogue-box.title-card .tap-indicator {
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  text-align: center;
+}
+.dialogue-box.title-card .dialogue-text {
+  text-align: center;
+  font-size: clamp(1.6rem, 8vw, 2.4rem);
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  color: var(--color-accent, #d9a441);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* Metin sütunu: portre olsa da olmasa da taşmaz. */
+.dialogue-main {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 14px 16px 16px;
+}
+
+/* Portre: tek büyük diyalog kutusunun İÇİNDE, sağ sütunda.
+   Ayrı bir kutu değil; metin ve portre aynı çerçevenin iki sütunu. */
+.dialogue-box {
+  --portrait-size: clamp(104px, 31vw, 132px);
+}
+
+.portrait-col {
+  display: none;
+  flex: 0 0 auto;
+  width: var(--portrait-size);
+  flex-direction: column;
+  /* Referanstaki gibi: iki bölme bitişik, aradaki tek çizgi dikiş. */
+  border-left: 1px solid rgba(217, 164, 65, 0.28);
+  background: rgba(38, 24, 16, 0.55);
+}
+
+.dialogue-box.has-portrait .portrait-col {
+  display: flex;
+}
+
+.portrait-frame {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: rgba(46, 30, 20, 0.9);
+}
+
+.portrait-image {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  /* Karakter SVG'leri 700x1400 ve yanlarda çok boşluk var; kareye
+     oturması için yatayda da yakınlaştırılıp yüz hizasından kırpılıyor. */
+  background-size: 140% auto;
+  background-position: 50% 15%;
+}
+
+/* İnci'nin çizimi büst; kare portrede yüz ortalanır. */
+.portrait-image[data-char="girl"] {
+  background-size: auto 122%;
+  background-position: 50% 4%;
+}
+
+/* Yahya'nın çizimi de büst; kare portrede yüz ortalanır. */
+.portrait-image[data-char="boy"] {
+  background-size: auto 122%;
+  background-position: 50% 4%;
+}
+
+/* Öğretmen asseti büst çizimi (diğerleri tam boy placeholder), bu yüzden
+   kendi kirpma değerleri var: yüz kareyi doldursun, gözlük kesilmesin. */
+.portrait-image[data-char="teacher"] {
+  background-size: auto 158%;
+  background-position: 44% 2%;
+}
+
+/* Portrenin altındaki isim levhası (referanstaki gibi). */
+.portrait-nameplate {
+  flex: 0 0 auto;
+  min-height: 26px;
+  padding: 4px 6px;
+  background: rgba(28, 18, 12, 0.9);
+  border-top: 1px solid rgba(217, 164, 65, 0.28);
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* İç monologda levha yine karakterin adını yazar, sadece biraz daha sakin. */
+.portrait-col.inner .portrait-nameplate {
+  color: rgba(217, 164, 65, 0.72);
+}
+
+/* İç ses: ayrı bir etiket yerine metnin kendisi soluk ve italik olur. */
+.dialogue-box.inner-thought .dialogue-text {
+  font-style: italic;
+  color: rgba(245, 233, 218, 0.68);
+}
+
+.portrait-col.inner {
+  border-left-color: rgba(217, 164, 65, 0.16);
+}
+
+/* Portre varken adı levha gösterdiği için üstteki başlık gizlenir. */
+.dialogue-box.has-portrait .speaker-name {
+  display: none;
+}
+
+.dialogue-text {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.dialogue-text {
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  min-height: 3.2em;
+}
+
+.tap-indicator {
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  animation: bounceArrow 1.2s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ---- Seçim katmanı ---- */
+
+.choice-layer {
+  position: absolute;
+  left: calc(var(--safe-left) + 16px);
+  right: calc(var(--safe-right) + 16px);
+  /* Kutu yüksekliği portreyle birlikte değiştiği için sabit yerine
+     ölçülen yükseklik kullanılır (--dialogue-h main.js'te güncellenir). */
+  bottom: calc(var(--safe-bottom) + var(--dialogue-h, 150px) + 26px);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice-prompt {
+  text-align: center;
+  /* Soru, arkasında açık renkli bir sahne (ör. kahve animasyonu) olduğunda
+     da okunabilsin diye kendi koyu zeminini taşıyor. */
+  color: var(--color-text);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  align-self: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(20, 12, 8, 0.72);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+}
+
+.choice-btn {
+  min-height: 52px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(111, 78, 55, 0.92);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+.choice-btn:active {
+  transform: scale(0.97);
+  background: rgba(217, 164, 65, 0.9);
+  color: #241305;
+}
+
+/* ---- Katman panelleri (geçmiş / duraklatma) ---- */
+
+.overlay-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: calc(var(--safe-top) + 16px) calc(var(--safe-right) + 16px) calc(var(--safe-bottom) + 16px) calc(var(--safe-left) + 16px);
+}
+
+.panel-box {
+  width: 100%;
+  max-width: 400px;
+  max-height: 82%;
+  background: var(--color-surface);
+  border: 1px solid rgba(217, 164, 65, 0.25);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-accent);
+}
+
+.history-box {
+  max-height: 70vh;
+}
+
+.history-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.history-entry {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--color-text-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
+}
+
+.history-speaker {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---- Telefon ekranı ---- */
+
+/* Telefon: üstte saat, ortada kayan içerik, altta her zaman görünen KAPAT.
+   Uygulamalar eklendikten sonra liste uzadığı için kutunun kendisi kaymaz. */
+.phone-box {
+  max-height: 85%;
+  overflow: hidden;
+  background: #12100e;
+  border: 1px solid rgba(217, 164, 65, 0.3);
+}
+
+.phone-box .phone-statusbar,
+.phone-box > .menu-btn { flex: 0 0 auto; }
+
+.phone-view {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 4px;
+  padding-bottom: 8px;   /* son satır KAPAT düğmesine yapışmasın */
+}
+
+.phone-statusbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#phone-time {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+#phone-date {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+}
+
+.phone-section h3 {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.phone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phone-row {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.phone-row-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.phone-row-text {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+  line-height: 1.35;
+}
+
+.phone-schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.phone-schedule-time {
+  font-weight: 700;
+  color: var(--color-text-dim);
+  min-width: 48px;
+}
+
+.phone-schedule-subject {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.phone-schedule-row.highlight {
+  background: rgba(217, 164, 65, 0.16);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+}
+
+.phone-schedule-row.highlight .phone-schedule-subject {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---- Telefon uygulamaları ---- */
+
+.phone-view.hidden { display: none; }
+
+.phone-apps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.phone-app-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 6px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.phone-app-btn:active { transform: scale(0.96); }
+
+.phone-app-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.phone-app-icon.ig   { background: linear-gradient(135deg, #f9a03f 0%, #d63c7a 55%, #6d3ac7 100%); }
+.phone-app-icon.gal  { background: linear-gradient(135deg, #7fc4e8, #3f7fb0); }
+.phone-app-icon.note { background: linear-gradient(135deg, #f4d06f, #c99a2e); }
+
+.phone-app-badge {
+  min-width: 18px;
+  height: 18px;
+  margin-top: -52px;
+  margin-left: 34px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.phone-app-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.phone-back {
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-text);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.phone-app-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.phone-app-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Instagram akışı */
+.ig-post {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ig-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ig-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f9a03f, #d63c7a);
+  flex: 0 0 auto;
+}
+
+.ig-media { width: 100%; display: block; background: #000; }
+.ig-media video, .ig-media img { width: 100%; display: block; }
+
+.ig-empty {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ig-caption {
+  padding: 8px 10px 10px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-text-dim);
+}
+.ig-caption b { color: var(--color-text); }
+
+.ig-comments {
+  padding: 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 8px;
+  margin-top: 2px;
+}
+.ig-comment {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-text-dim);
+}
+.ig-comment b { color: var(--color-text); font-weight: 700; }
+
+/* Galeri */
+.gal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.gal-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05) center / cover no-repeat;
+}
+
+.gal-cell:active { opacity: 0.8; }
+
+.gal-locked::after {
+  content: '?';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 8, 5, 0.82);
+  color: var(--color-accent);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.gal-open {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gal-open img { width: 100%; border-radius: 10px; display: block; }
+
+.gal-close {
+  align-self: flex-start;
+  min-height: 36px;
+  padding: 6px 14px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+}
+
+/* Izgarada seçili olan hücre belli olsun */
+.gal-cell-active { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+
+/* Açık not başlığı vurgulanır */
+.note-row-open { background: rgba(217, 164, 65, 0.14); }
+.note-row-open .note-row-title { color: var(--color-accent); }
+
+/* Kilitli albüm: kod girişi */
+.gal-code { display: flex; flex-direction: column; gap: 8px; }
+
+.gal-code-row { display: flex; gap: 8px; }
+
+.gal-code-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(217, 164, 65, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1.1rem;
+  letter-spacing: 0.28em;
+  text-align: center;
+}
+
+.gal-code-input:focus { outline: 2px solid rgba(217, 164, 65, 0.55); outline-offset: 1px; }
+
+.gal-code-btn {
+  flex: 0 0 auto;
+  min-width: 64px;
+  min-height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--coffee), var(--coffee-dark));
+  color: var(--color-text);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.gal-code.shake { animation: debateShake 380ms ease; }
+
+.gal-caption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--color-text-dim);
+}
+
+/* Notlar */
+.note-row {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text);
+}
+
+.note-row-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+.note-row-date { font-size: 0.75rem; color: var(--color-text-dim); }
+
+.note-body {
+  margin: -4px 0 4px;
+  padding: 10px 12px;
+  border-radius: 0 0 10px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  white-space: pre-wrap;
+}
+
+/* ---- Yardımcılar ---- */
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   DEBATE MODE — Act II: İnci vs Öğretmen tartışması
+   Oyunun geri kalanı normal sahne + portre sistemiyle çalışmaya devam eder;
+   bu blok yalnızca #screen-game.debate-mode altında devreye girer.
+   ========================================================================== */
+
+.debate-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 320ms ease;
+  /* Zemin: loş, sıcak bir duvar fotoğrafı. Üstündeki degradeler karakteri
+     öne çıkarır ve alt kenarı diyalog kutusuna doğru karartır. */
+  background:
+    radial-gradient(120% 70% at 50% 18%, rgba(217, 164, 65, 0.14), transparent 62%),
+    linear-gradient(180deg, rgba(36, 22, 17, 0.30) 0%, rgba(21, 13, 9, 0.72) 78%, rgba(15, 9, 6, 0.9) 100%),
+    url('../assets/backgrounds/debate_bg.jpg') center center / cover no-repeat,
+    #150d09;
+}
+
+#screen-game.debate-mode .debate-layer {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Tartışmada normal sahne karakterleri ve sağdaki portre devre dışı. */
+#screen-game.debate-mode .character-slot { display: none; }
+#screen-game.debate-mode .portrait-col { display: none; }
+
+/* Alt diyalog kutusu: sadece gereken yüksekliği kaplar, tam genişlik. */
+#screen-game.debate-mode .dialogue-box {
+  min-height: 0;
+  margin-left: calc(var(--safe-left) + 8px);
+  margin-right: calc(var(--safe-right) + 8px);
+  background: rgba(14, 9, 6, 0.93);
+  border-color: rgba(217, 164, 65, 0.45);
+}
+
+#screen-game.debate-mode .dialogue-main { padding: 12px 14px 14px; }
+#screen-game.debate-mode .dialogue-text { min-height: 2.6em; }
+
+#screen-game.debate-mode .speaker-name {
+  display: block;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+/* ---- Sahne: ekranın ana görseli, konuşan karakter ---- */
+
+/* Tek görsel; metin kutusunun üstündeki tüm alanı kaplar. Bütün pozlar aynı
+   tuvale (aynı kafa boyutu/konumu) göre üretildiği için poz değişince
+   karakter yer değiştirmez, boyut atlamaz. */
+.debate-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  /* SABİT: metin kutusunun yüksekliği replikten replige değişse bile
+     karakter yerinden oynamasın diye --dialogue-h'e bağlanmaz. */
+  bottom: calc(var(--safe-bottom) + 96px);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.debate-stage.present { opacity: 1; }
+
+.debate-char-art {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  /* Sprite'lar dikey ve hepsi aynı kadrajda üretildi: yükseklik sahneyi
+     doldurur, poz değişince karakter yerinden oynamaz. */
+  background-size: auto 100%;
+  background-position: center bottom;
+}
+
+/* Üç karakterin de tartışma sprite'ı aynı kadrajda üretildi; ayrı bir ölçü
+   kuralına gerek yok, yukarıdaki varsayılan hepsi için geçerli. */
+
+/* ---- Vurgu: seçilen karşı çıkış repliğinde kısa sarsıntı + flash ---- */
+
+.debate-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 236, 200, 0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.debate-layer.emphasis { animation: debateShake 420ms ease; }
+.debate-layer.emphasis .debate-flash { animation: debateFlash 300ms ease; }
+
+@keyframes debateShake {
+  0%, 100% { transform: translateX(0); }
+  18% { transform: translateX(-6px); }
+  38% { transform: translateX(5px); }
+  58% { transform: translateX(-3px); }
+  78% { transform: translateX(2px); }
+}
+
+@keyframes debateFlash {
+  0% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+/* ---- Seçim butonları: karakterlerin önünde, okunaklı ---- */
+
+#screen-game.debate-mode .choice-btn {
+  background: rgba(32, 20, 13, 0.95);
+  border-color: rgba(217, 164, 65, 0.6);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+}
+
+
+
+/* ==========================================================================
+   UYANMA EFEKTİ — oyunun ilk saniyeleri
+   İki siyah şerit göz kapağı gibi birkaç kez aralanıp sonunda tamamen açılır.
+   Tıklamayı engellemez; sadece görsel.
+   ========================================================================== */
+
+.eyelids {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.eyelids .lid {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  height: 0;
+  background: #000;
+  box-shadow: 0 0 60px 40px #000;
+}
+
+.eyelids .lid-top { top: 0; }
+.eyelids .lid-bottom { bottom: 0; }
+
+#screen-game.waking .eyelids,
+#screen-game.blacked .eyelids {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Açılış: ekran tamamen siyah, sadece alarm duyulur. */
+#screen-game.blacked .lid-top,
+#screen-game.blacked .lid-bottom { height: 52%; }
+
+#screen-game.blacked .dialogue-box,
+#screen-game.blacked .top-bar { opacity: 0; pointer-events: none; }
+
+#screen-game.waking .lid-top { animation: eyelidOpen 4200ms cubic-bezier(0.4, 0, 0.3, 1) forwards; }
+#screen-game.waking .lid-bottom { animation: eyelidOpen 4200ms cubic-bezier(0.4, 0, 0.3, 1) forwards; }
+
+@keyframes eyelidOpen {
+  0%   { height: 52%; }
+  14%  { height: 38%; }   /* aralanıyor */
+  24%  { height: 50%; }   /* tekrar kapanıyor */
+  44%  { height: 20%; }   /* daha çok açılıyor */
+  56%  { height: 32%; }
+  78%  { height: 6%; }
+  88%  { height: 12%; }
+  100% { height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #screen-game.waking .lid-top,
+  #screen-game.waking .lid-bottom { animation-duration: 600ms; }
+}
+
+/* Arka plan videosu: sahnenin kendisi olarak oynar, diyalog üstünde kalır. */
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Yeni baş çizimleri portre çerçevesine SVG'lerden farklı oturur. */
+.portrait-image[data-art="head"] {
+  background-size: cover !important;
+  background-position: 50% 18% !important;
+}
+
+/* 'note' kipi: oyunun başındaki mektup. Başlık kartından farklı olarak
+   normal punto, sola dayalı ve gerekirse kendi içinde kaydırılır — uzun
+   metin artık kutunun dışında kalıp kesilmiyor. */
+.dialogue-box.note-card {
+  margin-top: auto;
+  min-height: 0;
+  max-height: min(62vh, 520px);
+  background: rgba(20, 12, 8, 0.92);
+}
+.dialogue-box.note-card .portrait-col { display: none; }
+.dialogue-box.note-card .speaker-name { display: none; }
+.dialogue-box.note-card .dialogue-main {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px 18px 34px;
+}
+.dialogue-box.note-card .dialogue-text {
+  font-size: clamp(0.98rem, 4.1vw, 1.12rem);
+  line-height: 1.72;
+  text-align: left;
+  letter-spacing: 0.01em;
+}
+
+/* Büyük karakter figürü kapalı: karakterler portrede ve tartışma
+   sahnesinde görünüyor. (js/config.js -> SHOW_STANDING_CHARACTERS) */
+.character-slot { display: none; }
+
+/* Yapımcılar ekranı: ortalanmış, satır sonları korunan künye kartı. */
+.dialogue-box.credits-card {
+  background: transparent;
+  border-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  margin-top: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+}
+.dialogue-box.credits-card .portrait-col,
+.dialogue-box.credits-card .speaker-name { display: none; }
+.dialogue-box.credits-card .dialogue-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 24px 18px 40px;
+}
+.dialogue-box.credits-card .dialogue-text {
+  white-space: pre-line;
+  text-align: center;
+  font-size: clamp(0.95rem, 4vw, 1.1rem);
+  line-height: 1.85;
+  letter-spacing: 0.05em;
+  color: var(--color-accent, #d9a441);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+}
+.dialogue-box.credits-card .tap-indicator {
+  left: 0; right: 0; bottom: 20px; text-align: center;
+}
+
+/* Kısa ekranlarda telefon paneli %82'ye sığmıyor, uygulama satırı
+   kaydırma alanının altında kalıyordu; oyuncu simgeleri göremiyordu.
+   Alçak ekranlarda panel daha fazla yer kaplasın. */
+@media (max-height: 780px) {
+  .overlay-panel {
+    padding-top: calc(var(--safe-top) + 8px);
+    padding-bottom: calc(var(--safe-bottom) + 8px);
+  }
+  .panel-box {
+    max-height: 94%;
+    padding: 14px;
+    gap: 10px;
+  }
+}
+
+/* Telefonda dokunma hissi: hızlı hızlı dokunurken yazı seçilmesin ve
+   çift dokunma yakınlaştırması devreye girip gecikme yaratmasın. */
+#app {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+/* Telefondaki not ve yazı metinleri okuma amaçlı; seçilebilir kalsınlar. */
+.phone-app-body,
+.dialogue-box.note-card .dialogue-text {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Yan çevrilmiş telefonda kibar hatırlatma. Sadece alçak ve geniş
+   ekranlarda görünür; dik tutulunca kendiliğinden kaybolur. */
+#rotate-hint { display: none; }
+
+@media (orientation: landscape) and (max-height: 480px) {
+  #rotate-hint {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    z-index: 90;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 12, 8, 0.94);
+    padding: 20px;
+    text-align: center;
+  }
+  .rotate-box {
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .rotate-icon {
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--color-accent, #d9a441);
+    animation: rotateHint 2.4s ease-in-out infinite;
+  }
+  .rotate-box p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text, #f2e2c7);
+  }
+}
+
+@keyframes rotateHint {
+  0%, 100% { transform: rotate(-12deg); }
+  50%      { transform: rotate(12deg); }
+}
+
+/* Hatırlatmayı kapatan oyuncu yatayda oynamaya devam edebilsin. */
+#rotate-hint.dismissed { display: none !important; }
+.rotate-dismiss {
+  margin-top: 4px;
+  padding: 9px 18px;
+  font-size: 0.92rem;
+  color: var(--color-text, #f2e2c7);
+  background: rgba(217, 164, 65, 0.16);
+  border: 1px solid rgba(217, 164, 65, 0.4);
+  border-radius: 10px;
+}

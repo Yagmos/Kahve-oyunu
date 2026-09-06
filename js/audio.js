@@ -1,0 +1,292 @@
+/**
+ * AudioManager: müzik/efekt çalma, mute ve ses seviyesi kontrolü.
+ *
+ * Ses kaynağı CONFIG.audioMode ile belirlenir:
+ *   'auto'  — önce assets/audio içindeki dosya denenir; dosya yoksa veya
+ *             çalınamıyorsa aynı ses WebAudio ile üretilir (js/synth.js).
+ *             Böylece dosyalar tek tek eklenebilir, eksikler sessiz kalmaz.
+ *   'files' — sadece dosyalar; eksik olan ses hiç çalmaz.
+ *   'synth' — dosyalar hiç denenmez.
+ *
+ * Hangi durumda olursa olsun oyunun akışı bozulmaz: bir ses çalınamazsa
+ * sessizce (bir kere uyarı loglayarak) devam edilir.
+ */
+class AudioManager {
+  constructor() {
+    const mode = (typeof CONFIG !== 'undefined' && CONFIG.audioMode) || 'auto';
+    this.mode = mode;
+    this.useFiles = mode === 'auto' || mode === 'files';
+    this.synth = (mode !== 'files' && typeof SynthAudio === 'function') ? new SynthAudio() : null;
+
+    // Çapraz geçiş için iki eleman: biri kısılırken diğeri açılır.
+    this.bgmEls = [new Audio(), new Audio()];
+    this.bgmEls.forEach((el) => { el.loop = true; el.volume = 0; el.preload = 'auto'; });
+    this.active = 0;
+    this.currentBgmFile = null;
+    // Parçaya özel seviye çarpanı: aynı müzik bir sahnede fısıltı gibi, bir
+    // sonrakinde tam sesle çalabilsin diye (bkz. story.js 'bgm' + volume).
+    this.trackGain = 1;
+    this._fadeTimers = [null, null];
+
+    this.musicOn = CONFIG.defaultSettings.musicOn;
+    this.sfxOn = CONFIG.defaultSettings.sfxOn;
+    this.musicVolume = CONFIG.defaultSettings.musicVolume;
+    this.sfxVolume = CONFIG.defaultSettings.sfxVolume;
+
+
+    // Daha önce yüklenemediği görülen dosyalar tekrar denenmez.
+    this._unavailable = new Set();
+    /** dosya adı -> {els, i}: kısa efektler için yeniden kullanılan Audio havuzu. */
+    this._sfxPool = new Map();
+
+    // Sahne sesleri (zil, kapı, sayfa...) sahne değişince susturulabilsin diye
+    // ayrıca takip edilir. Yazı sesleri buraya girmez; onlar zaten çok kısa.
+    this._sahneSesleri = [];
+
+    this.bgmEls.forEach((el) => {
+      el.addEventListener('error', () => {
+        if (this.currentBgmFile && el.src && el.src.indexOf(this.currentBgmFile) !== -1) {
+          this._fallbackBgm(this.currentBgmFile);
+        }
+      });
+    });
+  }
+
+  applySettings(settings) {
+    if (!settings) return;
+    if (typeof settings.musicOn === 'boolean') this.setMusicOn(settings.musicOn);
+    if (typeof settings.sfxOn === 'boolean') this.sfxOn = settings.sfxOn;
+    if (typeof settings.musicVolume === 'number') this.setMusicVolume(settings.musicVolume);
+    if (typeof settings.sfxVolume === 'number') this.sfxVolume = settings.sfxVolume;
+  }
+
+  _markUnavailable(filename) {
+    if (!this._unavailable.has(filename)) {
+      this._unavailable.add(filename);
+      console.info('[AudioManager] Ses dosyası yok, üretilmiş sese düşülüyor:', filename);
+    }
+  }
+
+  /** Bir <audio> elemanının sesini yumuşakça hedef değere taşır. */
+  _fade(index, target, seconds, onDone) {
+    const el = this.bgmEls[index];
+    if (this._fadeTimers[index]) clearInterval(this._fadeTimers[index]);
+    const start = el.volume;
+    const dur = Math.max(0.05, seconds) * 1000;
+    const t0 = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+    this._fadeTimers[index] = setInterval(() => {
+      const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+      const t = Math.min(1, (now - t0) / dur);
+      // yumuşak giriş/çıkış eğrisi
+      const k = t * t * (3 - 2 * t);
+      el.volume = Math.max(0, Math.min(1, start + (target - start) * k));
+      if (t >= 1) {
+        clearInterval(this._fadeTimers[index]);
+        this._fadeTimers[index] = null;
+        if (onDone) onDone();
+      }
+    }, 40);
+  }
+
+  /** Dosya çalınamadı: aynı parçayı sentezle sürdür. */
+  _fallbackBgm(filename) {
+    this._markUnavailable(filename);
+    this.bgmEls.forEach((el, i) => { if (this._fadeTimers[i]) clearInterval(this._fadeTimers[i]); el.pause(); el.volume = 0; });
+    if (this.synth && this.musicOn && this.currentBgmFile === filename) {
+      this.synth.playBgm(filename);
+    }
+  }
+
+  /**
+   * @param {string} filename
+   * @param {{fadeIn?:number, fadeOut?:number}} [opts] Saniye cinsinden geçiş süreleri.
+   */
+  playBgm(filename, opts) {
+    if (!filename) return;
+    const fadeIn = (opts && typeof opts.fadeIn === 'number') ? opts.fadeIn : 2.2;
+    const fadeOut = (opts && typeof opts.fadeOut === 'number') ? opts.fadeOut : 1.2;
+    const gain = (opts && typeof opts.volume === 'number') ? Math.max(0, Math.min(1, opts.volume)) : 1;
+
+    // Zaten çalan parça: yeniden başlatmak yerine yalnızca seviyeyi taşı.
+    if (this.currentBgmFile === filename && this.musicOn) {
+      if (gain !== this.trackGain) {
+        this.trackGain = gain;
+        if (this.synth && (!this.useFiles || this._unavailable.has(filename))) {
+          this.synth.setMusicVolume(this.musicVolume * gain);
+        } else {
+          this._fade(this.active, this.musicVolume * gain, fadeIn);
+        }
+      }
+      return;
+    }
+    this.trackGain = gain;
+    const prev = this.currentBgmFile;
+    this.currentBgmFile = filename;
+
+    // Dosya yoksa sentez (onun kendi yumuşak girişi var)
+    if (!this.useFiles || this._unavailable.has(filename)) {
+      this._fadeOutCurrent(fadeOut);
+      if (this.synth) {
+        if (this.musicOn) { this.synth.playBgm(filename); this.synth.setMusicVolume(this.musicVolume * gain); }
+        else this.synth.stopBgm();
+      }
+      return;
+    }
+    if (this.synth && prev) this.synth.stopBgm();
+
+    const next = 1 - this.active;
+    const el = this.bgmEls[next];
+    el.src = assetPath('audio', filename);
+    el.currentTime = 0;
+    el.volume = 0;
+    if (!this.musicOn) return;
+
+    const playPromise = el.play();
+    const start = () => {
+      this._fadeOutCurrent(fadeOut);
+      this.active = next;
+      this._fade(next, this.musicVolume * this.trackGain, fadeIn);
+    };
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.then(start).catch(() => this._fallbackBgm(filename));
+    } else {
+      start();
+    }
+  }
+
+  /** Çalmakta olan parçayı kısarak durdurur. */
+  _fadeOutCurrent(seconds) {
+    const el = this.bgmEls[this.active];
+    if (!el.src || el.paused) return;
+    const i = this.active;
+    this._fade(i, 0, seconds, () => { el.pause(); });
+  }
+
+  /**
+   * Müziği yumuşakça susturur ama hangi parçanın çaldığını unutur; böylece
+   * aynı dosya sonradan tekrar `playBgm` ile baştan başlatılabilir.
+   * Hikâyede bilerek sessizlik istenen anlar için (bkz. story.js 'bgm' + stop).
+   * @param {number} [seconds]
+   */
+  fadeOutBgm(seconds) {
+    const sec = typeof seconds === 'number' ? seconds : 0.8;
+    this._fadeOutCurrent(sec);
+    if (this.synth) this.synth.stopBgm();
+    this.currentBgmFile = null;
+    this.trackGain = 1;
+  }
+
+  stopBgm() {
+    this.trackGain = 1;
+    this.bgmEls.forEach((el, i) => {
+      if (this._fadeTimers[i]) { clearInterval(this._fadeTimers[i]); this._fadeTimers[i] = null; }
+      el.pause(); el.currentTime = 0; el.volume = 0;
+    });
+    if (this.synth) this.synth.stopBgm();
+    this.currentBgmFile = null;
+  }
+
+  /**
+   * @param {string} filename
+   * @param {{volume?:number}} [opts] volume: sfx seviyesinin çarpanı (0-1).
+   *   Yazı sesi gibi saniyede birkaç kez çalan efektler için kısılır.
+   */
+  playSfx(filename, opts) {
+    if (!this.sfxOn || !filename) return;
+    const gain = (opts && typeof opts.volume === 'number') ? Math.max(0, Math.min(1, opts.volume)) : 1;
+
+    if (!this.useFiles || this._unavailable.has(filename)) {
+      if (this.synth) this.synth.playSfx(filename);
+      return;
+    }
+
+    // Yazı sesi her birkaç karakterde bir çalıyor; her seferinde yeni bir
+    // Audio yaratmamak için dosya başına küçük bir havuz tutuluyor.
+    let havuz = this._sfxPool.get(filename);
+    if (!havuz) {
+      havuz = { els: [], i: 0 };
+      for (let k = 0; k < 4; k++) {
+        const a = new Audio(assetPath('audio', filename));
+        a.preload = 'auto';
+        a.addEventListener('error', () => {
+          this._markUnavailable(filename);
+          if (this.synth) this.synth.playSfx(filename);
+        });
+        havuz.els.push(a);
+      }
+      this._sfxPool.set(filename, havuz);
+    }
+
+    const el = havuz.els[havuz.i];
+    havuz.i = (havuz.i + 1) % havuz.els.length;
+    if (opts && opts.track) this._trackSahneSesi(el);
+    el.volume = this.sfxVolume * gain;
+    try { el.currentTime = 0; } catch (e) { /* henüz yüklenmediyse yoksay */ }
+    const playPromise = el.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => {
+        this._markUnavailable(filename);
+        if (this.synth) this.synth.playSfx(filename);
+      });
+    }
+  }
+
+  setMusicOn(on) {
+    this.musicOn = !!on;
+    if (!this.musicOn) {
+      this._fadeOutCurrent(0.4);
+      if (this.synth) this.synth.stopBgm();
+      return;
+    }
+    if (!this.currentBgmFile) return;
+    if (!this.useFiles || this._unavailable.has(this.currentBgmFile)) {
+      if (this.synth) this.synth.playBgm(this.currentBgmFile);
+      return;
+    }
+    const el = this.bgmEls[this.active];
+    const p = el.play();
+    const up = () => this._fade(this.active, this.musicVolume * this.trackGain, 1.2);
+    if (p && typeof p.catch === 'function') p.then(up).catch(() => this._fallbackBgm(this.currentBgmFile));
+    else up();
+  }
+
+  setSfxOn(on) {
+    this.sfxOn = !!on;
+  }
+
+  setMusicVolume(v) {
+    this.musicVolume = v;
+    const el = this.bgmEls[this.active];
+    if (el && !el.paused) this._fade(this.active, v * this.trackGain, 0.25);
+    if (this.synth) this.synth.setMusicVolume(v * this.trackGain);
+  }
+
+  /** Sahne sesini listeye alır; kendiliğinden bitince listeden düşer. */
+  _trackSahneSesi(el) {
+    if (this._sahneSesleri.indexOf(el) === -1) {
+      this._sahneSesleri.push(el);
+      el.addEventListener('ended', () => {
+        const i = this._sahneSesleri.indexOf(el);
+        if (i !== -1) this._sahneSesleri.splice(i, 1);
+      });
+    }
+  }
+
+  /**
+   * Çalmakta olan sahne seslerini keser. Zil gibi uzun sesler bir sonraki
+   * sahneye taşmasın diye arka plan değiştiğinde çağrılır.
+   */
+  stopSfx() {
+    const liste = this._sahneSesleri.slice();
+    this._sahneSesleri.length = 0;
+    liste.forEach((el) => {
+      try { el.pause(); el.currentTime = 0; } catch (e) { /* yoksay */ }
+    });
+    if (this.synth && typeof this.synth.stopSfx === 'function') this.synth.stopSfx();
+  }
+
+  setSfxVolume(v) {
+    this.sfxVolume = v;
+    if (this.synth) this.synth.setSfxVolume(v);
+  }
+}
