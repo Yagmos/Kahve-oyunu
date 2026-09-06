@@ -169,6 +169,10 @@ const STORY = {
     },
     {
       type: 'say', speaker: '', note: true,
+      text: 'Ayrıca ben bu oyunu normalde Android telefonlar için tasarladım ama yüksek ihtimalle iPhone\'da da çalışır.'
+    },
+    {
+      type: 'say', speaker: '', note: true,
       text: 'Oyunu bitirdikten sonra ilk olarak hangi sonu elde edersen lütfen bunu yazmayı unutma.'
     },
     {
