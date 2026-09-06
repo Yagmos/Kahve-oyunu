@@ -280,7 +280,7 @@ const STORY = {
       date: 'Salı',
       notifications: [
         { app: 'Mesajlar', from: 'Annem', text: 'Süt almayı unutma, tamam mı? :)' },
-        { app: 'Hatırlatıcı', text: "İngilizce bilgi yarışması bugün 15.00 — sen de yarışıyorsun, geç kalma." },
+        { app: 'Hatırlatıcı', text: "Mayfest bilgi yarışması bugün 15.00 — sen de yarışıyorsun, geç kalma." },
         { app: 'Hatırlatıcı', text: 'Matematik ödevini çantaya koy!' },
         { app: 'Notlar', text: 'Yarışma: geçen sene soruların yarısı elektrik konusundan gelmişti.' }
       ],
@@ -524,13 +524,15 @@ const STORY = {
 
 
   act2_hallway4: [
-    { type: 'say', speaker: '', text: 'Birkaç kapı ileride durduğu yer, listedeki sınıflardan biri: hedef burası.' },
+    { type: 'say', speaker: '', text: 'Birkaç kapı ileride durduğu yer, listedeki sınıflardan biri. Kapının üstünde 11-C yazıyor: hedef burası.' },
     { type: 'camera', effect: 'zoom-in' },
     // Kapının ardından sızan ders müziği: çok kısık, uzun bir açılmayla.
     { type: 'bgm', file: 'classroom.mp3', fadeIn: 5.0, fadeOut: 2.0, volume: 0.16 },
     { type: 'say', speaker: '', text: 'Kapıya yaklaşırken içeriden sesler geliyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Bir şey mi oluyor?' },
     { type: 'say', speaker: '', text: 'İçeride hararetli bir tartışma sürüyor gibi. Sesler kızgın değil, ama yoğun.' },
+    { type: 'say', speaker: '', text: 'Aralarından bir ses diğerlerinin üstüne biniyor; Yahya o sesi hemen tanıyor.' },
+    { type: 'say', speaker: BOY_NAME, text: `Eyvah, ${TEACHER_NAME.split(' ')[0]} hocanın dersine denk gelmişim.` },
     { type: 'say', speaker: BOY_NAME, text: 'Hmm. Belki biraz beklesem daha iyi olur.' },
     { type: 'hide', id: 'boy' },
     { type: 'jump', goto: 'act2_debate_start' }
@@ -823,13 +825,13 @@ const STORY = {
       time: '11:52',
       date: 'Salı',
       notifications: [
-        { app: 'Hatırlatıcı', text: 'İngilizce bilgi yarışması 15.00 — çok kaldı sanma.' },
+        { app: 'Hatırlatıcı', text: 'Mayfest bilgi yarışması 15.00 — çok kaldı sanma.' },
         { app: 'Mesajlar', from: 'Annem', text: 'Nasıl geçiyor gün?' }
       ],
       schedule: [
         { time: '11:00', subject: 'Din Kültürü' },
         { time: '13:00', subject: 'Beden Eğitimi' },
-        { time: '15:00', subject: 'İngilizce bilgi yarışması', highlight: true }
+        { time: '15:00', subject: 'Mayfest bilgi yarışması', highlight: true }
       ],
       apps: PHONE_APPS_DATA
     },
@@ -1211,7 +1213,16 @@ const STORY = {
   act3_coda: [
     { type: 'bg', file: null },
     { type: 'say', speaker: '', text: 'Selam Ben Yahya', titleCard: true },
-    { type: 'say', speaker: '', text: '— Son —', titleCard: true },
+    {
+      // Hangi sona ulaşıldığı kapanış kartında yazsın: İnci ilk hangi sonu
+      // aldığını söyleyebilsin diye.
+      type: 'say', speaker: '', titleCard: true,
+      text: (game) => bayragaGore(game, 'kahve', {
+        olur: '— Son 1 —',
+        belki: '— Son 2 —',
+        hayir: '— Son 3 —'
+      }, '— Son —')
+    },
     { type: 'end' }
   ]
 };
