@@ -49,6 +49,123 @@ class Game {
     this.currentBg = null; // en son gösterilen arka plan (kayıt/yükleme için)
   }
 
+  /**
+   * Oyunun kullanacağı görselleri ve kafe videosunu arka planda, TEK TEK
+   * önden indirir. Sahne değişiminde görsel ilk kez o an yükleniyordu ve
+   * geçişte gözle görülür bir takılma oluyordu; giriş mektubu okunurken
+   * geçen süre bunun için fazlasıyla yetiyor.
+   *
+   * Sıra bilinçli: önce arka planlar (en görünür takılma orada), sonra
+   * portreler, sonra telefondaki fotoğraflar, en son kafe videosu.
+   * Tek tek yüklenir ki ilk sahnelerin kendi istekleriyle yarışmasın.
+   */
+  _prefetchAssets() {
+    if (this._prefetchStarted) return;
+    this._prefetchStarted = true;
+
+    const ses = new Set();
+    const arkaPlan = new Set();
+    const karakter = new Set();
+    let video = null;
+
+    Object.keys(STORY).forEach((etiket) => {
+      (STORY[etiket] || []).forEach((adim) => {
+        if (adim.type === 'bg' && typeof adim.file === 'string') arkaPlan.add(adim.file);
+        if (adim.type === 'bgvideo' && typeof adim.file === 'string') video = adim.file;
+        if ((adim.type === 'bgm' || adim.type === 'sfx') && typeof adim.file === 'string') ses.add(adim.file);
+        if ((adim.type === 'show' || adim.type === 'expr') && typeof adim.file === 'string') {
+          // Sahnedeki figür ve portre ayrı görsellerden geliyor; ikisi de ısınsın.
+          if (typeof SHOW_STANDING_CHARACTERS === 'undefined' || SHOW_STANDING_CHARACTERS) {
+            karakter.add(sceneArt(adim.file, this.flags));
+          }
+          karakter.add(portraitArt(adim.file));
+        }
+      });
+    });
+
+    // Yazı sesleri ve tıklama sesi hiçbir adımda geçmez; elle eklenir.
+    try {
+      Object.keys(VOICE_FILES).forEach((k) => ses.add(VOICE_FILES[k]));
+      ses.add(VOICE_DEFAULT);
+    } catch (e) { /* yoksa atla */ }
+    ses.add('click.mp3');
+
+    // Tartışma sahnesi kendi görsellerini ve sesini DebateManager üzerinden
+    // çağırıyor; hikaye adımlarında geçmedikleri için ayrıca eklenir.
+    try {
+      Object.keys(DEBATE_ART).forEach((id) => {
+        const set = DEBATE_ART[id] || {};
+        Object.keys(set).forEach((ifade) => karakter.add(set[ifade]));
+      });
+    } catch (e) { /* tartışma katmanı yoksa atla */ }
+    if (typeof EMPHASIS_SFX === 'string') ses.add(EMPHASIS_SFX);
+
+    // Sahneye hiç girmeyen karakterin portresi varsayılan ifadeye düşer
+    // (ör. Badem Öziş); o dosyalar da yukarıdaki taramada görünmez.
+    try {
+      Object.keys(PORTRAIT_DEFAULT_EXPRESSION).forEach((id) => {
+        karakter.add(portraitArt(id + '_' + PORTRAIT_DEFAULT_EXPRESSION[id] + '.svg'));
+      });
+    } catch (e) { /* yoksa atla */ }
+
+    const telefon = new Set();
+    try {
+      const veri = (typeof PHONE_APPS_DATA !== 'undefined') ? PHONE_APPS_DATA : null;
+      if (veri) {
+        (veri.instagram && veri.instagram.posts || []).forEach((g) => { if (g.image) telefon.add(g.image); if (g.poster) telefon.add(g.poster); });
+        const gal = veri.gallery || {};
+        (gal.items || []).forEach((g) => telefon.add(g.file));
+        ((gal.locked && gal.locked.items) || []).forEach((g) => telefon.add(g.file));
+      }
+    } catch (e) { /* telefon verisi yoksa sorun değil */ }
+
+    // Sıra bilinçli: müzik başta, çünkü geç yüklenen bir parça fade-in'i
+    // sessizliğe açıyor ve en çok orada duyuluyor. Sonra arka planlar,
+    // portreler, telefon fotoğrafları; kafe videosu en sonda.
+    const sira = []
+      .concat([...ses].map((f) => ({ tur: 'ses', url: assetPath('audio', f) })))
+      .concat([...arkaPlan].map((f) => ({ tur: 'gorsel', url: assetPath('backgrounds', f) })))
+      .concat([...karakter].map((f) => ({ tur: 'gorsel', url: assetPath('characters', f) })))
+      .concat([...telefon].map((f) => ({ tur: 'gorsel', url: assetPath('phone', f) })));
+
+    let i = 0;
+    const sonraki = () => {
+      if (i >= sira.length) { this._prefetchVideo(video); return; }
+      const oge = sira[i++];
+      let gecti = false;
+      const devam = () => { if (gecti) return; gecti = true; setTimeout(sonraki, 40); };
+      // Tek bir dosya takılırsa kuyruk durmasın.
+      setTimeout(devam, 4000);
+      if (oge.tur === 'ses') {
+        const a = new Audio();
+        a.preload = 'auto';
+        a.oncanplaythrough = devam;
+        a.onerror = devam;
+        a.src = oge.url;
+        try { a.load(); } catch (e) { devam(); }
+      } else {
+        const img = new Image();
+        img.onload = devam;
+        img.onerror = devam;
+        img.src = oge.url;
+      }
+    };
+    setTimeout(sonraki, 400);
+  }
+
+  /** Kafe animasyonu doruk noktasında takılmasın diye en sonda ısıtılır. */
+  _prefetchVideo(dosya) {
+    if (!dosya) return;
+    try {
+      const v = document.createElement('video');
+      v.preload = 'auto';
+      v.muted = true;
+      v.src = assetPath('video', dosya);
+      v.load();
+      this._prefetchedVideo = v;   // çöp toplayıcı almasın diye tutuluyor
+    } catch (e) { /* video ısıtılamazsa oyun aynen çalışır */ }
+  }
+
   newGame() {
     SaveManager.clearSave();
     this.dialogue.clearHistory();
@@ -67,6 +184,7 @@ class Game {
     this.label = STORY_START_LABEL;
     this.index = 0;
     this._executeCurrent();
+    this._prefetchAssets();
   }
 
   continueGame() {
@@ -96,6 +214,7 @@ class Game {
     this.label = save.label;
     this.index = save.index;
     this._executeCurrent();
+    this._prefetchAssets();
   }
 
   /**
@@ -350,7 +469,8 @@ class Game {
   }
 
   _returnToMenu() {
-    this.audio.stopBgm();
+    // Menüye dönerken müzik aniden kesilmesin; son kartın havası korunuyor.
+    this.audio.fadeOutBgm(1.2);
     if (this.portrait) this.portrait.reset();
     if (this.debate) this.debate.reset();
     if (this.debate) this.debate.reset();

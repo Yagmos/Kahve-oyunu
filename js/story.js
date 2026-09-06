@@ -747,7 +747,6 @@ const STORY = {
   act2_debate_end: [
     { type: 'say', speaker: '', text: 'Ders bitmek üzere, ama öğretmen son sözü söylemek istiyor gibi duruyor.' },
     { type: 'say', speaker: '', text: '(İçinden) Şimdi cevap verirsem bu tartışma bir saat daha sürer.' },
-    { type: 'sfx', file: 'bell.mp3' },
     { type: 'expr', id: 'teacher', file: 'teacher_debate_calm.png' }, // tartışma kapanıyor
     { type: 'say', speaker: TEACHER_NAME, text: 'Neyse, bu konuyu başka bir derste daha açarız.' },
     { type: 'say', speaker: 'Bir öğrenci', text: 'Hocam, bu da mı sınava girecek?' },
@@ -1014,7 +1013,7 @@ const STORY = {
 
   // Sahne 8 — kahve teklifi, sohbetin doğal bir sonucu olarak (hazır bir bahane cümlesi değil).
   act3_coffee_offer: [
-    { type: 'bgm', file: 'offer.mp3' },           // teklif anı
+    { type: 'bgm', file: 'offer.mp3', fadeIn: 1.6, fadeOut: 1.0 },   // teklif anı
     // Teklif anı: kafe animasyonu sahnenin kendisi olur, seçim onun üstünde yapılır.
     { type: 'hide', id: 'girl' },
     { type: 'hide', id: 'boy' },
@@ -1043,7 +1042,7 @@ const STORY = {
 
   // Sahne 9, seçim 1 — EVET. Sakin, gündelik, aşk ilanı değil.
   act3_yes: [
-    { type: 'bgm', file: 'accept.mp3' },
+    { type: 'bgm', file: 'accept.mp3', fadeIn: 2.0, fadeOut: 1.1 },
     { type: 'bg', file: 'school_gate_evening.jpg' },   // videodan sahneye dön
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'say', speaker: GIRL_NAME, text: 'Olur.' },
@@ -1057,7 +1056,7 @@ const STORY = {
 
   // Sahne 9, seçim 2 — ÖNCE TANIŞALIM. Sınır koyuyor ama kapıyı kapatmıyor; gizli bir "evet" değil.
   act3_getknow: [
-    { type: 'bgm', file: 'maybe.mp3' },
+    { type: 'bgm', file: 'maybe.mp3', fadeIn: 2.0, fadeOut: 1.1 },
     { type: 'bg', file: 'school_gate_evening.jpg' },   // videodan sahneye dön
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'say', speaker: GIRL_NAME, text: 'Belki... önce biraz tanışsak?' },
@@ -1071,7 +1070,7 @@ const STORY = {
 
   // Sahne 9, seçim 3 — HAYIR. Kötü son değil; karşılıklı saygı korunuyor.
   act3_no: [
-    { type: 'bgm', file: 'decline.mp3' },
+    { type: 'bgm', file: 'decline.mp3', fadeIn: 2.0, fadeOut: 1.1 },
     { type: 'bg', file: 'school_gate_evening.jpg' },   // olumsuz seçenekte görsel değişmez
     { type: 'show', id: 'girl', file: 'girl_neutral.svg', position: 'left', transition: 'fade' },
     { type: 'show', id: 'boy', file: 'boy_neutral.svg', position: 'right', transition: 'fade' },

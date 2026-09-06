@@ -19,6 +19,8 @@ const VOICE_DEFAULT = 'voice_other.mp3';
 const VOICE_EVERY = 3;
 /** Yazı sesi efekt seviyesinin çarpanı: arka planda kalmalı. */
 const VOICE_GAIN = 0.30;
+/** Arayüz tıklama sesi: müziğin önüne geçmesin diye kısılır. */
+const CLICK_GAIN = 0.45;
 class DialogueManager {
   constructor(refs) {
     this.nameEl = refs.nameEl;
@@ -186,7 +188,7 @@ class DialogueManager {
       btn.type = 'button';
       btn.textContent = option.text;
       btn.addEventListener('click', () => {
-        if (this.audio) this.audio.playSfx('click.mp3');
+        if (this.audio) this.audio.playSfx('click.mp3', { volume: CLICK_GAIN });
         onSelect(option);
       });
       this.choiceLayerEl.appendChild(btn);

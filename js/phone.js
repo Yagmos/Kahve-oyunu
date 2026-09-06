@@ -38,7 +38,7 @@ class PhoneManager {
 
     this.apps = {};
     if (this.backBtn) this.backBtn.addEventListener('click', () => {
-      if (this.audio) this.audio.playSfx('click.mp3');
+      if (this.audio) this.audio.playSfx('click.mp3', { volume: 0.45 });
       this.openHome();
     });
   }
@@ -135,7 +135,7 @@ class PhoneManager {
       btn.appendChild(label);
 
       btn.addEventListener('click', () => {
-        if (this.audio) this.audio.playSfx('click.mp3');
+        if (this.audio) this.audio.playSfx('click.mp3', { volume: 0.45 });
         this.openApp(app.id);
       });
       this.appsEl.appendChild(btn);
