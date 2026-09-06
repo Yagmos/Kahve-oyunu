@@ -106,15 +106,20 @@ const PHONE_APPS_DATA = {
           // Kilitli albüm: doğru kod girilene kadar hücreler "?" görünür.
           // İpucu Notlar uygulamasında; iki saat de bu telefonda yazıyor.
           locked: {
-            title: 'Kilitli albüm · 3 fotoğraf',
+            title: 'Gizli albüm · 8 fotoğraf',
             code: '526',
             hint: 'Bu albüm kilitli. Şifreyi her gün gördüğüm bir yere yazmıştım.',
             wrongText: 'Olmadı. Bir daha düşün.',
             openNote: 'Kilit açıldı.',
             items: [
-              { file: 'club.jpg', caption: 'Dergi kulübünün odası. Yazımı masaya bırakıp çıktım, kimseye söylemedim.' },
-              { file: 'room.jpg', caption: 'Kendi odam. Rafın en üstündeki kupa bana ait değil, ablamın. Yine de duruyor.' },
-              { file: 'gate.jpg', caption: 'Okul çıkışı, geçen hafta. O gün kimseyle konuşmadım ve bu fotoğrafı çektim.' }
+              { file: 'gizli_1.jpg', caption: 'İşte sana, bu oyunu tasarlarken tam olarak böyle gözüküyordum.' },
+              { file: 'gizli_2.jpg', caption: 'Proje fikri ilk aklıma geldiğinde TÜBİTAK işleri vardı tabii, bir yandan da onları halletmem şarttı.' },
+              { file: 'gizli_3.jpg', caption: 'Bu ise tam bu oyunu tasarlarken oynamaya yeni başladığım kutu oyunu. Oyunun bitmesi 8-9 saat sürüyor, evet yanlış duymadın. Okulda istersen bunları konuşabiliriz.' },
+              { file: 'gizli_4.jpg', caption: 'Bir de Ayhan hocanın tiyatrosu patlak verdi tabii. İnegöl\'de çocuklar güzel bir oyun sergiledi, ben de sahne arkası olarak oradaydım tabii ki.' },
+              { file: 'gizli_5.jpg', caption: 'Bu oyunu tasarlarken okuduğum kitap. C. M. Kösemen\'in bana kalırsa bir şaheseri.' },
+              { file: 'gizli_6.jpg', caption: 'Tam bu oyunu tasarlarken hayatımda ilk defa sushi yapmayı denedim ve galiba biraz da olsa başarılı olmuşum. Haksız mıyım?' },
+              { file: 'gizli_7.jpg', caption: 'En sevdiğim film, tartışmasız.' },
+              { file: 'gizli_8.jpg', caption: 'İlber hocamın ölümüne ciddi anlamda üzüldüm.' }
             ]
           }
         },
@@ -174,6 +179,14 @@ const STORY = {
       type: 'say', speaker: '', note: true,
       text: 'Umarım senin için de unutulmaz bir deneyim olur. Hadi bakalım, iyi eğlenceler.'
     },
+    { type: 'jump', goto: 'credits' }
+  ],
+
+  // ---- Yapımcılar ----
+  credits: [
+    { type: 'say', speaker: '', credits: true, text: 'SELAM BEN YAHYA\n\n\nTasarım · Senaryo · Kurgu\nYahya Kocabey\n\nÇizim · Görsel Tasarım\nYahya Kocabey\n\nSes Tasarımı · Test\nYahya Kocabey' },
+    { type: 'say', speaker: '', credits: true, text: 'YARDIM ALINANLAR\n\n\nMobil sürüme geçiş\nClaude AI\n\nBadem Hoca tartışma sahnesi\nGemini' },
+    { type: 'say', speaker: '', credits: true, text: 'Bu oyun\nİnci Cihan\'a\nözel olarak hazırlanmıştır.' },
     { type: 'jump', goto: 'act1_start' }
   ],
 
@@ -981,8 +994,8 @@ const STORY = {
     { type: 'say', speaker: BOY_NAME, text: 'Adını söyleyebilirim ama ne için olduğunu söyleyemem.' },
     { type: 'expr', id: 'girl', file: 'girl_happy.svg' },
     { type: 'say', speaker: GIRL_NAME, text: 'Bu şekilde söylersen daha çok merak edilir, haberin olsun.' },
-    { type: 'say', speaker: BOY_NAME, text: 'Adı Kahve Oyunu.' },
-    { type: 'say', speaker: GIRL_NAME, text: 'Kahve Oyunu.' },
+    { type: 'say', speaker: BOY_NAME, text: 'Adı Selam Ben Yahya.' },
+    { type: 'say', speaker: GIRL_NAME, text: 'Selam Ben Yahya.' },
     { type: 'say', speaker: BOY_NAME, text: 'Aynen.' },
     { type: 'say', speaker: GIRL_NAME, text: 'Ne için olduğunu gerçekten söylemeyecek misin?' },
     { type: 'say', speaker: BOY_NAME, text: 'Şimdilik.' },
@@ -1180,7 +1193,7 @@ const STORY = {
 
   act3_coda: [
     { type: 'bg', file: null },
-    { type: 'say', speaker: '', text: 'Kahve Oyunu', titleCard: true },
+    { type: 'say', speaker: '', text: 'Selam Ben Yahya', titleCard: true },
     { type: 'say', speaker: '', text: '— Son —', titleCard: true },
     { type: 'end' }
   ]

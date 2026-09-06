@@ -56,6 +56,7 @@ class DialogueManager {
       kutu.classList.toggle('title-card', !!(opts && opts.titleCard));
       // 'note': uzun mektup metni — normal punto, sola dayalı, taşarsa kaydırılır.
       kutu.classList.toggle('note-card', !!(opts && opts.note));
+      kutu.classList.toggle('credits-card', !!(opts && opts.credits));
     }
 
     this.nameEl.textContent = speaker || '';
@@ -67,7 +68,8 @@ class DialogueManager {
     this.currentSpeaker = speaker || '';
     this.typing = true;
 
-    if (this.charDelay <= 0) {
+    // Yapımcılar ekranı harf harf yazılmaz; blok hâlinde belirir.
+    if (this.charDelay <= 0 || (opts && opts.credits)) {
       this._finishTyping();
       return;
     }
